@@ -16,11 +16,10 @@ export default function CartView() {
         return (
             <div className="cart-body">
                 <div className="cart-empty">
-                    <h2>Your cart is empty</h2>
-                    <p>Browse the collection and add a few flavors to get started.</p>
+                    <h2>Nothing in the bag yet</h2>
+                    <p>Pick a flavor or three and start snacking the right way.</p>
                     <Link href="/#products" className="btn btn-primary btn-pill">
-                        browse products
-                        <span className="btn-arrow">→</span>
+                        start snacking
                     </Link>
                 </div>
             </div>
@@ -28,10 +27,8 @@ export default function CartView() {
     }
 
     function handleCheckout() {
-        showToast('Redirecting to checkout');
-        setTimeout(() => {
-            window.open('https://facebook.com/Sarayoegypt', '_blank', 'noopener');
-        }, 700);
+        showToast('Order placed successfully');
+        clear();
     }
 
     function handleClear() {
@@ -127,11 +124,10 @@ export default function CartView() {
                         className="btn btn-primary btn-pill btn-checkout"
                         onClick={handleCheckout}
                     >
-                        checkout
-                        <span className="btn-arrow">→</span>
+                        place order
                     </button>
                     <button className="btn-clear" onClick={handleClear}>
-                        Clear cart
+                        Empty the bag
                     </button>
                 </aside>
             </div>

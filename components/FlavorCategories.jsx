@@ -1,9 +1,11 @@
 'use client';
 
 import {useRef} from 'react';
+import {useFlavor} from '@/lib/FlavorContext';
 
 const FLAVORS = [
     {
+        id: 'all',
         name: 'All Flavors',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -15,6 +17,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'chili',
         name: 'Chili',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -24,6 +27,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'cheese',
         name: 'Cheese',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -35,6 +39,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'bbq',
         name: 'BBQ',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -45,6 +50,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'ketchup',
         name: 'Ketchup',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -54,6 +60,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'vegetable',
         name: 'Vegetable',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -67,6 +74,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'tomato',
         name: 'Tomato',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -76,6 +84,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'sour-cream',
         name: 'Sour Cream',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -86,6 +95,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'salt-vinegar',
         name: 'Salt & Vinegar',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -97,6 +107,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'onion',
         name: 'Onion',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -107,6 +118,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'garlic',
         name: 'Garlic',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -116,6 +128,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'lime',
         name: 'Lime',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -125,6 +138,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'pepper',
         name: 'Pepper',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -136,6 +150,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'ranch',
         name: 'Ranch',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -146,6 +161,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'honey',
         name: 'Honey',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -155,6 +171,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'sweet-chili',
         name: 'Sweet Chili',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -165,6 +182,7 @@ const FLAVORS = [
         ),
     },
     {
+        id: 'pizza',
         name: 'Pizza',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -179,6 +197,7 @@ const FLAVORS = [
 
 export default function FlavorCategories() {
     const scrollRef = useRef(null);
+    const {selectedFlavor, selectFlavor} = useFlavor();
 
     function scroll(direction) {
         const target = scrollRef.current;
@@ -193,7 +212,7 @@ export default function FlavorCategories() {
     }
 
     return (
-        <section className="flavors" aria-labelledby="flavorsHeading">
+        <section className="flavors" id="flavors" aria-labelledby="flavorsHeading">
             <h2 id="flavorsHeading" className="visually-hidden">
                 Browse by flavor
             </h2>
@@ -209,7 +228,13 @@ export default function FlavorCategories() {
 
                 <div className="flavors-scroll" ref={scrollRef}>
                     {FLAVORS.map((f) => (
-                        <button key={f.name} className="flavor-item">
+                        <button
+                            key={f.id}
+                            type="button"
+                            className={'flavor-item' + (selectedFlavor === f.id ? ' is-active' : '')}
+                            onClick={() => selectFlavor(f.id)}
+                            aria-pressed={selectedFlavor === f.id}
+                        >
                             <span className="flavor-icon">{f.icon}</span>
                             <span className="flavor-name">{f.name}</span>
                         </button>

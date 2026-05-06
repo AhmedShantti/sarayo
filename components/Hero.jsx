@@ -48,8 +48,7 @@ export default function Hero() {
                     </h1>
                     <p className="hero-lede">{slide.lede}</p>
                     <a href="#products" className="btn btn-primary btn-pill">
-                        shop Sarayo
-                        <span className="btn-arrow">→</span>
+                        grab a bag
                     </a>
 
                     <div

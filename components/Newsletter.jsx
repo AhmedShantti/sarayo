@@ -19,7 +19,7 @@ export default function Newsletter() {
     }
 
     return (
-        <section className="newsletter" aria-labelledby="newsletterHeading">
+        <section className="newsletter" id="subscribe" aria-labelledby="newsletterHeading">
             <div className="container">
                 <div className="newsletter-inner">
                     <div className="newsletter-left">
@@ -44,7 +44,7 @@ export default function Newsletter() {
                             required
                         />
                         <button type="submit" className="btn-subscribe">
-                            Subscribe
+                            Join the crunch
                         </button>
                     </form>
                 </div>

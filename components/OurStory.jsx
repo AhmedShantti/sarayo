@@ -16,7 +16,6 @@ export default function OurStory() {
                     </p>
                     <a href="#" className="btn btn-primary btn-pill">
                         more about Sarayo
-                        <span className="btn-arrow">→</span>
                     </a>
                 </div>
             </div>

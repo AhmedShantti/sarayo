@@ -11,9 +11,9 @@ export default function CartPage() {
         <main className="cart-page">
             <div className="container">
                 <div className="cart-head">
-                    <h1 className="cart-title">Your cart</h1>
+                    <h1 className="cart-title">Your bag</h1>
                     <Link href="/#products" className="continue-link">
-                        ← Continue shopping
+                        ← keep snacking
                     </Link>
                 </div>
 

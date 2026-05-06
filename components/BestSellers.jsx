@@ -1,163 +1,36 @@
 'use client';
 
-import {useEffect, useRef} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 import {useCart} from '@/lib/CartContext';
 import {useToast} from '@/lib/ToastContext';
+import {useFlavor} from '@/lib/FlavorContext';
 
 const FALLBACK_IMG = '/lays-cheddar.png';
 
 const PRODUCTS = [
-    {
-        id: 'cheddar-sour-cream',
-        name: 'lay’s',
-        flavor: 'cheddar & sour cream',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: true,
-        image: '/lays-cheddar.png',
-    },
-    {
-        id: 'classic-salted',
-        name: 'lay’s',
-        flavor: 'classic salted',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-classic.png',
-    },
-    {
-        id: 'salt-vinegar',
-        name: 'lay’s',
-        flavor: 'salt & vinegar',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: true,
-        image: '/lays-salt-vinegar.png',
-    },
-    {
-        id: 'wavy',
-        name: 'lay’s',
-        flavor: 'wavy original',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-wavy.png',
-    },
-    {
-        id: 'indian-spice',
-        name: 'lay’s',
-        flavor: 'indian magic masala',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-indian.png',
-    },
-    {
-        id: 'cheddar-classic',
-        name: 'lay’s',
-        flavor: 'cheddar classic',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: true,
-        image: '/lays-cheddar.png',
-    },
-    {
-        id: 'wavy-bbq',
-        name: 'lay’s',
-        flavor: 'wavy bbq',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-wavy.png',
-    },
-    {
-        id: 'classic-large',
-        name: 'lay’s',
-        flavor: 'classic family pack',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-classic.png',
-    },
-    {
-        id: 'spicy-masala',
-        name: 'lay’s',
-        flavor: 'spicy masala',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-indian.png',
-    },
-    {
-        id: 'salt-vinegar-twist',
-        name: 'lay’s',
-        flavor: 'tangy salt & vinegar',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: true,
-        image: '/lays-salt-vinegar.png',
-    },
-    {
-        id: 'wavy-cheddar',
-        name: 'lay’s',
-        flavor: 'wavy cheddar ranch',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-wavy.png',
-    },
-    {
-        id: 'sour-cream-classic',
-        name: 'lay’s',
-        flavor: 'sour cream & onion',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-cheddar.png',
-    },
-    {
-        id: 'classic-original',
-        name: 'lay’s',
-        flavor: 'original',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: true,
-        image: '/lays-classic.png',
-    },
-    {
-        id: 'wavy-bbq-deluxe',
-        name: 'lay’s',
-        flavor: 'smoky bbq deluxe',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-wavy.png',
-    },
-    {
-        id: 'indian-tandoori',
-        name: 'lay’s',
-        flavor: 'tandoori twist',
-        price: 18,
-        pack: '6 pack',
-        size: '4oz bags',
-        bestSeller: false,
-        image: '/lays-indian.png',
-    },
+    {id: 'cheddar-sour-cream',  name: 'lay’s', flavor: 'cheddar & sour cream',  price: 18, pack: '6 pack', size: '4oz bags', bestSeller: true,  image: '/lays-cheddar.png',      tags: ['cheese', 'sour-cream']},
+    {id: 'classic-salted',      name: 'lay’s', flavor: 'classic salted',        price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-classic.png',      tags: ['salt-vinegar']},
+    {id: 'salt-vinegar',        name: 'lay’s', flavor: 'salt & vinegar',        price: 18, pack: '6 pack', size: '4oz bags', bestSeller: true,  image: '/lays-salt-vinegar.png', tags: ['salt-vinegar']},
+    {id: 'wavy',                name: 'lay’s', flavor: 'wavy original',         price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-wavy.png',         tags: ['salt-vinegar']},
+    {id: 'indian-spice',        name: 'lay’s', flavor: 'indian magic masala',   price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-indian.png',       tags: ['chili', 'pepper', 'sweet-chili']},
+    {id: 'cheddar-classic',     name: 'lay’s', flavor: 'cheddar classic',       price: 18, pack: '6 pack', size: '4oz bags', bestSeller: true,  image: '/lays-cheddar.png',      tags: ['cheese']},
+    {id: 'wavy-bbq',            name: 'lay’s', flavor: 'wavy bbq',              price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-wavy.png',         tags: ['bbq']},
+    {id: 'classic-large',       name: 'lay’s', flavor: 'classic family pack',   price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-classic.png',      tags: ['salt-vinegar']},
+    {id: 'spicy-masala',        name: 'lay’s', flavor: 'spicy masala',          price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-indian.png',       tags: ['chili', 'pepper']},
+    {id: 'salt-vinegar-twist',  name: 'lay’s', flavor: 'tangy salt & vinegar',  price: 18, pack: '6 pack', size: '4oz bags', bestSeller: true,  image: '/lays-salt-vinegar.png', tags: ['salt-vinegar']},
+    {id: 'wavy-cheddar',        name: 'lay’s', flavor: 'wavy cheddar ranch',    price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-wavy.png',         tags: ['cheese', 'ranch']},
+    {id: 'sour-cream-classic',  name: 'lay’s', flavor: 'sour cream & onion',    price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-cheddar.png',      tags: ['sour-cream', 'onion']},
+    {id: 'classic-original',    name: 'lay’s', flavor: 'original',              price: 18, pack: '6 pack', size: '4oz bags', bestSeller: true,  image: '/lays-classic.png',      tags: ['salt-vinegar']},
+    {id: 'wavy-bbq-deluxe',     name: 'lay’s', flavor: 'smoky bbq deluxe',      price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-wavy.png',         tags: ['bbq']},
+    {id: 'indian-tandoori',     name: 'lay’s', flavor: 'tandoori twist',        price: 18, pack: '6 pack', size: '4oz bags', bestSeller: false, image: '/lays-indian.png',       tags: ['chili', 'tomato']},
 ];
+
+const FLAVOR_LABELS = {
+    all: 'All Flavors', chili: 'Chili', cheese: 'Cheese', bbq: 'BBQ', ketchup: 'Ketchup',
+    vegetable: 'Vegetable', tomato: 'Tomato', 'sour-cream': 'Sour Cream',
+    'salt-vinegar': 'Salt & Vinegar', onion: 'Onion', garlic: 'Garlic', lime: 'Lime',
+    pepper: 'Pepper', ranch: 'Ranch', honey: 'Honey', 'sweet-chili': 'Sweet Chili', pizza: 'Pizza',
+};
 
 const CartIcon = () => (
     <svg viewBox="0 0 24 24" width="16" height="16">
@@ -179,30 +52,28 @@ export default function BestSellers() {
     const sectionRef = useRef(null);
     const {addItem} = useCart();
     const {showToast} = useToast();
+    const {selectedFlavor, selectFlavor} = useFlavor();
+
+    const visibleProducts = useMemo(() => {
+        if (selectedFlavor === 'all') return PRODUCTS;
+        return PRODUCTS.filter((p) => p.tags && p.tags.includes(selectedFlavor));
+    }, [selectedFlavor]);
+
+    const flavorLabel = FLAVOR_LABELS[selectedFlavor] || 'All Flavors';
+    const isFiltered = selectedFlavor !== 'all';
 
     function scroll(direction) {
         const target = scrollRef.current;
         if (!target) return;
-        // Advance by a full page-worth of cards (whatever fits in the visible
-        // viewport), so each click of the arrow reveals the next batch.
         const page = target.clientWidth;
-        target.scrollBy({
-            left: direction === 'prev' ? -page : page,
-            behavior: 'smooth',
-        });
+        target.scrollBy({left: direction === 'prev' ? -page : page, behavior: 'smooth'});
     }
 
     function handleAdd(product) {
-        addItem({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            flavor: product.flavor,
-        });
+        addItem({id: product.id, name: product.name, price: product.price, flavor: product.flavor});
         showToast(`Added ${product.flavor} to cart`);
     }
 
-    // Reveal-on-scroll for product cards
     useEffect(() => {
         const root = sectionRef.current;
         if (!root) return;
@@ -227,7 +98,6 @@ export default function BestSellers() {
         );
         cards.forEach((c) => io.observe(c));
 
-        // Failsafe: reveal anything left after 1.5s
         const t = setTimeout(() => {
             cards.forEach((c) => c.classList.add('is-revealed'));
         }, 1500);
@@ -236,7 +106,7 @@ export default function BestSellers() {
             clearTimeout(t);
             io.disconnect();
         };
-    }, []);
+    }, [visibleProducts]);
 
     return (
         <section
@@ -248,13 +118,35 @@ export default function BestSellers() {
             <div className="container">
                 <div className="section-head">
                     <h2 id="bestSellersHeading" className="section-title">
-                        CHIPS JUST GOT HIP
+                        {isFiltered ? `${flavorLabel} chips` : 'CHIPS JUST GOT HIP'}
                     </h2>
-                    <a href="#" className="view-all">
-                        view all <span>→</span>
-                    </a>
+                    {isFiltered ? (
+                        <button
+                            type="button"
+                            className="view-all"
+                            onClick={() => selectFlavor('all')}
+                        >
+                            taste them all
+                        </button>
+                    ) : (
+                        <a href="#flavors" className="view-all">
+                            pick a flavor
+                        </a>
+                    )}
                 </div>
 
+                {visibleProducts.length === 0 ? (
+                    <div className="products-empty">
+                        <p>That flavor’s out of stock for now — try another above.</p>
+                        <button
+                            type="button"
+                            className="btn btn-pill btn-primary"
+                            onClick={() => selectFlavor('all')}
+                        >
+                            taste them all
+                        </button>
+                    </div>
+                ) : (
                 <div className="products-wrap">
                     <button
                         className="carousel-arrow arrow-prev"
@@ -265,11 +157,8 @@ export default function BestSellers() {
                     </button>
 
                     <div className="products-scroll" ref={scrollRef}>
-                        {PRODUCTS.map((p) => (
-                            <article
-                                key={p.id}
-                                className="product-card"
-                            >
+                        {visibleProducts.map((p) => (
+                            <article key={p.id} className="product-card">
                                 <div className="product-image">
                                     <span className="pack-badge">{p.pack}</span>
                                     {p.bestSeller && (
@@ -313,6 +202,7 @@ export default function BestSellers() {
                         ›
                     </button>
                 </div>
+                )}
             </div>
         </section>
     );

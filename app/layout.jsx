@@ -1,15 +1,17 @@
 import {CartProvider} from '@/lib/CartContext';
 import {ToastProvider} from '@/lib/ToastContext';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import BackToTop from '@/components/BackToTop';
-import SmoothScroll from '@/components/SmoothScroll';
+import {FlavorProvider} from '@/lib/FlavorContext';
 import './globals.css';
 
 export const metadata = {
     title: 'Sarayo Alwadiya — Crunchy. Flavorful. Irresistible.',
     description:
         'Sarayo Alwadiya — Crunchy, flavorful, irresistible chips since 2002.',
+    icons: {
+        icon: '/images.png',
+        shortcut: '/images.png',
+        apple: '/images.png',
+    },
 };
 
 export const viewport = {
@@ -21,10 +23,6 @@ export default function RootLayout({children}) {
     return (
         <html lang="en">
             <head>
-                {/*
-                    Google Fonts loaded directly so the existing CSS keeps working —
-                    it references the fonts by name (e.g. 'Bowlby One', 'Fredoka').
-                */}
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
                     rel="preconnect"
@@ -32,18 +30,16 @@ export default function RootLayout({children}) {
                     crossOrigin="anonymous"
                 />
                 <link
-                    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Cairo:wght@700;900&display=swap"
+                    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Cairo:wght@700;900&family=Inter:wght@400;500;600;700&display=swap"
                     rel="stylesheet"
                 />
             </head>
             <body>
                 <CartProvider>
                     <ToastProvider>
-                        <Header />
-                        {children}
-                        <Footer />
-                        <BackToTop />
-                        <SmoothScroll />
+                        <FlavorProvider>
+                            {children}
+                        </FlavorProvider>
                     </ToastProvider>
                 </CartProvider>
             </body>
