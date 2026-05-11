@@ -4,26 +4,24 @@ import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {useEffect, useRef, useState} from 'react';
 import {useCart} from '@/lib/CartContext';
+import {useLanguage} from '@/lib/LanguageContext';
 import BrandLogo from './BrandLogo';
+import LangToggle from './LangToggle';
 
 const NAV_LINKS = [
-    {href: '/#products', label: 'menu',    sectionId: 'products'},
-    {href: '/#flavors',  label: 'flavors', sectionId: 'flavors'},
-    {href: '/#story',    label: 'story',   sectionId: 'story'},
+    {href: '/#products', tKey: 'nav.menu',    sectionId: 'products'},
+    {href: '/#flavors',  tKey: 'nav.flavors', sectionId: 'flavors'},
+    {href: '/#story',    tKey: 'nav.story',   sectionId: 'story'},
 ];
 
-const CONTACT_LINK = {href: '/#subscribe', label: 'contact', sectionId: 'subscribe'};
+const CONTACT_LINK = {href: '/#subscribe', tKey: 'nav.contact', sectionId: 'subscribe'};
 
-const PROMO_MESSAGES = [
-    'Shop our NEW Variety Packs',
-    'Free shipping on orders over 200 EGP',
-    'Crispy. Bold. Sarayo.',
-    'New flavors dropping soon',
-];
+const PROMO_KEYS = ['promo.0', 'promo.1', 'promo.2', 'promo.3'];
 
 export default function Header() {
     const pathname = usePathname();
     const isHomePage = pathname === '/';
+    const {t} = useLanguage();
 
     const {count, hydrated} = useCart();
     const [menuOpen, setMenuOpen] = useState(false);
@@ -79,10 +77,10 @@ export default function Header() {
 
     return (
         <>
-            <div className="promo-strip" aria-label="Site promotions">
+            <div className="promo-strip" aria-label={t('promo.aria')}>
                 <div className="promo-track">
-                    {[...PROMO_MESSAGES, ...PROMO_MESSAGES].map((msg, i) => (
-                        <span key={i}>{msg}</span>
+                    {[...PROMO_KEYS, ...PROMO_KEYS].map((key, i) => (
+                        <span key={i}>{t(key)}</span>
                     ))}
                 </div>
             </div>
@@ -94,7 +92,7 @@ export default function Header() {
                     aria-hidden="true"
                 />
                 <div className="container header-inner">
-                    <Link href="/#home" className="brand" aria-label="Sarayo Alwadiya home">
+                    <Link href="/#home" className="brand" aria-label={t('nav.brandAria')}>
                         <span className="brand-logo" aria-hidden="true">
                             <BrandLogo />
                         </span>
@@ -102,11 +100,11 @@ export default function Header() {
 
                     <nav
                         className={`main-nav${menuOpen ? ' is-open' : ''}`}
-                        aria-label="Primary"
+                        aria-label={t('nav.primary')}
                         ref={navRef}
                     >
                         <ul>
-                            {NAV_LINKS.map(({href, label, sectionId}) => (
+                            {NAV_LINKS.map(({href, tKey, sectionId}) => (
                                 <li key={href}>
                                     <Link
                                         href={href}
@@ -116,7 +114,7 @@ export default function Header() {
                                         }
                                         onClick={handleNavClick}
                                     >
-                                        {label}
+                                        {t(tKey)}
                                     </Link>
                                 </li>
                             ))}
@@ -129,7 +127,7 @@ export default function Header() {
                                     }
                                     onClick={handleNavClick}
                                 >
-                                    {CONTACT_LINK.label}
+                                    {t(CONTACT_LINK.tKey)}
                                 </Link>
                             </li>
                         </ul>
@@ -144,13 +142,15 @@ export default function Header() {
                             }
                             onClick={handleNavClick}
                         >
-                            {CONTACT_LINK.label}
+                            {t(CONTACT_LINK.tKey)}
                         </Link>
+
+                        <LangToggle />
 
                         <Link
                             href="/cart"
                             className={'cart-btn' + (pathname === '/cart' ? ' is-active-page' : '')}
-                            aria-label="View cart"
+                            aria-label={t('nav.cart')}
                         >
                             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
                                 <path d="M3 4h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 8H6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -164,7 +164,7 @@ export default function Header() {
 
                         <button
                             className={`menu-toggle${menuOpen ? ' is-open' : ''}`}
-                            aria-label="Menu"
+                            aria-label={t('nav.menuAria')}
                             aria-expanded={menuOpen}
                             ref={toggleRef}
                             onClick={() => setMenuOpen((o) => !o)}

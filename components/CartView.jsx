@@ -3,10 +3,13 @@
 import Link from 'next/link';
 import {useCart} from '@/lib/CartContext';
 import {useToast} from '@/lib/ToastContext';
+import {useLanguage} from '@/lib/LanguageContext';
 
 export default function CartView() {
     const {cart, hydrated, count, subtotal, incItem, decItem, removeItem, clear} = useCart();
     const {showToast} = useToast();
+    const {t, locale} = useLanguage();
+    const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     if (!hydrated) {
         return <div className="cart-body" />;
@@ -16,25 +19,20 @@ export default function CartView() {
         return (
             <div className="cart-body">
                 <div className="cart-empty">
-                    <h2>Nothing in the bag yet</h2>
-                    <p>Pick a flavor or three and start snacking the right way.</p>
+                    <h2>{t('cart.empty.title')}</h2>
+                    <p>{t('cart.empty.body')}</p>
                     <Link href="/#products" className="btn btn-primary btn-pill">
-                        start snacking
+                        {t('cart.empty.cta')}
                     </Link>
                 </div>
             </div>
         );
     }
 
-    function handleCheckout() {
-        showToast('Order placed successfully');
-        clear();
-    }
-
     function handleClear() {
-        if (confirm('Clear all items from your cart?')) {
+        if (confirm(t('cart.confirmClear'))) {
             clear();
-            showToast('Cart cleared');
+            showToast(t('cart.cleared'));
         }
     }
 
@@ -44,11 +42,11 @@ export default function CartView() {
     return (
         <div className="cart-body">
             <div className="cart-grid">
-                <section className="cart-items" aria-label="Items in cart">
+                <section className="cart-items" aria-label={t('cart.itemsAria')}>
                     <div className="cart-items-head">
-                        <span>Item</span>
-                        <span>Quantity</span>
-                        <span>Price</span>
+                        <span>{t('cart.col.item')}</span>
+                        <span>{t('cart.col.qty')}</span>
+                        <span>{t('cart.col.price')}</span>
                     </div>
                     {cart.map((it) => (
                         <article key={it.id} className="cart-item">
@@ -61,13 +59,13 @@ export default function CartView() {
                             </div>
                             <div className="cart-item-info">
                                 <h3>{it.name}</h3>
-                                <p className="cart-item-meta">{it.price} EGP each</p>
+                                <p className="cart-item-meta">{t('cart.priceEach', {price: it.price})}</p>
                             </div>
-                            <div className="qty-control" role="group" aria-label="Quantity">
+                            <div className="qty-control" role="group" aria-label={t('cart.qtyAria')}>
                                 <button
                                     type="button"
                                     className="qty-btn"
-                                    aria-label="Decrease"
+                                    aria-label={t('cart.decAria')}
                                     onClick={() => decItem(it.id)}
                                 >
                                     −
@@ -76,19 +74,19 @@ export default function CartView() {
                                 <button
                                     type="button"
                                     className="qty-btn"
-                                    aria-label="Increase"
+                                    aria-label={t('cart.incAria')}
                                     onClick={() => incItem(it.id)}
                                 >
                                     +
                                 </button>
                             </div>
                             <div className="cart-item-price">
-                                {(it.price * it.qty).toFixed(0)} EGP
+                                {(it.price * it.qty).toFixed(0)} {currency}
                             </div>
                             <button
                                 type="button"
                                 className="remove-btn"
-                                aria-label={`Remove ${it.name}`}
+                                aria-label={t('cart.removeAria', {name: it.name})}
                                 onClick={() => removeItem(it.id)}
                             >
                                 <svg viewBox="0 0 24 24" width="14" height="14">
@@ -104,30 +102,30 @@ export default function CartView() {
                     ))}
                 </section>
 
-                <aside className="cart-summary" aria-label="Order summary">
-                    <h2>Summary</h2>
+                <aside className="cart-summary" aria-label={t('cart.summaryAria')}>
+                    <h2>{t('cart.summary')}</h2>
                     <div className="summary-row">
-                        <span>Items ({count})</span>
-                        <span>{subtotal.toFixed(0)} EGP</span>
+                        <span>{t('cart.items')} ({count})</span>
+                        <span>{subtotal.toFixed(0)} {currency}</span>
                     </div>
                     <div className="summary-row">
-                        <span>Shipping</span>
-                        <span className="shipping-free">Free</span>
+                        <span>{t('cart.shipping')}</span>
+                        <span className="shipping-free">{t('cart.shipping.free')}</span>
                     </div>
                     <div className="summary-divider"></div>
                     <div className="summary-row summary-total">
-                        <span>Total</span>
-                        <span>{total.toFixed(0)} EGP</span>
+                        <span>{t('cart.total')}</span>
+                        <span>{total.toFixed(0)} {currency}</span>
                     </div>
 
-                    <button
+                    <Link
+                        href="/checkout"
                         className="btn btn-primary btn-pill btn-checkout"
-                        onClick={handleCheckout}
                     >
-                        place order
-                    </button>
+                        {t('cart.checkout')}
+                    </Link>
                     <button className="btn-clear" onClick={handleClear}>
-                        Empty the bag
+                        {t('cart.empty.bag')}
                     </button>
                 </aside>
             </div>

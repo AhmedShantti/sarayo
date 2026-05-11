@@ -2,11 +2,11 @@
 
 import {useRef} from 'react';
 import {useFlavor} from '@/lib/FlavorContext';
+import {useLanguage} from '@/lib/LanguageContext';
 
 const FLAVORS = [
     {
         id: 'all',
-        name: 'All Flavors',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <rect x="5" y="5" width="9" height="9" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -18,7 +18,6 @@ const FLAVORS = [
     },
     {
         id: 'chili',
-        name: 'Chili',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M10 6 Q12 4 15 5 Q19 6 22 12 Q25 19 22 24 Q19 28 14 26 Q9 23 8 17 Q7 11 10 6 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -28,7 +27,6 @@ const FLAVORS = [
     },
     {
         id: 'cheese',
-        name: 'Cheese',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M5 14 Q5 8 11 7 L22 7 Q27 8 27 14 L27 22 Q27 26 22 26 L11 26 Q5 26 5 22 Z" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -40,7 +38,6 @@ const FLAVORS = [
     },
     {
         id: 'bbq',
-        name: 'BBQ',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M6 18 L26 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -51,7 +48,6 @@ const FLAVORS = [
     },
     {
         id: 'ketchup',
-        name: 'Ketchup',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M13 5 L19 5 L19 9 Q22 10 22 13 L22 26 Q22 28 20 28 L12 28 Q10 28 10 26 L10 13 Q10 10 13 9 Z" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -61,7 +57,6 @@ const FLAVORS = [
     },
     {
         id: 'vegetable',
-        name: 'Vegetable',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M6 18 Q5 12 10 11 Q14 16 13 21 Q9 22 6 18 Z" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -75,7 +70,6 @@ const FLAVORS = [
     },
     {
         id: 'tomato',
-        name: 'Tomato',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <circle cx="16" cy="19" r="9" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -85,7 +79,6 @@ const FLAVORS = [
     },
     {
         id: 'sour-cream',
-        name: 'Sour Cream',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M9 11 L23 11 L21 27 Q21 28 20 28 L12 28 Q11 28 11 27 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -96,7 +89,6 @@ const FLAVORS = [
     },
     {
         id: 'salt-vinegar',
-        name: 'Salt & Vinegar',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M11 6 L21 6 L20 12 Q23 14 23 18 L23 25 Q23 27 21 27 L11 27 Q9 27 9 25 L9 18 Q9 14 12 12 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -108,7 +100,6 @@ const FLAVORS = [
     },
     {
         id: 'onion',
-        name: 'Onion',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M16 8 Q22 10 22 18 Q22 26 16 27 Q10 26 10 18 Q10 10 16 8 Z" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -119,7 +110,6 @@ const FLAVORS = [
     },
     {
         id: 'garlic',
-        name: 'Garlic',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M16 6 Q12 9 11 16 Q10 24 16 27 Q22 24 21 16 Q20 9 16 6 Z" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -129,7 +119,6 @@ const FLAVORS = [
     },
     {
         id: 'lime',
-        name: 'Lime',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -139,7 +128,6 @@ const FLAVORS = [
     },
     {
         id: 'pepper',
-        name: 'Pepper',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M16 9 Q12 9 11 13 L11 22 Q11 27 16 27 Q21 27 21 22 L21 13 Q20 9 16 9 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -151,7 +139,6 @@ const FLAVORS = [
     },
     {
         id: 'ranch',
-        name: 'Ranch',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M10 8 L22 8 L22 12 L10 12 Z" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -162,7 +149,6 @@ const FLAVORS = [
     },
     {
         id: 'honey',
-        name: 'Honey',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M11 8 L21 8 L21 14 Q24 16 24 22 Q24 27 16 27 Q8 27 8 22 Q8 16 11 14 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -172,7 +158,6 @@ const FLAVORS = [
     },
     {
         id: 'sweet-chili',
-        name: 'Sweet Chili',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M9 7 Q11 5 14 6 Q19 7 23 14 Q26 22 22 26 Q17 28 13 25 Q8 21 7 13 Q6 9 9 7 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -183,7 +168,6 @@ const FLAVORS = [
     },
     {
         id: 'pizza',
-        name: 'Pizza',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path d="M16 5 L27 25 Q22 28 16 28 Q10 28 5 25 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -198,6 +182,7 @@ const FLAVORS = [
 export default function FlavorCategories() {
     const scrollRef = useRef(null);
     const {selectedFlavor, selectFlavor} = useFlavor();
+    const {t} = useLanguage();
 
     function scroll(direction) {
         const target = scrollRef.current;
@@ -214,13 +199,13 @@ export default function FlavorCategories() {
     return (
         <section className="flavors" id="flavors" aria-labelledby="flavorsHeading">
             <h2 id="flavorsHeading" className="visually-hidden">
-                Browse by flavor
+                {t('flavors.aria')}
             </h2>
 
             <div className="container flavors-row">
                 <button
                     className="carousel-arrow arrow-prev"
-                    aria-label="Previous flavors"
+                    aria-label={t('flavors.prev')}
                     onClick={() => scroll('prev')}
                 >
                     ‹
@@ -236,14 +221,14 @@ export default function FlavorCategories() {
                             aria-pressed={selectedFlavor === f.id}
                         >
                             <span className="flavor-icon">{f.icon}</span>
-                            <span className="flavor-name">{f.name}</span>
+                            <span className="flavor-name">{t(`flavor.${f.id}`)}</span>
                         </button>
                     ))}
                 </div>
 
                 <button
                     className="carousel-arrow arrow-next"
-                    aria-label="Next flavors"
+                    aria-label={t('flavors.next')}
                     onClick={() => scroll('next')}
                 >
                     ›

@@ -1,11 +1,12 @@
 'use client';
 
 import {useEffect, useRef} from 'react';
+import {useLanguage} from '@/lib/LanguageContext';
 
 const FEATURES = [
     {
-        title: 'MADE WITH CARE',
-        text: 'Carefully sourced potatoes and the finest seasonings — nothing more, nothing less.',
+        titleKey: 'feat.1.title',
+        textKey:  'feat.1.text',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path
@@ -26,8 +27,8 @@ const FEATURES = [
         ),
     },
     {
-        title: 'PACKED WITH FLAVOR',
-        text: 'Bold seasonings and a slow, methodical fry — the good stuff in every bite.',
+        titleKey: 'feat.2.title',
+        textKey:  'feat.2.text',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path
@@ -41,8 +42,8 @@ const FEATURES = [
         ),
     },
     {
-        title: 'CRISP & FRESH',
-        text: 'Perfectly cooked for the ultimate crunch, every single time.',
+        titleKey: 'feat.3.title',
+        textKey:  'feat.3.text',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <path
@@ -64,8 +65,8 @@ const FEATURES = [
         ),
     },
     {
-        title: 'FULL OF FAR OUT FLAVOR',
-        text: 'No cardboard snacks here — just bold tastes you can&rsquo;t put down.',
+        titleKey: 'feat.4.title',
+        textKey:  'feat.4.text',
         icon: (
             <svg viewBox="0 0 32 32" aria-hidden="true">
                 <circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -85,6 +86,7 @@ const FEATURES = [
 
 export default function Features() {
     const sectionRef = useRef(null);
+    const {t} = useLanguage();
 
     // Reveal-on-scroll for feature blocks
     useEffect(() => {
@@ -122,13 +124,13 @@ export default function Features() {
     }, []);
 
     return (
-        <section className="features" aria-label="Why choose us" ref={sectionRef}>
+        <section className="features" aria-label={t('feat.aria')} ref={sectionRef}>
             <div className="container features-grid">
                 {FEATURES.map((f) => (
-                    <div className="feature" key={f.title}>
+                    <div className="feature" key={f.titleKey}>
                         <span className="feature-icon">{f.icon}</span>
-                        <h3 className="feature-title">{f.title}</h3>
-                        <p className="feature-text">{f.text}</p>
+                        <h3 className="feature-title">{t(f.titleKey)}</h3>
+                        <p className="feature-text">{t(f.textKey)}</p>
                     </div>
                 ))}
             </div>

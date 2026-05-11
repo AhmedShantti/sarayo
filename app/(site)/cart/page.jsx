@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import CartView from '@/components/CartView';
+import CartHeader from '@/components/CartHeader';
 
 export const metadata = {
     title: 'Your Cart — Sarayo Alwadiya',
@@ -10,13 +10,7 @@ export default function CartPage() {
     return (
         <main className="cart-page">
             <div className="container">
-                <div className="cart-head">
-                    <h1 className="cart-title">Your bag</h1>
-                    <Link href="/#products" className="continue-link">
-                        ← keep snacking
-                    </Link>
-                </div>
-
+                <CartHeader />
                 <CartView />
             </div>
         </main>

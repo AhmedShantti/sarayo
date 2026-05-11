@@ -1,6 +1,7 @@
 import {CartProvider} from '@/lib/CartContext';
 import {ToastProvider} from '@/lib/ToastContext';
 import {FlavorProvider} from '@/lib/FlavorContext';
+import {LanguageProvider} from '@/lib/LanguageContext';
 import './globals.css';
 
 export const metadata = {
@@ -30,18 +31,20 @@ export default function RootLayout({children}) {
                     crossOrigin="anonymous"
                 />
                 <link
-                    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Cairo:wght@700;900&family=Inter:wght@400;500;600;700&display=swap"
+                    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;900&family=Inter:wght@400;500;600;700&display=swap"
                     rel="stylesheet"
                 />
             </head>
             <body>
-                <CartProvider>
-                    <ToastProvider>
-                        <FlavorProvider>
-                            {children}
-                        </FlavorProvider>
-                    </ToastProvider>
-                </CartProvider>
+                <LanguageProvider>
+                    <CartProvider>
+                        <ToastProvider>
+                            <FlavorProvider>
+                                {children}
+                            </FlavorProvider>
+                        </ToastProvider>
+                    </CartProvider>
+                </LanguageProvider>
             </body>
         </html>
     );

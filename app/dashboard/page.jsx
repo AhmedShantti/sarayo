@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
+import {useLanguage} from '@/lib/LanguageContext';
 
 const STATUS_STYLES = {
     paid:     {pill: 'bg-emerald-50 text-emerald-700 ring-emerald-200', dot: 'bg-emerald-500'},
@@ -11,11 +12,12 @@ const STATUS_STYLES = {
 };
 
 function StatusPill({status}) {
+    const {t} = useLanguage();
     const s = STATUS_STYLES[status] || {pill: 'bg-neutral-100 text-neutral-600 ring-neutral-200', dot: 'bg-neutral-400'};
     return (
         <span className={'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ring-1 ring-inset ' + s.pill}>
             <span className={'w-1.5 h-1.5 rounded-full ' + s.dot} />
-            {status}
+            {t(`status.${status}`) || status}
         </span>
     );
 }
@@ -36,12 +38,12 @@ function Delta({value}) {
     );
 }
 
-const STAT_ICONS = {
-    Revenue:  'M12 2 V22 M6 7 H17 a3 3 0 0 1 0 6 H7 a3 3 0 0 0 0 6 H18',
-    Orders:   'M5 6 H19 L17 19 H7 Z M9 9 V13 M15 9 V13',
-    Products: 'M4 7 L12 3 L20 7 V17 L12 21 L4 17 Z M4 7 L12 11 L20 7 M12 11 V21',
-    Users:    'M9 11 a3 3 0 1 1 6 0 a3 3 0 1 1 -6 0 M5 20 c0-3 3-5 7-5 s7 2 7 5',
-};
+const STAT_DEFS = [
+    {key: 'revenue',  labelKey: 'dash.stat.revenue',  iconPath: 'M12 2 V22 M6 7 H17 a3 3 0 0 1 0 6 H7 a3 3 0 0 0 0 6 H18'},
+    {key: 'orders',   labelKey: 'dash.stat.orders',   iconPath: 'M5 6 H19 L17 19 H7 Z M9 9 V13 M15 9 V13'},
+    {key: 'products', labelKey: 'dash.stat.products', iconPath: 'M4 7 L12 3 L20 7 V17 L12 21 L4 17 Z M4 7 L12 11 L20 7 M12 11 V21'},
+    {key: 'users',    labelKey: 'dash.stat.users',    iconPath: 'M9 11 a3 3 0 1 1 6 0 a3 3 0 1 1 -6 0 M5 20 c0-3 3-5 7-5 s7 2 7 5'},
+];
 
 const RING_COLORS = {
     paid:     '#10b981',
@@ -51,6 +53,7 @@ const RING_COLORS = {
 };
 
 function StatusRing({breakdown}) {
+    const {t} = useLanguage();
     const entries = Object.entries(breakdown || {});
     const total = entries.reduce((s, [, n]) => s + n, 0);
     if (!total) return null;
@@ -95,12 +98,12 @@ function StatusRing({breakdown}) {
             <ul className="flex flex-col gap-2 text-sm flex-1">
                 {segments.map((s) => (
                     <li key={s.status} className="flex items-center justify-between gap-3">
-                        <span className="flex items-center gap-2 text-neutral-700 capitalize">
+                        <span className="flex items-center gap-2 text-neutral-700">
                             <span
                                 className="w-2.5 h-2.5 rounded-full shrink-0"
                                 style={{backgroundColor: s.color}}
                             />
-                            {s.status}
+                            {t(`status.${s.status}`) || s.status}
                         </span>
                         <span className="text-ink font-medium tabular-nums">{s.count}</span>
                     </li>
@@ -113,20 +116,20 @@ function StatusRing({breakdown}) {
 const QUICK_ACTIONS = [
     {
         href: '/dashboard/orders/new',
-        title: 'New order',
-        sub: 'Create a manual order',
+        titleKey: 'dash.ov.q.newOrder.title',
+        subKey:   'dash.ov.q.newOrder.sub',
         icon: 'M12 5 V19 M5 12 H19',
     },
     {
         href: '/dashboard/products',
-        title: 'Products',
-        sub: 'Stock & SKUs',
+        titleKey: 'dash.ov.q.products.title',
+        subKey:   'dash.ov.q.products.sub',
         icon: 'M4 7 L12 3 L20 7 V17 L12 21 L4 17 Z M4 7 L12 11 L20 7 M12 11 V21',
     },
     {
         href: '/dashboard/users',
-        title: 'Users',
-        sub: 'Customer directory',
+        titleKey: 'dash.ov.q.users.title',
+        subKey:   'dash.ov.q.users.sub',
         icon: 'M9 11 a3 3 0 1 1 6 0 a3 3 0 1 1 -6 0 M5 20 c0-3 3-5 7-5 s7 2 7 5',
     },
 ];
@@ -134,6 +137,8 @@ const QUICK_ACTIONS = [
 export default function DashboardOverview() {
     const [stats, setStats] = useState(null);
     const [orders, setOrders] = useState([]);
+    const {t, locale} = useLanguage();
+    const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
         Promise.all([
@@ -150,26 +155,20 @@ export default function DashboardOverview() {
     const maxRevenue = top.length ? Math.max(...top.map((p) => p.revenue)) : 1;
     const deltas = stats?.deltas || {};
 
-    const cards = stats
-        ? [
-              {label: 'Revenue',  value: stats.revenue.toLocaleString() + ' EGP', delta: deltas.revenue},
-              {label: 'Orders',   value: stats.orders,                            delta: deltas.orders},
-              {label: 'Products', value: stats.products,                          delta: deltas.products},
-              {label: 'Users',    value: stats.users,                             delta: deltas.users},
-          ]
-        : [
-              {label: 'Revenue',  value: '—'},
-              {label: 'Orders',   value: '—'},
-              {label: 'Products', value: '—'},
-              {label: 'Users',    value: '—'},
-          ];
+    const cards = STAT_DEFS.map((def) => {
+        if (!stats) return {labelKey: def.labelKey, iconPath: def.iconPath, value: '—'};
+        let value;
+        if (def.key === 'revenue') value = stats.revenue.toLocaleString() + ' ' + currency;
+        else value = stats[def.key];
+        return {labelKey: def.labelKey, iconPath: def.iconPath, value, delta: deltas[def.key]};
+    });
 
     return (
         <>
             <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
                 <div>
-                    <h1 className="text-[26px] font-semibold tracking-tight text-ink">Overview</h1>
-                    <p className="text-sm text-neutral-500 mt-1">Live snapshot of your store</p>
+                    <h1 className="text-[26px] font-semibold tracking-tight text-ink">{t('dash.nav.overview')}</h1>
+                    <p className="text-sm text-neutral-500 mt-1">{t('dash.ov.subtitle')}</p>
                 </div>
                 <Link
                     href="/dashboard/orders/new"
@@ -178,7 +177,7 @@ export default function DashboardOverview() {
                     <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
                         <path d="M12 5 V19 M5 12 H19" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     </svg>
-                    New order
+                    {t('dash.nav.newOrder')}
                 </Link>
             </div>
 
@@ -186,17 +185,17 @@ export default function DashboardOverview() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 {cards.map((s) => (
                     <div
-                        key={s.label}
+                        key={s.labelKey}
                         className="bg-white border border-neutral-200 rounded-xl p-5 flex flex-col gap-3 hover:border-neutral-300 hover:shadow-sm transition-all"
                     >
                         <div className="flex items-center justify-between">
                             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                                {s.label}
+                                {t(s.labelKey)}
                             </span>
                             <span className="inline-flex w-8 h-8 rounded-md bg-neutral-100 items-center justify-center text-neutral-600">
                                 <svg viewBox="0 0 24 24" width="16" height="16">
                                     <path
-                                        d={STAT_ICONS[s.label]}
+                                        d={s.iconPath}
                                         fill="none"
                                         stroke="currentColor"
                                         strokeWidth="1.6"
@@ -211,7 +210,7 @@ export default function DashboardOverview() {
                         </span>
                         <div className="flex items-center gap-1.5">
                             <Delta value={s.delta} />
-                            <span className="text-[11px] text-neutral-400">vs last 30d</span>
+                            <span className="text-[11px] text-neutral-400">{t('dash.ov.vsLast30')}</span>
                         </div>
                     </div>
                 ))}
@@ -221,18 +220,18 @@ export default function DashboardOverview() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
                 <section className="bg-white border border-neutral-200 rounded-xl p-5">
                     <header className="mb-4">
-                        <h2 className="text-sm font-semibold text-ink">Order status</h2>
-                        <p className="text-xs text-neutral-500 mt-0.5">Breakdown across all orders</p>
+                        <h2 className="text-sm font-semibold text-ink">{t('dash.ov.statusTitle')}</h2>
+                        <p className="text-xs text-neutral-500 mt-0.5">{t('dash.ov.statusSub')}</p>
                     </header>
                     {stats?.statusBreakdown
                         ? <StatusRing breakdown={stats.statusBreakdown} />
-                        : <p className="text-sm text-neutral-500">Loading…</p>}
+                        : <p className="text-sm text-neutral-500">{t('dash.ov.loading')}</p>}
                 </section>
 
                 <section className="bg-white border border-neutral-200 rounded-xl p-5 lg:col-span-2">
                     <header className="mb-4">
-                        <h2 className="text-sm font-semibold text-ink">Quick actions</h2>
-                        <p className="text-xs text-neutral-500 mt-0.5">Jump straight in</p>
+                        <h2 className="text-sm font-semibold text-ink">{t('dash.ov.quickTitle')}</h2>
+                        <p className="text-xs text-neutral-500 mt-0.5">{t('dash.ov.quickSub')}</p>
                     </header>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {QUICK_ACTIONS.map((a) => (
@@ -254,8 +253,8 @@ export default function DashboardOverview() {
                                     </svg>
                                 </span>
                                 <div className="leading-tight">
-                                    <span className="block text-sm font-semibold text-ink">{a.title}</span>
-                                    <span className="block text-xs text-neutral-500 mt-0.5">{a.sub}</span>
+                                    <span className="block text-sm font-semibold text-ink">{t(a.titleKey)}</span>
+                                    <span className="block text-xs text-neutral-500 mt-0.5">{t(a.subKey)}</span>
                                 </div>
                             </Link>
                         ))}
@@ -267,38 +266,38 @@ export default function DashboardOverview() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <section className="bg-white border border-neutral-200 rounded-xl lg:col-span-2 overflow-hidden">
                     <header className="flex items-baseline justify-between px-5 py-4 border-b border-neutral-100">
-                        <h2 className="text-sm font-semibold text-ink">Recent orders</h2>
+                        <h2 className="text-sm font-semibold text-ink">{t('dash.ov.recentTitle')}</h2>
                         <Link
                             href="/dashboard/orders"
                             className="text-xs font-medium text-neutral-500 hover:text-ink transition-colors"
                         >
-                            View all →
+                            {t('dash.ov.viewAll')}
                         </Link>
                     </header>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead className="bg-neutral-50">
                                 <tr className="text-left text-[11px] uppercase tracking-[0.1em] text-neutral-500">
-                                    <th className="py-2.5 px-5 font-semibold">Order</th>
-                                    <th className="py-2.5 px-2 font-semibold">Customer</th>
-                                    <th className="py-2.5 px-2 font-semibold">Items</th>
-                                    <th className="py-2.5 px-2 font-semibold">Total</th>
-                                    <th className="py-2.5 px-2 font-semibold">Status</th>
-                                    <th className="py-2.5 px-5 font-semibold">Date</th>
+                                    <th className="py-2.5 px-5 font-semibold">{t('dash.orders.col.order')}</th>
+                                    <th className="py-2.5 px-2 font-semibold">{t('dash.orders.col.customer')}</th>
+                                    <th className="py-2.5 px-2 font-semibold">{t('dash.orders.col.items')}</th>
+                                    <th className="py-2.5 px-2 font-semibold">{t('dash.orders.col.total')}</th>
+                                    <th className="py-2.5 px-2 font-semibold">{t('dash.orders.col.status')}</th>
+                                    <th className="py-2.5 px-5 font-semibold">{t('dash.orders.col.date')}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {recent.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="px-5 py-10 text-center text-sm text-neutral-500">Loading orders…</td>
+                                        <td colSpan={6} className="px-5 py-10 text-center text-sm text-neutral-500">{t('dash.ov.loadingOrders')}</td>
                                     </tr>
                                 )}
                                 {recent.map((o) => (
                                     <tr key={o.id} className="border-t border-neutral-100 hover:bg-neutral-50 transition-colors">
                                         <td className="py-3 px-5 font-mono text-xs text-ink">{o.id}</td>
-                                        <td className="py-3 px-2 text-ink font-medium">{o.customer}</td>
+                                        <td className="py-3 px-2 text-ink font-medium">{locale === 'ar' ? (o.customerAr || o.customer) : o.customer}</td>
                                         <td className="py-3 px-2 text-neutral-600">{o.items}</td>
-                                        <td className="py-3 px-2 text-ink font-medium tabular-nums">{o.total} EGP</td>
+                                        <td className="py-3 px-2 text-ink font-medium tabular-nums">{o.total} {currency}</td>
                                         <td className="py-3 px-2"><StatusPill status={o.status} /></td>
                                         <td className="py-3 px-5 text-neutral-500 text-xs">{o.date}</td>
                                     </tr>
@@ -310,24 +309,24 @@ export default function DashboardOverview() {
 
                 <section className="bg-white border border-neutral-200 rounded-xl p-5">
                     <header className="flex items-baseline justify-between mb-5">
-                        <h2 className="text-sm font-semibold text-ink">Top sellers</h2>
-                        <span className="text-[11px] uppercase tracking-[0.1em] text-neutral-500">by revenue</span>
+                        <h2 className="text-sm font-semibold text-ink">{t('dash.ov.topTitle')}</h2>
+                        <span className="text-[11px] uppercase tracking-[0.1em] text-neutral-500">{t('dash.ov.byRevenue')}</span>
                     </header>
                     <ul className="flex flex-col gap-4">
                         {top.length === 0 && (
-                            <li className="text-sm text-neutral-500">Loading…</li>
+                            <li className="text-sm text-neutral-500">{t('dash.ov.loading')}</li>
                         )}
                         {top.map((p, idx) => (
-                            <li key={p.name} className="flex flex-col gap-2">
+                            <li key={locale === 'ar' ? (p.nameAr || p.name) : p.name} className="flex flex-col gap-2">
                                 <div className="flex items-baseline justify-between gap-3">
                                     <span className="flex items-center gap-2 text-sm text-ink truncate">
                                         <span className="text-[10px] font-semibold text-neutral-400 w-4 tabular-nums">
                                             {idx + 1}
                                         </span>
-                                        <span className="font-medium truncate">{p.name}</span>
+                                        <span className="font-medium truncate">{locale === 'ar' ? (p.nameAr || p.name) : p.name}</span>
                                     </span>
                                     <span className="text-xs font-semibold text-ink shrink-0 tabular-nums">
-                                        {p.revenue.toLocaleString()} EGP
+                                        {p.revenue.toLocaleString()} {currency}
                                     </span>
                                 </div>
                                 <div className="h-1.5 bg-neutral-100 rounded-full overflow-hidden">
@@ -336,7 +335,7 @@ export default function DashboardOverview() {
                                         style={{width: `${(p.revenue / maxRevenue) * 100}%`}}
                                     />
                                 </div>
-                                <span className="text-[11px] text-neutral-500">{p.sold} sold</span>
+                                <span className="text-[11px] text-neutral-500">{t('dash.ov.sold', {n: p.sold})}</span>
                             </li>
                         ))}
                     </ul>

@@ -3,6 +3,7 @@
 import {useRouter} from 'next/navigation';
 import {useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
+import {useLanguage} from '@/lib/LanguageContext';
 
 export default function NewOrderPage() {
     const router = useRouter();
@@ -14,6 +15,8 @@ export default function NewOrderPage() {
     const [status, setStatus] = useState('pending');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const {t, locale} = useLanguage();
+    const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
         fetch('/api/products')
@@ -31,9 +34,9 @@ export default function NewOrderPage() {
     async function handleSubmit(e) {
         e.preventDefault();
         setError('');
-        if (!customer.trim()) { setError('Customer name is required.'); return; }
-        if (!sku) { setError('Pick a product.'); return; }
-        if (qty < 1) { setError('Quantity must be at least 1.'); return; }
+        if (!customer.trim()) { setError(t('dash.new.err.name')); return; }
+        if (!sku) { setError(t('dash.new.err.product')); return; }
+        if (qty < 1) { setError(t('dash.new.err.qty')); return; }
 
         setSubmitting(true);
         try {
@@ -51,7 +54,7 @@ export default function NewOrderPage() {
             });
             if (!res.ok) {
                 const body = await res.json().catch(() => ({}));
-                throw new Error(body.error || 'Failed to create order');
+                throw new Error(body.error || t('dash.new.err.create'));
             }
             router.push('/dashboard/orders');
         } catch (err) {
@@ -63,8 +66,8 @@ export default function NewOrderPage() {
     return (
         <>
             <div className="mb-6">
-                <h1 className="text-[26px] font-semibold tracking-tight text-ink">New order</h1>
-                <p className="text-sm text-neutral-500 mt-1">Place an order on a customer’s behalf.</p>
+                <h1 className="text-[26px] font-semibold tracking-tight text-ink">{t('dash.new.title')}</h1>
+                <p className="text-sm text-neutral-500 mt-1">{t('dash.new.subtitle')}</p>
             </div>
 
             <form
@@ -73,23 +76,23 @@ export default function NewOrderPage() {
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label className="flex flex-col gap-1.5">
-                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">Customer name</span>
+                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">{t('dash.new.customer')}</span>
                         <input
                             type="text"
                             value={customer}
                             onChange={(e) => setCustomer(e.target.value)}
-                            placeholder="Mariam Hassan"
+                            placeholder={t('dash.new.customer.ph')}
                             className="px-3 py-2 rounded-lg border border-neutral-300 text-sm text-ink focus:outline-none focus:border-ink transition-colors"
                             required
                         />
                     </label>
                     <label className="flex flex-col gap-1.5">
-                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">Email (optional)</span>
+                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">{t('dash.new.email')}</span>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="customer@example.com"
+                            placeholder={t('dash.new.email.ph')}
                             className="px-3 py-2 rounded-lg border border-neutral-300 text-sm text-ink focus:outline-none focus:border-ink transition-colors"
                         />
                     </label>
@@ -97,23 +100,23 @@ export default function NewOrderPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4">
                     <label className="flex flex-col gap-1.5">
-                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">Product</span>
+                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">{t('dash.new.product')}</span>
                         <select
                             value={sku}
                             onChange={(e) => setSku(e.target.value)}
                             className="px-3 py-2 rounded-lg border border-neutral-300 text-sm text-ink bg-white focus:outline-none focus:border-ink transition-colors"
                             disabled={products.length === 0}
                         >
-                            {products.length === 0 && <option>Loading…</option>}
+                            {products.length === 0 && <option>{t('dash.ov.loading')}</option>}
                             {products.map((p) => (
                                 <option key={p.sku} value={p.sku}>
-                                    {p.name} — {p.price} EGP
+                                    {locale === 'ar' ? (p.nameAr || p.name) : p.name} — {p.price} {currency}
                                 </option>
                             ))}
                         </select>
                     </label>
                     <label className="flex flex-col gap-1.5">
-                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">Quantity</span>
+                        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">{t('dash.new.qty')}</span>
                         <input
                             type="number"
                             min="1"
@@ -125,21 +128,21 @@ export default function NewOrderPage() {
                 </div>
 
                 <label className="flex flex-col gap-1.5 max-w-xs">
-                    <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">Status</span>
+                    <span className="text-xs font-semibold uppercase tracking-[0.1em] text-neutral-500">{t('dash.new.status')}</span>
                     <select
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
                         className="px-3 py-2 rounded-lg border border-neutral-300 text-sm text-ink bg-white focus:outline-none focus:border-ink transition-colors"
                     >
-                        <option value="pending">Pending</option>
-                        <option value="paid">Paid</option>
-                        <option value="shipped">Shipped</option>
+                        <option value="pending">{t('status.pending')}</option>
+                        <option value="paid">{t('status.paid')}</option>
+                        <option value="shipped">{t('status.shipped')}</option>
                     </select>
                 </label>
 
                 <div className="flex items-center justify-between border-t border-neutral-200 pt-4 mt-1">
-                    <span className="text-sm text-neutral-500">Total</span>
-                    <span className="text-lg font-semibold text-ink">{total} EGP</span>
+                    <span className="text-sm text-neutral-500">{t('dash.new.total')}</span>
+                    <span className="text-lg font-semibold text-ink">{total} {currency}</span>
                 </div>
 
                 {error && (
@@ -152,13 +155,13 @@ export default function NewOrderPage() {
                         disabled={submitting}
                         className="px-5 py-2 rounded-lg bg-ink text-white text-sm font-medium hover:bg-neutral-800 transition-colors disabled:opacity-60"
                     >
-                        {submitting ? 'Saving…' : 'Place order'}
+                        {submitting ? t('dash.new.saving') : t('dash.new.placeOrder')}
                     </button>
                     <Link
                         href="/dashboard/orders"
                         className="px-5 py-2 rounded-lg border border-neutral-300 text-ink text-sm font-medium hover:border-ink transition-colors"
                     >
-                        Cancel
+                        {t('dash.new.cancel')}
                     </Link>
                 </div>
             </form>

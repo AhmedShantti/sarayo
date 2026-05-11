@@ -1,9 +1,11 @@
 'use client';
 
 import {useEffect, useState} from 'react';
+import {useLanguage} from '@/lib/LanguageContext';
 
 export default function BackToTop() {
     const [visible, setVisible] = useState(false);
+    const {t} = useLanguage();
 
     useEffect(() => {
         function onScroll() {
@@ -21,7 +23,7 @@ export default function BackToTop() {
     return (
         <button
             className={`back-to-top${visible ? ' is-visible' : ''}`}
-            aria-label="Back to top"
+            aria-label={t('a11y.backToTop')}
             onClick={scrollUp}
         >
             ↑
