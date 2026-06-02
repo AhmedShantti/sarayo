@@ -1,7 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import {useLanguage} from '@/lib/LanguageContext';
 import BrandLogo from './BrandLogo';
 
 export default function Footer() {
+    const {t} = useLanguage();
     return (
         <footer className="site-footer">
             <div className="container footer-grid">
@@ -10,35 +14,35 @@ export default function Footer() {
                         <BrandLogo gradientId="logoGrad2" />
                     </span>
                     <p className="footer-desc">
-                        Bold flavor. Honest crunch. Snacking done right since 2002.
+                        {t('footer.desc')}
                     </p>
                     <p className="made-with">
-                        Made with <span className="heart">♥</span> in Cairo
+                        {t('footer.madeWith')} <span className="heart">♥</span> {t('footer.inCairo')}
                     </p>
                 </div>
 
                 <div className="footer-col">
-                    <h4>Explore</h4>
+                    <h4>{t('footer.explore')}</h4>
                     <ul>
-                        <li><Link href="/#home">Home</Link></li>
-                        <li><Link href="/#products">Shop</Link></li>
-                        <li><Link href="/#story">Story</Link></li>
-                        <li><Link href="/cart">Cart</Link></li>
+                        <li><Link href="/#home">{t('footer.home')}</Link></li>
+                        <li><Link href="/#products">{t('footer.shop')}</Link></li>
+                        <li><Link href="/#story">{t('footer.story')}</Link></li>
+                        <li><Link href="/cart">{t('footer.cart')}</Link></li>
                     </ul>
                 </div>
 
                 <div className="footer-col">
-                    <h4>Care</h4>
+                    <h4>{t('footer.care')}</h4>
                     <ul>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Shipping</a></li>
-                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">{t('footer.contact')}</a></li>
+                        <li><a href="#">{t('footer.faqs')}</a></li>
+                        <li><a href="#">{t('footer.shipping')}</a></li>
+                        <li><a href="#">{t('footer.returns')}</a></li>
                     </ul>
                 </div>
 
                 <div className="footer-col">
-                    <h4>Contact</h4>
+                    <h4>{t('footer.contact')}</h4>
                     <ul className="contact-list">
                         <li>
                             <span className="ic">
@@ -47,7 +51,7 @@ export default function Footer() {
                                     <circle cx="12" cy="9" r="2.5" fill="currentColor" />
                                 </svg>
                             </span>
-                            Cairo, Egypt
+                            {t('footer.location')}
                         </li>
                         <li>
                             <span className="ic">
@@ -55,7 +59,7 @@ export default function Footer() {
                                     <path d="M5 4 L9 4 L11 9 L8.5 11 Q11 16 14 18 L16 15 L21 17 L21 20 Q21 21 20 21 C12 21 4 13 4 5 Q4 4 5 4 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
                                 </svg>
                             </span>
-                            <a href="tel:+201234567890">0123 456 7890</a>
+                            <a href="tel:+201234567890">{t('footer.phone')}</a>
                         </li>
                         <li>
                             <span className="ic">
@@ -67,6 +71,7 @@ export default function Footer() {
                                 href="https://facebook.com/Sarayoegypt"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                dir="ltr"
                             >
                                 facebook.com/Sarayoegypt
                             </a>
@@ -76,7 +81,7 @@ export default function Footer() {
             </div>
 
             <div className="footer-bottom">
-                <p>© 2024 Sarayo Alwadiya. All Rights Reserved.</p>
+                <p>{t('footer.copyright')}</p>
             </div>
         </footer>
     );

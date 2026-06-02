@@ -2,31 +2,33 @@
 
 import {useState} from 'react';
 import {useToast} from '@/lib/ToastContext';
+import {useLanguage} from '@/lib/LanguageContext';
 
 export default function Newsletter() {
     const [email, setEmail] = useState('');
     const {showToast} = useToast();
+    const {t} = useLanguage();
 
     function handleSubmit(e) {
         e.preventDefault();
         const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
         if (!valid) {
-            showToast('Please enter a valid email');
+            showToast(t('news.invalid'));
             return;
         }
-        showToast('Thanks for subscribing');
+        showToast(t('news.success'));
         setEmail('');
     }
 
     return (
-        <section className="newsletter" aria-labelledby="newsletterHeading">
+        <section className="newsletter" id="subscribe" aria-labelledby="newsletterHeading">
             <div className="container">
                 <div className="newsletter-inner">
                     <div className="newsletter-left">
                         <h2 id="newsletterHeading" className="newsletter-title">
-                            JOIN THE
+                            {t('news.title.1')}
                             <br />
-                            CRUNCH CLUB
+                            {t('news.title.2')}
                         </h2>
                     </div>
 
@@ -37,14 +39,14 @@ export default function Newsletter() {
                     >
                         <input
                             type="email"
-                            placeholder="Your email address"
-                            aria-label="Email address"
+                            placeholder={t('news.placeholder')}
+                            aria-label={t('news.emailAria')}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                         <button type="submit" className="btn-subscribe">
-                            Subscribe
+                            {t('news.submit')}
                         </button>
                     </form>
                 </div>

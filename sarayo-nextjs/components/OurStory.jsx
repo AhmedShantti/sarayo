@@ -1,22 +1,23 @@
+'use client';
+
+import {useLanguage} from '@/lib/LanguageContext';
+
 export default function OurStory() {
+    const {t} = useLanguage();
     return (
         <section className="our-story" id="story" aria-labelledby="storyHeading">
             <div className="story-bg">
                 <div className="container story-grid">
                     <h2 id="storyHeading" className="story-title">
-                        BETTER FOR YOU,
+                        {t('story.title.1')}
                         <br />
-                        BETTER FOR THE PLANET
+                        {t('story.title.2')}
                     </h2>
                     <p className="story-text">
-                        We&rsquo;re changing snacking from the inside out. Real ingredients,
-                        bold flavors, and a process that respects the people growing,
-                        making, and eating our chips. Crispy, considered, and made for
-                        the curious.
+                        {t('story.body')}
                     </p>
                     <a href="#" className="btn btn-primary btn-pill">
-                        more about Sarayo
-                        <span className="btn-arrow">→</span>
+                        {t('story.cta')}
                     </a>
                 </div>
             </div>

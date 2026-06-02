@@ -1,0 +1,6 @@
+# Local Claude Code settings
+.claude/
+
+# Dependencies / build (also covered by app-level .gitignore)
+node_modules/
+.next/

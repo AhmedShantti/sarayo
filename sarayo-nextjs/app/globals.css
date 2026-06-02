@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ==========================================================
    SARAYO ALWADIYA — HIPPEAS-STYLE EDITION
    Yellow • Multi-color tiles • Chunky uppercase display
@@ -1704,3 +1708,717 @@ input    { font: inherit; }
         scroll-behavior: auto !important;
     }
 }
+
+/* ============================================================
+   TODAY'S OVERRIDES
+   Header relayout, smaller hero/section titles, cursors,
+   contact pill, mobile drawer, products empty state, etc.
+   These intentionally override the rules above.
+   ============================================================ */
+
+:root { --header-h: 76px; }
+
+/* Header — flex with absolute centered brand so nav (left)
+   and actions (right) sit on opposite ends of the bar. */
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: var(--header-h);
+    position: relative;
+}
+.brand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+.brand-logo {
+    width: 110px;
+    height: 110px;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.main-nav {
+    grid-column: auto;
+    justify-self: auto;
+    position: relative;
+    z-index: 2;
+}
+.header-actions {
+    grid-column: auto;
+    justify-self: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Right-side contact pill (desktop only) */
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .8px;
+    color: var(--red);
+    padding: 9px 18px;
+    background: transparent;
+    border: 1.5px solid var(--red);
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    transition: background .2s, color .2s;
+}
+.contact-link:hover,
+.contact-link.is-active {
+    background: var(--red);
+    color: var(--yellow);
+}
+
+/* Drawer-only contact link (hidden on desktop) */
+.main-nav li.nav-contact-mobile { display: none; }
+
+/* Mobile drawer backdrop */
+.nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(45, 26, 14, .45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s var(--ease);
+    z-index: 95;
+}
+.nav-overlay.is-visible { opacity: 1; pointer-events: auto; }
+@media (min-width: 769px) { .nav-overlay { display: none; } }
+
+/* Smaller hero + section titles */
+.hero-title {
+    font-size: clamp(44px, 7vw, 92px);
+    letter-spacing: -.5px;
+    margin: 0 0 20px;
+    text-shadow: 3px 3px 0 var(--ink);
+}
+.hero-lede {
+    font-size: 15px;
+    max-width: 380px;
+    margin: 0 0 30px;
+}
+.section-title {
+    font-size: clamp(28px, 3.4vw, 46px);
+    letter-spacing: -.3px;
+}
+
+/* Empty-state for filtered products */
+.products-empty {
+    text-align: center;
+    padding: 48px 24px 56px;
+    border: 2px dashed var(--red);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+.products-empty p {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 15px;
+}
+
+/* Active flavor pill */
+.flavor-item.is-active {
+    background: var(--red);
+    color: var(--yellow);
+    box-shadow: 0 3px 0 var(--ink-deep);
+}
+
+/* Custom cursor (marketing site only) */
+body {
+    cursor: url('/cursor-arrow.png') 3 2, auto;
+}
+a, button, [role="button"], label, summary, select,
+.flavor-item, .product-card, .dot, .add-cart-btn,
+.qty-btn, .remove-btn, .cart-btn, .menu-toggle, .carousel-arrow,
+.back-to-top, .btn, .nav-link, .contact-link, .view-all, .continue-link {
+    cursor: url('/cursor-pointer.png') 12 12, pointer;
+}
+
+/* ----- Mobile drawer ----- */
+@media (max-width: 768px) {
+    :root { --header-h: 60px; }
+    .brand-logo { width: 68px; height: 68px; }
+    .brand { position: static; transform: none; }
+
+    .menu-toggle { display: inline-flex; position: relative; z-index: 110; }
+    .contact-link { display: none; }
+    .main-nav li.nav-contact-mobile { display: block; }
+
+    /* Right-side slide-in drawer — clean panel, single thin divider, soft shadow.
+       Header reserved at top via padding so the burger/X stays clickable on top. */
+    .main-nav {
+        position: fixed;
+        top: 0; right: 0; bottom: 0;
+        width: min(82vw, 340px);
+        background: var(--white);
+        border-left: 1px solid rgba(255, 95, 0, .15);
+        padding: 76px 0 24px;
+        display: block;
+        transform: translateX(100%);
+        transition: transform .32s cubic-bezier(.22, 1, .36, 1);
+        box-shadow: -12px 0 32px rgba(45, 26, 14, .08);
+        z-index: 100;
+        overflow-y: auto;
+    }
+    /* Override the original drop-down `.main-nav.is-open` rules so the drawer
+       stays anchored to the right edge instead of dropping below the header. */
+    .main-nav.is-open {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: auto;
+        width: min(82vw, 340px);
+        padding: 76px 0 24px;
+        background: var(--white);
+        border-bottom: none;
+        border-left: 1px solid rgba(255, 95, 0, .15);
+        box-shadow: -12px 0 32px rgba(45, 26, 14, .08);
+        transform: translateX(0);
+        display: block;
+    }
+
+    /* Small "Menu" eyebrow label inside the drawer top */
+    .main-nav::before {
+        content: 'Menu';
+        position: absolute;
+        top: 28px;
+        left: 24px;
+        font-family: var(--font-ui);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 0;
+        border-top: 1px solid rgba(255, 95, 0, .1);
+    }
+    .main-nav li {
+        display: block;
+        border-bottom: 1px solid rgba(255, 95, 0, .08);
+    }
+    .main-nav .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        color: var(--ink);
+        text-transform: uppercase;
+        transition: background .18s, color .18s;
+    }
+    .main-nav .nav-link::after {
+        content: '›';
+        position: static;
+        width: auto;
+        height: auto;
+        background: transparent;
+        transform: none;
+        font-size: 18px;
+        color: var(--ink-muted);
+        display: inline;
+    }
+    .main-nav .nav-link:hover {
+        background: rgba(255, 95, 0, .04);
+    }
+    .main-nav .nav-link.is-active {
+        color: var(--red);
+        background: rgba(255, 212, 0, .12);
+    }
+    .main-nav .nav-link.is-active::after { color: var(--red); }
+}
+
+/* ============================================================
+   "LESS AI" PASS — calmer buttons, single-layer shadows,
+   thinner borders, gentler hovers, no looping animations.
+   ============================================================ */
+
+/* Primary CTAs */
+.btn {
+    font-weight: 700;
+    letter-spacing: .8px;
+    padding: 13px 28px;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    transition: background .2s, color .2s, transform .2s, border-color .2s;
+    text-transform: uppercase;
+    box-shadow: none;
+}
+.btn-primary {
+    background: var(--ink);
+    color: var(--white);
+    box-shadow: none;
+}
+.btn-primary:hover {
+    background: var(--ink-deep);
+    border-color: var(--ink-deep);
+    transform: none;
+    box-shadow: none;
+}
+.btn-primary:active { transform: translateY(1px); box-shadow: none; }
+
+.btn-light {
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: none;
+}
+.btn-light:hover {
+    background: var(--ink);
+    color: var(--white);
+    transform: none;
+    box-shadow: none;
+}
+.btn-light:active { transform: translateY(1px); box-shadow: none; }
+
+.btn-arrow { width: 18px; height: 18px; font-size: 15px; }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* Header cart icon */
+.cart-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1.5px solid var(--red);
+    box-shadow: none;
+}
+.cart-btn:hover {
+    background: var(--red);
+    color: var(--yellow);
+    transform: none;
+    box-shadow: none;
+}
+.cart-btn:active { transform: none; box-shadow: none; }
+
+/* Carousel arrows */
+.carousel-arrow {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: none;
+}
+.carousel-arrow:hover {
+    background: var(--ink);
+    color: var(--yellow);
+    transform: none;
+    box-shadow: none;
+}
+.carousel-arrow:active { transform: none; box-shadow: none; }
+
+/* Add-to-cart */
+.add-cart-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: none;
+}
+.add-cart-btn:hover {
+    background: var(--ink-deep);
+    color: var(--yellow);
+    transform: none;
+    box-shadow: none;
+}
+.add-cart-btn:active { transform: none; box-shadow: none; }
+
+/* Newsletter subscribe */
+.btn-subscribe {
+    font-weight: 700;
+    letter-spacing: .8px;
+    padding: 11px 24px;
+    border: none;
+    box-shadow: none;
+}
+.btn-subscribe:hover {
+    background: var(--ink-deep);
+    color: var(--white);
+    transform: none;
+    box-shadow: none;
+}
+.btn-subscribe:active { transform: none; box-shadow: none; }
+
+/* Cart summary buttons */
+.btn-checkout {
+    border: none;
+    box-shadow: none;
+    background: var(--yellow);
+    color: var(--red);
+}
+.btn-checkout:hover {
+    background: var(--white);
+    color: var(--red);
+    border-color: transparent;
+    transform: none;
+    box-shadow: none;
+}
+.btn-checkout:active { transform: none; box-shadow: none; }
+
+.btn-clear {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    padding: 8px;
+    color: rgba(255, 204, 31, .8);
+    background: transparent;
+}
+.btn-clear:hover {
+    color: var(--white);
+    background: transparent;
+}
+
+/* Quantity control */
+.qty-control {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    padding: 0;
+}
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    color: var(--ink-deep);
+    box-shadow: none;
+}
+.qty-btn:hover {
+    background: transparent;
+    color: var(--red);
+    transform: none;
+    box-shadow: none;
+}
+
+/* Remove icon */
+.remove-btn {
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    color: var(--ink-muted);
+    border: none;
+    box-shadow: none;
+}
+.remove-btn:hover {
+    background: transparent;
+    color: var(--red);
+    border-color: transparent;
+    transform: none;
+}
+
+/* Mobile menu toggle — clean square button with three crisp lines */
+.menu-toggle {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1.5px solid var(--red);
+    border-radius: 8px;
+    box-shadow: none;
+    gap: 4px;
+    transition: background .2s, border-color .2s;
+}
+.menu-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--red);
+    border-radius: 1px;
+    transition: transform .25s var(--ease), opacity .15s, background .2s;
+}
+.menu-toggle:hover {
+    background: var(--red);
+    transform: none;
+    box-shadow: none;
+}
+.menu-toggle:hover span { background: var(--white); }
+.menu-toggle.is-open {
+    background: var(--ink);
+    border-color: var(--ink);
+}
+.menu-toggle.is-open span { background: var(--white); }
+.menu-toggle.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-toggle.is-open span:nth-child(2) { opacity: 0; }
+.menu-toggle.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Back to top */
+.back-to-top {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--ink);
+    color: var(--yellow);
+    border: none;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: none;
+}
+.back-to-top:hover {
+    background: var(--ink-deep);
+    color: var(--yellow);
+    transform: none;
+    box-shadow: none;
+}
+.back-to-top:active { transform: none; box-shadow: none; }
+
+/* View-all / continue links */
+.view-all {
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+.view-all:hover {
+    background: var(--ink);
+    color: var(--yellow);
+    transform: none;
+    box-shadow: none;
+}
+/* Cart "← keep snacking" — keep it as a simple text link, not a pill. */
+.continue-link {
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: .3px;
+    color: var(--red);
+    border: none;
+    padding: 0;
+    background: transparent;
+    text-transform: none;
+}
+.continue-link:hover {
+    color: var(--ink-deep);
+    background: transparent;
+    transform: translateX(-2px);
+    box-shadow: none;
+}
+
+/* Product card — single soft shadow, no chunky offset */
+.product-card {
+    border: 1.5px solid var(--red);
+    box-shadow: none;
+    transition: transform .25s var(--ease-out), box-shadow .25s;
+}
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(45, 26, 14, .08);
+}
+
+/* Flavor pill — no chunky shadow on hover/active */
+.flavor-item {
+    padding: 7px 14px;
+    border: 1.5px solid var(--red);
+    background: transparent;
+    transition: background .2s, color .2s;
+}
+.flavor-item:hover {
+    background: var(--red);
+    color: var(--yellow);
+    transform: none;
+    box-shadow: none;
+}
+.flavor-item.is-active {
+    background: var(--red);
+    color: var(--yellow);
+    box-shadow: none;
+}
+.flavor-item.is-active:hover { transform: none; box-shadow: none; }
+
+/* Contact pill — match the calmer style */
+.contact-link {
+    font-weight: 700;
+    letter-spacing: .8px;
+    border: 1.5px solid var(--red);
+    box-shadow: none;
+}
+.contact-link:hover,
+.contact-link.is-active {
+    background: var(--red);
+    color: var(--yellow);
+    transform: none;
+    box-shadow: none;
+}
+
+/* Heart in footer — drop the loop */
+.heart { animation: none; }
+
+/* ---------- Checkout form ---------- */
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.checkout-fieldset {
+    background: var(--white);
+    border: 1px solid var(--red);
+    border-radius: var(--radius-md);
+    padding: 18px 20px 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.checkout-fieldset legend {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    background: var(--white);
+    padding: 0 8px;
+    margin-left: -8px;
+}
+.checkout-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.checkout-field span {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--red);
+}
+.checkout-field input,
+.checkout-field textarea {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--ink);
+    padding: 10px 12px;
+    border: 1.5px solid rgba(206, 30, 35, .25);
+    border-radius: 8px;
+    background: var(--yellow);
+    transition: border-color .2s, background .2s;
+    resize: vertical;
+}
+.checkout-field input:focus,
+.checkout-field textarea:focus {
+    outline: none;
+    border-color: var(--red);
+    background: var(--white);
+}
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+}
+.method-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1.5px solid rgba(206, 30, 35, .25);
+    border-radius: 8px;
+    background: var(--yellow);
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    transition: border-color .2s, background .2s;
+}
+.method-option:hover { border-color: var(--red); }
+.method-option.is-selected {
+    background: var(--red);
+    color: var(--yellow);
+    border-color: var(--red);
+}
+.method-option input { accent-color: var(--red); }
+.method-option.is-selected input { accent-color: var(--yellow); }
+.card-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 6px;
+}
+.card-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.card-hint {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: rgba(26, 26, 26, .65);
+    margin: 0;
+    line-height: 1.5;
+}
+.card-hint code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    background: rgba(206, 30, 35, .08);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--red);
+}
+.checkout-error {
+    background: rgba(206, 30, 35, .08);
+    border: 1px solid var(--red);
+    color: var(--red);
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+/* ---------- Language toggle ---------- */
+.lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    border: 1.5px solid currentColor;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: inherit;
+    transition: background .2s, color .2s;
+}
+.lang-toggle:hover { background: currentColor; }
+.lang-toggle:hover span { color: var(--yellow); }
+
+/* ---------- RTL adjustments ---------- */
+html[dir="rtl"] body { font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
+html[dir="rtl"] .continue-link:hover { transform: translateX(2px); }
+html[dir="rtl"] .promo-track { direction: ltr; }
