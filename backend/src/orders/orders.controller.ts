@@ -12,12 +12,14 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateGuestOrderDto } from './dto/create-guest-order.dto';
 import { AdminQueryOrdersDto, QueryOrdersDto } from './dto/query-orders.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { Public } from '../common/decorators/public.decorator';
 
 @ApiTags('Orders')
 @ApiBearerAuth('access-token')
@@ -30,6 +32,13 @@ export class OrdersController {
   @ApiOperation({ summary: 'Create an order from the cart and initiate Paymob payment' })
   create(@CurrentUser('id') userId: string, @Body() dto: CreateOrderDto) {
     return this.ordersService.create(userId, dto);
+  }
+
+  @Public()
+  @Post('guest')
+  @ApiOperation({ summary: 'Guest checkout — create an order without logging in' })
+  createGuest(@Body() dto: CreateGuestOrderDto) {
+    return this.ordersService.createGuestOrder(dto);
   }
 
   @Get()

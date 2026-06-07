@@ -7,11 +7,14 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { OrderStatus, PaymentStatus, Prisma } from '@prisma/client';
+import { OrderStatus, PaymentStatus, Prisma, Product, Role } from '@prisma/client';
+import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { PricingService } from '../common/pricing/pricing.service';
 import { buildPaginationMeta } from '../common/dto/pagination.dto';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateGuestOrderDto } from './dto/create-guest-order.dto';
 import { AdminQueryOrdersDto, QueryOrdersDto } from './dto/query-orders.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { PaymentsService } from '../payments/payments.service';
@@ -139,6 +142,115 @@ export class OrdersService {
       paymobOrderId: payment?.paymobOrderId ?? null,
       paymentInitiated: payment !== null,
     };
+  }
+
+  // ──────────────────────────────────────────────
+  // Guest checkout (no auth) — used by the storefront
+  // ──────────────────────────────────────────────
+
+  async createGuestOrder(dto: CreateGuestOrderDto) {
+    // 1. Resolve every line to a real, active, in-stock product.
+    const resolved: Array<{ product: Product; quantity: number }> = [];
+    for (const line of dto.items) {
+      const product = await this.prisma.product.findFirst({
+        where: line.productId
+          ? { id: line.productId }
+          : line.sku
+            ? { sku: line.sku }
+            : { id: '__none__' },
+      });
+      if (!product || !product.isActive) {
+        throw new BadRequestException(
+          `Product not found: ${line.productId ?? line.sku ?? 'unknown'}`,
+        );
+      }
+      if (line.quantity > product.stock) {
+        throw new BadRequestException(
+          `Only ${product.stock} unit(s) of ${product.name} are available`,
+        );
+      }
+      resolved.push({ product, quantity: line.quantity });
+    }
+
+    // 2. Find or create a lightweight customer keyed by email.
+    const guest = await this.resolveGuestUser(dto.customer, dto.email, dto.phone);
+
+    // 3. Totals.
+    const subtotal = resolved.reduce(
+      (sum, r) => sum + Number(r.product.price) * r.quantity,
+      0,
+    );
+    const breakdown = this.pricing.calculate(subtotal);
+
+    const shippingAddress = {
+      fullName: dto.customer,
+      email: dto.email ?? null,
+      phone: dto.phone ?? null,
+      street: dto.address ?? 'NA',
+      city: 'NA',
+      state: 'NA',
+      country: 'Egypt',
+      postalCode: 'NA',
+      method: dto.method ?? 'card',
+    } as Prisma.JsonObject;
+
+    // 4. Atomic create + stock decrement.
+    const order = await this.prisma.$transaction(async (tx) => {
+      const orderNumber = await this.nextOrderNumber(tx);
+      const created = await tx.order.create({
+        data: {
+          orderNumber,
+          userId: guest.id,
+          status: OrderStatus.PENDING,
+          paymentStatus: PaymentStatus.PENDING,
+          subtotal: breakdown.subtotal,
+          shippingCost: breakdown.shippingCost,
+          tax: breakdown.tax,
+          total: breakdown.total,
+          shippingAddress,
+          notes: dto.notes,
+          items: {
+            create: resolved.map((r) => ({
+              productId: r.product.id,
+              quantity: r.quantity,
+              price: r.product.price,
+              productName: r.product.name,
+              productImage: r.product.images[0] ?? null,
+            })),
+          },
+        },
+        include: { items: true },
+      });
+      for (const r of resolved) {
+        await tx.product.update({
+          where: { id: r.product.id },
+          data: { stock: { decrement: r.quantity } },
+        });
+      }
+      return created;
+    });
+
+    this.logger.log(`Guest order ${order.orderNumber} created for ${dto.customer}`);
+    return this.toResponse(order);
+  }
+
+  /** Find an existing user by email, or create a passwordless guest customer. */
+  private async resolveGuestUser(name: string, email?: string, phone?: string) {
+    const guestEmail = (email && email.trim()) || 'guest@sarayo.store';
+    const existing = await this.prisma.user.findUnique({ where: { email: guestEmail } });
+    if (existing) return existing;
+
+    // Random unusable password — guests can't log in until they reset it.
+    const randomPassword = await bcrypt.hash(crypto.randomBytes(24).toString('hex'), 12);
+    return this.prisma.user.create({
+      data: {
+        email: guestEmail,
+        password: randomPassword,
+        name: name || 'Guest',
+        phone,
+        role: Role.CUSTOMER,
+      },
+    });
   }
 
   // ──────────────────────────────────────────────
