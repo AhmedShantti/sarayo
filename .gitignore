@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 # Local Claude Code settings
 .claude/
 
-# Dependencies / build (also covered by app-level .gitignore)
-node_modules/
-.next/
-=======
 # Dependencies
 node_modules/
 .pnp
@@ -35,4 +30,3 @@ yarn-error.log*
 
 # Vercel
 .vercel
->>>>>>> 05549e412767026bfff41e7659b298637ad0cbd0
