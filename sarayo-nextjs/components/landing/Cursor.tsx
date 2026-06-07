@@ -4,11 +4,18 @@ import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 /**
- * Custom cursor — a snappy yellow dot with a larger ring that trails behind it
- * and swells over interactive elements. Desktop + motion only; otherwise the
- * native cursor stays.
+ * Custom cursor — a snappy dot with a larger ring that trails behind it and
+ * swells over interactive elements. Desktop + motion only; otherwise the native
+ * cursor stays. Reusable: pass a `rootSelector` (the element to hide the native
+ * cursor on) and a `color`. Defaults match the landing site.
  */
-export default function Cursor() {
+export default function Cursor({
+    rootSelector = '.landing-root',
+    color = '#FFD400',
+}: {
+    rootSelector?: string;
+    color?: string;
+}) {
     const [enabled, setEnabled] = useState(false);
 
     const x = useMotionValue(-100);
@@ -28,8 +35,8 @@ export default function Cursor() {
         if (!fine || reduce) return;
 
         setEnabled(true);
-        const root = document.querySelector('.landing-root');
-        root?.classList.add('cursor-none');
+        const root = document.querySelector(rootSelector);
+        root?.classList.add('app-cursor-active');
 
         const move = (e: MouseEvent) => {
             x.set(e.clientX);
@@ -41,9 +48,9 @@ export default function Cursor() {
         window.addEventListener('mousemove', move);
         return () => {
             window.removeEventListener('mousemove', move);
-            root?.classList.remove('cursor-none');
+            root?.classList.remove('app-cursor-active');
         };
-    }, [x, y, scale]);
+    }, [x, y, scale, rootSelector]);
 
     if (!enabled) return null;
 
@@ -51,13 +58,21 @@ export default function Cursor() {
         <>
             <motion.div
                 aria-hidden
-                className="landing-cursor-ring pointer-events-none fixed left-0 top-0 z-[150]"
-                style={{ x: ringX, y: ringY, scale: ringScale }}
+                className="pointer-events-none fixed left-0 top-0 z-[150] rounded-full"
+                style={{
+                    x: ringX, y: ringY, scale: ringScale,
+                    width: 42, height: 42, marginLeft: -21, marginTop: -21,
+                    border: `1.5px solid ${color}`,
+                }}
             />
             <motion.div
                 aria-hidden
-                className="landing-cursor-dot pointer-events-none fixed left-0 top-0 z-[150]"
-                style={{ x: dotX, y: dotY }}
+                className="pointer-events-none fixed left-0 top-0 z-[150] rounded-full"
+                style={{
+                    x: dotX, y: dotY,
+                    width: 8, height: 8, marginLeft: -4, marginTop: -4,
+                    background: color,
+                }}
             />
         </>
     );

@@ -11,10 +11,16 @@ import {
     useVelocity,
     wrap,
 } from 'framer-motion';
+import { useLanguage } from '@/lib/LanguageContext';
 
-const WORDS = ['Crunchy', 'Flavorful', 'Irresistible', 'Cut Thick', 'Fried Crisp', 'Since 2002'];
+const WORD_KEYS = [
+    'lnd.word.crunchy', 'lnd.word.flavorful', 'lnd.word.irresistible',
+    'lnd.word.cutThick', 'lnd.word.friedCrisp', 'lnd.since',
+];
 
 function Row({ baseVelocity, reverse = false }: { baseVelocity: number; reverse?: boolean }) {
+    const { t } = useLanguage();
+    const WORDS = WORD_KEYS.map((k) => t(k));
     const baseX = useMotionValue(0);
     const { scrollY } = useScroll();
     const scrollVelocity = useVelocity(scrollY);

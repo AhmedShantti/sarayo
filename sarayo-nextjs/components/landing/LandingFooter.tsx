@@ -1,10 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Chip from './Chip';
-
-const COLUMNS = [
-    { title: 'Shop', links: ['Classic', 'Cheddar', 'Indian Magic', 'Salt & Vinegar', 'Wavy'] },
-    { title: 'Company', links: ['Our Story', 'Careers', 'Wholesale', 'Press'] },
-];
+import { useLanguage } from '@/lib/LanguageContext';
+import { PRODUCTS, localizeProduct } from '@/lib/landingData';
 
 const SOCIALS = [
     {
@@ -35,13 +34,27 @@ const SOCIALS = [
     },
 ];
 
-const CONTACT = [
-    { label: 'hello@sarayoalwadiya.com', href: 'mailto:hello@sarayoalwadiya.com' },
-    { label: '+20 100 123 4567', href: 'tel:+201001234567' },
-    { label: 'Cairo, Egypt', href: null },
-];
-
 export default function LandingFooter() {
+    const { t, locale } = useLanguage();
+
+    // Shop column = first five flavors (localized); Company column = static links.
+    const shopLinks = PRODUCTS.slice(0, 5).map((p) => localizeProduct(p, locale).name);
+    const companyLinks = [
+        t('lnd.footer.ourStory'),
+        t('lnd.footer.careers'),
+        t('lnd.footer.wholesale'),
+        t('lnd.footer.press'),
+    ];
+    const contact = [
+        { label: 'hello@sarayoalwadiya.com', href: 'mailto:hello@sarayoalwadiya.com' },
+        { label: '+20 100 123 4567', href: 'tel:+201001234567' },
+        { label: t('lnd.footer.location'), href: null as string | null },
+    ];
+    const columns = [
+        { title: t('lnd.footer.shop'), links: shopLinks },
+        { title: t('lnd.footer.company'), links: companyLinks },
+    ];
+
     return (
         <footer className="border-t border-white/12 bg-brand-red-deep">
             <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-8">
@@ -53,12 +66,11 @@ export default function LandingFooter() {
                             <span className="landing-display text-lg text-white">Sarayo Alwadiya</span>
                         </div>
                         <p className="max-w-xs text-sm leading-relaxed text-white/65">
-                            Crunchy. Flavorful. Irresistible. Hand-seasoned chips, made loud
-                            and shipped fresh across Egypt.
+                            {t('lnd.footer.desc')}
                         </p>
                         <div className="mt-5 flex flex-wrap gap-2">
-                            <Chip variant="outline" size="sm" interactive={false}>Since 2002</Chip>
-                            <Chip variant="yellow" size="sm" interactive={false}>Crunch in style</Chip>
+                            <Chip variant="outline" size="sm" interactive={false}>{t('lnd.since')}</Chip>
+                            <Chip variant="yellow" size="sm" interactive={false}>{t('lnd.tagline')}</Chip>
                         </div>
 
                         {/* Social */}
@@ -82,7 +94,7 @@ export default function LandingFooter() {
                     </div>
 
                     {/* Link columns */}
-                    {COLUMNS.map((col) => (
+                    {columns.map((col) => (
                         <div key={col.title}>
                             <h4 className="landing-display mb-4 text-sm uppercase tracking-wider text-brand-yellow">{col.title}</h4>
                             <ul className="space-y-2.5">
@@ -97,9 +109,9 @@ export default function LandingFooter() {
 
                     {/* Contact */}
                     <div>
-                        <h4 className="landing-display mb-4 text-sm uppercase tracking-wider text-brand-yellow">Contact</h4>
+                        <h4 className="landing-display mb-4 text-sm uppercase tracking-wider text-brand-yellow">{t('lnd.footer.contact')}</h4>
                         <ul className="space-y-2.5">
-                            {CONTACT.map((c) => (
+                            {contact.map((c) => (
                                 <li key={c.label}>
                                     {c.href ? (
                                         <a href={c.href} data-cursor="hover" className="text-sm text-white/65 transition-colors hover:text-white">{c.label}</a>
@@ -113,8 +125,10 @@ export default function LandingFooter() {
                 </div>
 
                 <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/12 pt-7 sm:flex-row">
-                    <p className="text-xs text-white/50">© 2026 Sarayo Alwadiya. All rights reserved.</p>
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/50">Crunchy · Flavorful · Irresistible</p>
+                    <p className="text-xs text-white/50">{t('lnd.footer.rights')}</p>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/50">
+                        {t('lnd.word.crunchy')} · {t('lnd.word.flavorful')} · {t('lnd.word.irresistible')}
+                    </p>
                 </div>
             </div>
         </footer>

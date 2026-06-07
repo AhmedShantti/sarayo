@@ -3,7 +3,8 @@
 import { motion, type Variants } from 'framer-motion';
 import Chip from './Chip';
 import TextReveal from './TextReveal';
-import { FEATURES, type Feature } from '@/lib/landingData';
+import { FEATURES, localizeFeature, type Feature } from '@/lib/landingData';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const ICONS: Record<Feature['icon'], React.ReactNode> = {
     spark: <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" strokeWidth="1.6" strokeLinejoin="round" />,
@@ -31,16 +32,17 @@ function spotlight(e: React.MouseEvent<HTMLElement>) {
 }
 
 export default function Features() {
+    const { t, locale } = useLanguage();
     return (
         <section id="features" className="relative py-24 sm:py-32">
             <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
                 <div className="mb-14 max-w-2xl">
-                    <Chip variant="yellow" size="md" className="mb-5">Why Sarayo</Chip>
+                    <Chip variant="yellow" size="md" className="mb-5">{t('lnd.features.chip')}</Chip>
                     <h2 className="landing-display text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] text-white">
-                        <TextReveal text="Made to be noticed" />
+                        <TextReveal text={t('lnd.features.title')} />
                     </h2>
                     <p className="mt-5 max-w-lg text-base text-white/75">
-                        Four reasons a bag of Sarayo never lasts the afternoon.
+                        {t('lnd.features.sub')}
                     </p>
                 </div>
 
@@ -51,7 +53,9 @@ export default function Features() {
                     viewport={{ once: true, amount: 0.2 }}
                     className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
                 >
-                    {FEATURES.map((f) => (
+                    {FEATURES.map((f) => {
+                        const fl = localizeFeature(f, locale);
+                        return (
                         <motion.article
                             key={f.title}
                             variants={card}
@@ -66,11 +70,12 @@ export default function Features() {
                                     {ICONS[f.icon]}
                                 </svg>
                             </span>
-                            <Chip variant="outline" size="sm" className="mb-4 self-start">{f.chip}</Chip>
-                            <h3 className="landing-display mb-3 text-2xl leading-tight text-white">{f.title}</h3>
-                            <p className="text-sm leading-relaxed text-white/70">{f.text}</p>
+                            <Chip variant="outline" size="sm" className="mb-4 self-start">{fl.chip}</Chip>
+                            <h3 className="landing-display mb-3 text-2xl leading-tight text-white">{fl.title}</h3>
+                            <p className="text-sm leading-relaxed text-white/70">{fl.text}</p>
                         </motion.article>
-                    ))}
+                        );
+                    })}
                 </motion.div>
             </div>
         </section>

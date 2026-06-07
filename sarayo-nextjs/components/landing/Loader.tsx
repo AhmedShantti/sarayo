@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from 'framer-motion';
+import { useLanguage } from '@/lib/LanguageContext';
 
 /**
  * Cinematic intro — a count to 100 behind the logo, then the curtain wipes
@@ -10,6 +11,7 @@ import { AnimatePresence, animate, motion, useMotionValue, useTransform } from '
  * click to skip.
  */
 export default function Loader() {
+    const { t } = useLanguage();
     const [done, setDone] = useState(false);
     const count = useMotionValue(0);
     const rounded = useTransform(count, (v) => Math.round(v));
@@ -53,7 +55,7 @@ export default function Loader() {
                     </div>
 
                     <span className="mt-6 font-grotesk text-[11px] uppercase tracking-[0.4em] text-white/50">
-                        Crunch in style
+                        {t('lnd.tagline')}
                     </span>
                 </motion.div>
             )}

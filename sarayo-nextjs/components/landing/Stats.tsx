@@ -2,12 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const STATS = [
-    { to: 24, suffix: '', label: 'Years of crunch' },
-    { to: 6, suffix: '', label: 'Signature flavors' },
-    { to: 100, suffix: '%', label: 'Loud flavor' },
-    { to: 1, suffix: 'M+', label: 'Bags devoured' },
+    { to: 24, suffix: '', labelKey: 'lnd.stats.years' },
+    { to: 6, suffix: '', labelKey: 'lnd.stats.flavors' },
+    { to: 100, suffix: '%', labelKey: 'lnd.stats.loud' },
+    { to: 1, suffix: 'M+', labelKey: 'lnd.stats.bags' },
 ];
 
 function Counter({ to, suffix }: { to: number; suffix: string }) {
@@ -31,12 +32,13 @@ function Counter({ to, suffix }: { to: number; suffix: string }) {
 }
 
 export default function Stats() {
+    const { t } = useLanguage();
     return (
         <section className="border-y border-white/12 bg-brand-red-deep/40 py-16 backdrop-blur-sm sm:py-20">
             <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-y-12 px-5 sm:px-8 lg:grid-cols-4">
                 {STATS.map((s) => (
                     <motion.div
-                        key={s.label}
+                        key={s.labelKey}
                         initial={{ opacity: 0, y: 24 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.6 }}
@@ -47,7 +49,7 @@ export default function Stats() {
                             <Counter to={s.to} suffix={s.suffix} />
                         </div>
                         <p className="mt-3 font-grotesk text-xs uppercase tracking-[0.25em] text-white/60">
-                            {s.label}
+                            {t(s.labelKey)}
                         </p>
                     </motion.div>
                 ))}
