@@ -26,6 +26,19 @@ export default function CartDrawer() {
     const [error, setError] = useState('');
     const [orderRef, setOrderRef] = useState('');
 
+    // Payment method: bank card, cash on delivery, or mobile wallet.
+    const [method, setMethod] = useState<'card' | 'cod' | 'wallet'>('card');
+    const [cardNumber, setCardNumber] = useState('');
+    const [cardExpiry, setCardExpiry] = useState('');
+    const [cardCvc, setCardCvc] = useState('');
+    const [walletPhone, setWalletPhone] = useState('');
+
+    const PAYMENT_METHODS: { id: 'card' | 'cod' | 'wallet'; en: string; ar: string }[] = [
+        { id: 'card', en: 'Bank card', ar: 'بطاقة بنكية' },
+        { id: 'cod', en: 'Cash on delivery', ar: 'الدفع عند الاستلام' },
+        { id: 'wallet', en: 'Mobile wallet', ar: 'محفظة إلكترونية' },
+    ];
+
     // Cart lines are keyed by the English product name; map back to the catalog
     // so names/flavors render in the active locale.
     const lineText = (lname: string, fallbackFlavor: string) => {
@@ -40,15 +53,25 @@ export default function CartDrawer() {
             setError(ar ? 'الاسم مطلوب' : 'Please enter your name');
             return;
         }
+        if (method === 'card') {
+            const digits = cardNumber.replace(/\s/g, '');
+            if (digits.length < 12) { setError(ar ? 'رقم بطاقة غير صحيح' : 'Enter a valid card number'); return; }
+            if (!/^\d{2}\s*\/\s*\d{2}$/.test(cardExpiry)) { setError(ar ? 'تاريخ انتهاء غير صحيح (MM/YY)' : 'Enter expiry as MM/YY'); return; }
+            if (!/^\d{3,4}$/.test(cardCvc)) { setError(ar ? 'رمز CVC غير صحيح' : 'Enter a valid CVC'); return; }
+        }
+        if (method === 'wallet' && !walletPhone.trim()) {
+            setError(ar ? 'أدخل رقم المحفظة' : 'Enter your wallet number');
+            return;
+        }
         setError('');
         setPlacing(true);
         try {
             const order = await placeGuestOrder({
                 customer: name.trim(),
                 email: email.trim() || undefined,
-                phone: phone.trim() || undefined,
+                phone: (method === 'wallet' ? walletPhone.trim() : '') || phone.trim() || undefined,
                 address: address.trim() || undefined,
-                method: 'cod',
+                method,
                 items: items.map((l) => ({
                     name: l.name,
                     price: l.price,
@@ -74,6 +97,11 @@ export default function CartDrawer() {
         setEmail('');
         setAddress('');
         setOrderRef('');
+        setMethod('card');
+        setCardNumber('');
+        setCardExpiry('');
+        setCardCvc('');
+        setWalletPhone('');
         close();
     };
 
@@ -202,6 +230,81 @@ export default function CartDrawer() {
                                             rows={2}
                                         />
                                     </div>
+
+                                    {/* Payment method */}
+                                    <h3 className="landing-display mb-3 mt-6 text-2xl">
+                                        {ar ? 'طريقة الدفع' : 'Payment method'}
+                                    </h3>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {PAYMENT_METHODS.map((m) => (
+                                            <button
+                                                key={m.id}
+                                                type="button"
+                                                onClick={() => setMethod(m.id)}
+                                                data-cursor="hover"
+                                                className={
+                                                    'rounded-xl border px-2 py-3 text-center font-grotesk text-[11px] font-bold uppercase tracking-wide transition-colors ' +
+                                                    (method === m.id
+                                                        ? 'border-brand-yellow bg-brand-yellow text-brand-red-deep'
+                                                        : 'border-white/20 bg-white/5 text-white/80 hover:border-white/40')
+                                                }
+                                            >
+                                                {ar ? m.ar : m.en}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {method === 'card' && (
+                                        <div className="mt-3 flex flex-col gap-3">
+                                            <input
+                                                className={inputClass}
+                                                placeholder={ar ? 'رقم البطاقة' : 'Card number'}
+                                                value={cardNumber}
+                                                onChange={(e) =>
+                                                    setCardNumber(
+                                                        e.target.value.replace(/\D/g, '').slice(0, 19).replace(/(.{4})/g, '$1 ').trim(),
+                                                    )
+                                                }
+                                                inputMode="numeric"
+                                                dir="ltr"
+                                            />
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <input
+                                                    className={inputClass}
+                                                    placeholder="MM/YY"
+                                                    value={cardExpiry}
+                                                    onChange={(e) => setCardExpiry(e.target.value)}
+                                                    dir="ltr"
+                                                />
+                                                <input
+                                                    className={inputClass}
+                                                    placeholder="CVC"
+                                                    value={cardCvc}
+                                                    onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                                                    inputMode="numeric"
+                                                    dir="ltr"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                    {method === 'wallet' && (
+                                        <input
+                                            className={inputClass + ' mt-3'}
+                                            placeholder={ar ? 'رقم المحفظة (موبايل)' : 'Wallet mobile number'}
+                                            value={walletPhone}
+                                            onChange={(e) => setWalletPhone(e.target.value)}
+                                            inputMode="tel"
+                                            dir="ltr"
+                                        />
+                                    )}
+                                    {method === 'cod' && (
+                                        <p className="mt-3 font-grotesk text-xs text-white/55">
+                                            {ar
+                                                ? 'ادفع نقدًا عند استلام طلبك.'
+                                                : 'Pay with cash when your order arrives.'}
+                                        </p>
+                                    )}
+
                                     {error && (
                                         <p className="mt-4 rounded-lg border border-white/30 bg-white/10 px-3 py-2 font-grotesk text-sm text-white">
                                             {error}

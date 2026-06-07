@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
 import {useLanguage} from '@/lib/LanguageContext';
 import {getOrders} from '@/lib/adminApi';
 
@@ -29,6 +30,7 @@ export default function OrdersPage() {
     const [filter, setFilter] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const {t, locale} = useLanguage();
+    const router = useRouter();
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
@@ -125,13 +127,22 @@ export default function OrdersPage() {
                                 </tr>
                             )}
                             {filtered.map((o) => (
-                                <tr key={o.id} className="border-t border-neutral-100 hover:bg-neutral-50">
+                                <tr
+                                    key={o.id}
+                                    onClick={() => o._id && router.push(`/dashboard/orders/${o._id}`)}
+                                    className="border-t border-neutral-100 hover:bg-neutral-50 cursor-pointer"
+                                >
                                     <td className="py-3 px-5 font-mono text-xs text-ink">{o.id}</td>
                                     <td className="py-3 px-2 text-ink font-medium">{locale === 'ar' ? (o.customerAr || o.customer) : o.customer}</td>
                                     <td className="py-3 px-2 text-neutral-600">{o.items}</td>
                                     <td className="py-3 px-2 text-ink font-medium">{o.total} {currency}</td>
                                     <td className="py-3 px-2"><StatusPill status={o.status} /></td>
-                                    <td className="py-3 px-5 text-neutral-500 text-xs">{o.date}</td>
+                                    <td className="py-3 px-5 text-neutral-500 text-xs">
+                                        <span className="inline-flex items-center gap-2">
+                                            {o.date}
+                                            <span className="text-neutral-300">→</span>
+                                        </span>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
