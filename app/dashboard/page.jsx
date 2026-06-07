@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {useLanguage} from '@/lib/LanguageContext';
+import {getStats, getOrders} from '@/lib/adminApi';
 
 const STATUS_STYLES = {
     paid:     {pill: 'bg-emerald-50 text-emerald-700 ring-emerald-200', dot: 'bg-emerald-500'},
@@ -141,13 +142,15 @@ export default function DashboardOverview() {
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
-        Promise.all([
-            fetch('/api/stats').then((r) => r.json()),
-            fetch('/api/orders').then((r) => r.json()),
-        ]).then(([s, o]) => {
-            setStats(s);
-            setOrders(o.orders || []);
-        });
+        Promise.all([getStats(), getOrders()])
+            .then(([s, o]) => {
+                setStats(s);
+                setOrders(o);
+            })
+            .catch(() => {
+                setStats(null);
+                setOrders([]);
+            });
     }, []);
 
     const recent = orders.slice(0, 6);

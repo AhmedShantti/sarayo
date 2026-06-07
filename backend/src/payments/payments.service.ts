@@ -29,6 +29,60 @@ export class PaymentsService {
   ) {}
 
   // ──────────────────────────────────────────────
+  // Admin — list payments (+ aggregate stats) for the dashboard
+  // ──────────────────────────────────────────────
+
+  async adminListPayments() {
+    const payments = await this.prisma.payment.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        order: {
+          select: {
+            orderNumber: true,
+            shippingAddress: true,
+            user: { select: { name: true, nameAr: true } },
+          },
+        },
+      },
+    });
+
+    const items = payments.map((p) => {
+      const addr = (p.order?.shippingAddress ?? {}) as Record<string, any>;
+      return {
+        id: p.id,
+        orderId: p.order?.orderNumber ?? null,
+        customer: p.order?.user?.name ?? addr.fullName ?? 'Guest',
+        customerAr: p.order?.user?.nameAr ?? null,
+        amount: Number(p.amount),
+        currency: p.currency,
+        method: addr.method ?? 'card',
+        status: p.status, // enum: PENDING | SUCCESS | FAILED | REFUNDED
+        date: p.createdAt.toISOString().slice(0, 10),
+      };
+    });
+
+    const sumBy = (s: TransactionStatus) =>
+      items.filter((i) => i.status === s).reduce((acc, i) => acc + i.amount, 0);
+
+    const byMethod = items.reduce<Record<string, number>>((acc, i) => {
+      if (i.status === 'SUCCESS') acc[i.method] = (acc[i.method] || 0) + i.amount;
+      return acc;
+    }, {});
+
+    return {
+      items,
+      stats: {
+        totalReceived: sumBy(TransactionStatus.SUCCESS),
+        pending: sumBy(TransactionStatus.PENDING),
+        refunded: sumBy(TransactionStatus.REFUNDED),
+        failedCount: items.filter((i) => i.status === 'FAILED').length,
+        successCount: items.filter((i) => i.status === 'SUCCESS').length,
+        byMethod,
+      },
+    };
+  }
+
+  // ──────────────────────────────────────────────
   // Initiate (3-step Paymob flow)
   // ──────────────────────────────────────────────
 

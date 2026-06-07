@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {useLanguage} from '@/lib/LanguageContext';
+import {getOrders} from '@/lib/adminApi';
 
 const STATUS_STYLES = {
     paid:     'bg-emerald-50 text-emerald-700 ring-emerald-200',
@@ -31,9 +32,9 @@ export default function OrdersPage() {
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
-        fetch('/api/orders')
-            .then((r) => r.json())
-            .then((d) => setOrders(d.orders || []));
+        getOrders()
+            .then(setOrders)
+            .catch(() => setOrders([]));
     }, []);
 
     const filtered = orders

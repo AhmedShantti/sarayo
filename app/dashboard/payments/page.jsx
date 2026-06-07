@@ -2,6 +2,7 @@
 
 import {useEffect, useMemo, useState} from 'react';
 import {useLanguage} from '@/lib/LanguageContext';
+import {getPayments} from '@/lib/adminApi';
 
 const STATUS_STYLES = {
     succeeded: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
@@ -38,7 +39,9 @@ export default function PaymentsPage() {
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
-        fetch('/api/payments').then((r) => r.json()).then(setData);
+        getPayments()
+            .then(setData)
+            .catch(() => setData({payments: [], stats: {}}));
     }, []);
 
     const payments = data?.payments || [];

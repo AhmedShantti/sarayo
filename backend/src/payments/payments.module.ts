@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { PaymentsController } from './payments.controller';
+import { AdminPaymentsController, PaymentsController } from './payments.controller';
 import { PaymobModule } from './paymob.module';
 import { OrdersModule } from '../orders/orders.module';
 
@@ -10,7 +10,7 @@ import { OrdersModule } from '../orders/orders.module';
     // forwardRef resolves the Orders <-> Payments circular dependency.
     forwardRef(() => OrdersModule),
   ],
-  controllers: [PaymentsController],
+  controllers: [PaymentsController, AdminPaymentsController],
   providers: [PaymentsService],
   exports: [PaymentsService],
 })

@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import {useLanguage} from '@/lib/LanguageContext';
+import {getUsers} from '@/lib/adminApi';
 
 function initials(name) {
     return name
@@ -18,9 +19,9 @@ export default function UsersPage() {
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
-        fetch('/api/users')
-            .then((r) => r.json())
-            .then((d) => setUsers(d.users || []));
+        getUsers()
+            .then(setUsers)
+            .catch(() => setUsers([]));
     }, []);
 
     return (

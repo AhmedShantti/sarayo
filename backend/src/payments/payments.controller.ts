@@ -65,3 +65,18 @@ export class PaymentsController {
     return this.paymentsService.refund(dto);
   }
 }
+
+@ApiTags('Admin · Payments')
+@ApiBearerAuth('access-token')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
+@Controller('admin/payments')
+export class AdminPaymentsController {
+  constructor(private readonly paymentsService: PaymentsService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'List all payments with aggregate stats (admin)' })
+  list() {
+    return this.paymentsService.adminListPayments();
+  }
+}

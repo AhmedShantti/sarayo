@@ -1,6 +1,7 @@
 import DashboardNav from '@/components/DashboardNav';
 import DashboardTopbar from '@/components/DashboardTopbar';
 import DashboardSidebarLabels from '@/components/DashboardSidebarLabels';
+import DashboardGate from '@/components/DashboardGate';
 
 export const metadata = {
     title: 'Dashboard — Sarayo Alwadiya',
@@ -9,6 +10,7 @@ export const metadata = {
 
 export default function DashboardLayout({children}) {
     return (
+        <DashboardGate>
         <div className="min-h-screen bg-neutral-50 grid grid-cols-1 md:grid-cols-[240px_1fr] text-ink">
             <aside className="bg-white border-r border-neutral-200 flex flex-col md:sticky md:top-0 md:h-screen relative">
                 {/* Subtle brand accent stripe down the right edge of the sidebar */}
@@ -27,5 +29,6 @@ export default function DashboardLayout({children}) {
                 <main className="flex-1 p-6 md:p-8 overflow-x-hidden">{children}</main>
             </div>
         </div>
+        </DashboardGate>
     );
 }

@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import {useLanguage} from '@/lib/LanguageContext';
+import {getProducts} from '@/lib/adminApi';
 
 function StockBadge({status, stock}) {
     const {t} = useLanguage();
@@ -33,9 +34,9 @@ export default function ProductsPage() {
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
-        fetch('/api/products')
-            .then((r) => r.json())
-            .then((d) => setProducts(d.products || []));
+        getProducts()
+            .then(setProducts)
+            .catch(() => setProducts([]));
     }, []);
 
     return (

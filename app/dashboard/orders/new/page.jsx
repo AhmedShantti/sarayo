@@ -4,6 +4,7 @@ import {useRouter} from 'next/navigation';
 import {useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
 import {useLanguage} from '@/lib/LanguageContext';
+import {getProducts, createAdminOrder} from '@/lib/adminApi';
 
 export default function NewOrderPage() {
     const router = useRouter();
@@ -19,13 +20,12 @@ export default function NewOrderPage() {
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
     useEffect(() => {
-        fetch('/api/products')
-            .then((r) => r.json())
-            .then((d) => {
-                const list = d.products || [];
+        getProducts()
+            .then((list) => {
                 setProducts(list);
                 if (list[0]) setSku(list[0].sku);
-            });
+            })
+            .catch(() => setProducts([]));
     }, []);
 
     const product = useMemo(() => products.find((p) => p.sku === sku), [products, sku]);
@@ -40,25 +40,16 @@ export default function NewOrderPage() {
 
         setSubmitting(true);
         try {
-            const res = await fetch('/api/orders', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    customer: customer.trim(),
-                    email: email.trim() || null,
-                    sku,
-                    items: qty,
-                    total,
-                    status,
-                }),
+            await createAdminOrder({
+                customer: customer.trim(),
+                email: email.trim() || undefined,
+                sku,
+                qty,
+                status,
             });
-            if (!res.ok) {
-                const body = await res.json().catch(() => ({}));
-                throw new Error(body.error || t('dash.new.err.create'));
-            }
             router.push('/dashboard/orders');
         } catch (err) {
-            setError(err.message);
+            setError(err.message || t('dash.new.err.create'));
             setSubmitting(false);
         }
     }
