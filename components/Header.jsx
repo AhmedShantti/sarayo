@@ -120,6 +120,15 @@ export default function Header() {
                             ))}
                             <li className="nav-contact-mobile">
                                 <Link
+                                    href="/landing"
+                                    className="nav-link"
+                                    onClick={handleNavClick}
+                                >
+                                    {t('nav.landing')}
+                                </Link>
+                            </li>
+                            <li className="nav-contact-mobile">
+                                <Link
                                     href={CONTACT_LINK.href}
                                     className={
                                         'nav-link' +
@@ -134,6 +143,14 @@ export default function Header() {
                     </nav>
 
                     <div className="header-actions">
+                        <Link
+                            href="/landing"
+                            className={'contact-link' + (pathname === '/landing' ? ' is-active' : '')}
+                            onClick={handleNavClick}
+                        >
+                            {t('nav.landing')}
+                        </Link>
+
                         <Link
                             href={CONTACT_LINK.href}
                             className={

@@ -1,6 +1,3 @@
-# Local Claude Code settings
-.claude/
-
 # Dependencies
 node_modules/
 .pnp
