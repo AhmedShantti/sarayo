@@ -7,6 +7,7 @@
  * 10 orders across statuses, and sample reviews. Idempotent-ish: it wipes the
  * relevant tables first so re-running gives a clean, predictable dataset.
  */
+import 'dotenv/config';
 import {
   Category,
   OrderStatus,
