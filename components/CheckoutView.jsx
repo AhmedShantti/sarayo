@@ -6,6 +6,7 @@ import {useState} from 'react';
 import {useCart} from '@/lib/CartContext';
 import {useToast} from '@/lib/ToastContext';
 import {useLanguage} from '@/lib/LanguageContext';
+import {placeGuestOrder} from '@/lib/api';
 
 const METHODS = [
     {id: 'card',   tKey: 'checkout.method.card'},
@@ -66,35 +67,22 @@ export default function CheckoutView() {
 
         setSubmitting(true);
         try {
-            const res = await fetch('/api/payments/checkout', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    customer: customer.trim(),
-                    email: email.trim() || null,
-                    address: address.trim() || null,
-                    method,
-                    cardNumber: method === 'card' ? cardNumber : undefined,
-                    items: cart.map((it) => ({
-                        sku: it.id,
-                        name: it.name,
-                        price: it.price,
-                        qty: it.qty,
-                    })),
-                }),
+            // Real guest checkout against the backend — saves the order to the
+            // database so it shows up in the admin dashboard.
+            const order = await placeGuestOrder({
+                customer: customer.trim(),
+                email: email.trim() || undefined,
+                address: address.trim() || undefined,
+                method,
+                items: cart.map((it) => ({
+                    productId: it.id,
+                    quantity: it.qty,
+                })),
             });
-            if (!res.ok) {
-                const body = await res.json().catch(() => ({}));
-                throw new Error(body.error || 'Payment failed');
-            }
-            const data = await res.json();
             clear();
-            showToast(
-                data.payment?.status === 'pending'
-                    ? t('checkout.toast.cod')
-                    : t('checkout.toast.paid')
-            );
-            router.push(`/checkout/success?order=${encodeURIComponent(data.order.id)}`);
+            showToast(method === 'cod' ? t('checkout.toast.cod') : t('checkout.toast.paid'));
+            const ref = order.orderNumber || order.id;
+            router.push(`/checkout/success?order=${encodeURIComponent(ref)}`);
         } catch (err) {
             setError(err.message);
             setSubmitting(false);

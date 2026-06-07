@@ -53,7 +53,7 @@ export default function CartView() {
                             <div className="cart-item-image">
                                 <img
                                     className="cart-item-photo"
-                                    src="/lays-cheddar.png"
+                                    src={it.image || '/lays-cheddar.png'}
                                     alt={it.name}
                                 />
                             </div>

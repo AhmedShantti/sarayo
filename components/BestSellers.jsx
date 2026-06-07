@@ -1,32 +1,13 @@
 'use client';
 
-import {useEffect, useMemo, useRef} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {useCart} from '@/lib/CartContext';
 import {useToast} from '@/lib/ToastContext';
 import {useFlavor} from '@/lib/FlavorContext';
 import {useLanguage} from '@/lib/LanguageContext';
+import {fetchProducts} from '@/lib/api';
 
 const FALLBACK_IMG = '/lays-cheddar.png';
-
-// Product flavor strings are stored as translation keys; the live label comes
-// from t(`product.<id>`) so they switch with the locale.
-const PRODUCTS = [
-    {id: 'cheddar-sour-cream',  price: 18, bestSeller: true,  image: '/lays-cheddar.png',      tags: ['cheese', 'sour-cream']},
-    {id: 'classic-salted',      price: 18, bestSeller: false, image: '/lays-classic.png',      tags: ['salt-vinegar']},
-    {id: 'salt-vinegar',        price: 18, bestSeller: true,  image: '/lays-salt-vinegar.png', tags: ['salt-vinegar']},
-    {id: 'wavy',                price: 18, bestSeller: false, image: '/lays-wavy.png',         tags: ['salt-vinegar']},
-    {id: 'indian-spice',        price: 18, bestSeller: false, image: '/lays-indian.png',       tags: ['chili', 'pepper', 'sweet-chili']},
-    {id: 'cheddar-classic',     price: 18, bestSeller: true,  image: '/lays-cheddar.png',      tags: ['cheese']},
-    {id: 'wavy-bbq',            price: 18, bestSeller: false, image: '/lays-wavy.png',         tags: ['bbq']},
-    {id: 'classic-large',       price: 18, bestSeller: false, image: '/lays-classic.png',      tags: ['salt-vinegar']},
-    {id: 'spicy-masala',        price: 18, bestSeller: false, image: '/lays-indian.png',       tags: ['chili', 'pepper']},
-    {id: 'salt-vinegar-twist',  price: 18, bestSeller: true,  image: '/lays-salt-vinegar.png', tags: ['salt-vinegar']},
-    {id: 'wavy-cheddar',        price: 18, bestSeller: false, image: '/lays-wavy.png',         tags: ['cheese', 'ranch']},
-    {id: 'sour-cream-classic',  price: 18, bestSeller: false, image: '/lays-cheddar.png',      tags: ['sour-cream', 'onion']},
-    {id: 'classic-original',    price: 18, bestSeller: true,  image: '/lays-classic.png',      tags: ['salt-vinegar']},
-    {id: 'wavy-bbq-deluxe',     price: 18, bestSeller: false, image: '/lays-wavy.png',         tags: ['bbq']},
-    {id: 'indian-tandoori',     price: 18, bestSeller: false, image: '/lays-indian.png',       tags: ['chili', 'tomato']},
-];
 
 const PACK_LABEL_EN = '6 pack';
 const PACK_LABEL_AR = 'علبة ٦ قطع';
@@ -56,16 +37,43 @@ export default function BestSellers() {
     const {selectedFlavor, selectFlavor} = useFlavor();
     const {t, locale} = useLanguage();
 
+    // Products now come from the live backend (Supabase) instead of a hardcoded list.
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState(false);
+
+    useEffect(() => {
+        let active = true;
+        fetchProducts({limit: 50})
+            .then((list) => {
+                if (active) {
+                    setProducts(list);
+                    setLoading(false);
+                }
+            })
+            .catch(() => {
+                if (active) {
+                    setLoadError(true);
+                    setLoading(false);
+                }
+            });
+        return () => {
+            active = false;
+        };
+    }, []);
+
     const visibleProducts = useMemo(() => {
-        if (selectedFlavor === 'all') return PRODUCTS;
-        return PRODUCTS.filter((p) => p.tags && p.tags.includes(selectedFlavor));
-    }, [selectedFlavor]);
+        if (selectedFlavor === 'all') return products;
+        return products.filter((p) => p.flavor === selectedFlavor);
+    }, [products, selectedFlavor]);
 
     const flavorLabel = t(`flavor.${selectedFlavor}`);
     const isFiltered = selectedFlavor !== 'all';
     const packLabel = locale === 'ar' ? PACK_LABEL_AR : PACK_LABEL_EN;
     const sizeLabel = locale === 'ar' ? SIZE_LABEL_AR : SIZE_LABEL_EN;
     const productName = t('product.name');
+
+    const nameFor = (p) => (locale === 'ar' && p.nameAr ? p.nameAr : p.name);
 
     function scroll(direction) {
         const target = scrollRef.current;
@@ -75,9 +83,15 @@ export default function BestSellers() {
     }
 
     function handleAdd(product) {
-        const flavorText = t(`product.${product.id}`);
-        addItem({id: product.id, name: productName, price: product.price, flavor: flavorText});
-        showToast(t('bs.added', {name: flavorText}));
+        const label = nameFor(product);
+        addItem({
+            id: product.id,
+            sku: product.sku,
+            name: label,
+            price: product.price,
+            image: (product.images && product.images[0]) || FALLBACK_IMG,
+        });
+        showToast(t('bs.added', {name: label}));
     }
 
     useEffect(() => {
@@ -104,12 +118,12 @@ export default function BestSellers() {
         );
         cards.forEach((c) => io.observe(c));
 
-        const t = setTimeout(() => {
+        const timer = setTimeout(() => {
             cards.forEach((c) => c.classList.add('is-revealed'));
         }, 1500);
 
         return () => {
-            clearTimeout(t);
+            clearTimeout(timer);
             io.disconnect();
         };
     }, [visibleProducts]);
@@ -141,7 +155,15 @@ export default function BestSellers() {
                     )}
                 </div>
 
-                {visibleProducts.length === 0 ? (
+                {loading ? (
+                    <div className="products-empty">
+                        <p>{t('bs.loading') || 'Loading products…'}</p>
+                    </div>
+                ) : loadError ? (
+                    <div className="products-empty">
+                        <p>{t('bs.error') || 'Could not load products. Please try again.'}</p>
+                    </div>
+                ) : visibleProducts.length === 0 ? (
                     <div className="products-empty">
                         <p>{t('bs.empty')}</p>
                         <button
@@ -164,18 +186,20 @@ export default function BestSellers() {
 
                     <div className="products-scroll" ref={scrollRef}>
                         {visibleProducts.map((p) => {
-                            const flavorText = t(`product.${p.id}`);
+                            const label = nameFor(p);
+                            const img = (p.images && p.images[0]) || FALLBACK_IMG;
+                            const outOfStock = p.status === 'out' || p.stock <= 0;
                             return (
                                 <article key={p.id} className="product-card">
                                     <div className="product-image">
                                         <span className="pack-badge">{packLabel}</span>
-                                        {p.bestSeller && (
+                                        {p.isFeatured && (
                                             <span className="best-seller-ribbon">{t('bs.ribbon')}</span>
                                         )}
                                         <img
                                             className="product-photo"
-                                            src={p.image || FALLBACK_IMG}
-                                            alt={flavorText}
+                                            src={img}
+                                            alt={label}
                                             onError={(e) => {
                                                 if (e.currentTarget.src.indexOf(FALLBACK_IMG) === -1) {
                                                     e.currentTarget.src = FALLBACK_IMG;
@@ -185,14 +209,16 @@ export default function BestSellers() {
                                     </div>
                                     <div className="product-info">
                                         <h3 className="product-name">{productName}</h3>
-                                        <p className="product-flavor">{flavorText}</p>
+                                        <p className="product-flavor">{label}</p>
                                         <div className="product-row">
                                             <span className="product-meta">{sizeLabel}</span>
                                             <span className="product-price">{p.price} {locale === 'ar' ? 'جنيه' : 'EGP'}</span>
                                             <button
                                                 className="add-cart-btn"
-                                                aria-label={t('bs.addAria', {name: flavorText})}
+                                                aria-label={t('bs.addAria', {name: label})}
                                                 onClick={() => handleAdd(p)}
+                                                disabled={outOfStock}
+                                                title={outOfStock ? (t('bs.outOfStock') || 'Out of stock') : undefined}
                                             >
                                                 <CartIcon />
                                             </button>
