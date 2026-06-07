@@ -1,0 +1,8 @@
+import { SetMetadata } from '@nestjs/common';
+
+export const IS_PUBLIC_KEY = 'isPublic';
+
+/**
+ * Mark a route as public so the (optionally global) JwtAuthGuard skips it.
+ */
+export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
