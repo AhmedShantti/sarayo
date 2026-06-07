@@ -5,6 +5,7 @@ import {
   IsArray,
   IsEmail,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   MaxLength,
@@ -13,7 +14,7 @@ import {
 } from 'class-validator';
 
 export class GuestOrderItemDto {
-  @ApiPropertyOptional({ description: 'Backend product id (preferred)' })
+  @ApiPropertyOptional({ description: 'Backend product id (links to catalog if provided)' })
   @IsOptional()
   @IsString()
   productId?: string;
@@ -22,6 +23,25 @@ export class GuestOrderItemDto {
   @IsOptional()
   @IsString()
   sku?: string;
+
+  @ApiPropertyOptional({ description: 'Product name snapshot (for catalog-less storefront items)' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(150)
+  name?: string;
+
+  @ApiPropertyOptional({ description: 'Unit price snapshot (required when no productId/sku)' })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  price?: number;
+
+  @ApiPropertyOptional({ description: 'Image URL snapshot' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  image?: string;
 
   @ApiProperty({ example: 2, minimum: 1 })
   @Type(() => Number)

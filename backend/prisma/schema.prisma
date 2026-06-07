@@ -186,8 +186,10 @@ model OrderItem {
   id           String  @id @default(uuid())
   orderId      String
   order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId    String
-  product      Product @relation(fields: [productId], references: [id])
+  // Optional: guest orders from the storefront's static catalog may not map to
+  // a catalog Product. Name/price/image are always snapshotted below.
+  productId    String?
+  product      Product? @relation(fields: [productId], references: [id])
   quantity     Int
   price        Decimal @db.Decimal(10, 2) // snapshot
   productName  String // snapshot

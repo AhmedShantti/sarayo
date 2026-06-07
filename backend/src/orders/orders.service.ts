@@ -149,37 +149,65 @@ export class OrdersService {
   // ──────────────────────────────────────────────
 
   async createGuestOrder(dto: CreateGuestOrderDto) {
-    // 1. Resolve every line to a real, active, in-stock product.
-    const resolved: Array<{ product: Product; quantity: number }> = [];
+    // 1. Resolve every line. A line either links to a catalog product (by id or
+    //    sku — stock is checked + decremented) or is a self-described snapshot
+    //    (name + price) from the storefront's static catalog.
+    const resolved: Array<{
+      productId: string | null;
+      quantity: number;
+      price: number;
+      productName: string;
+      productImage: string | null;
+      decrementStock: boolean;
+    }> = [];
+
     for (const line of dto.items) {
-      const product = await this.prisma.product.findFirst({
-        where: line.productId
-          ? { id: line.productId }
-          : line.sku
-            ? { sku: line.sku }
-            : { id: '__none__' },
-      });
-      if (!product || !product.isActive) {
+      let product: Product | null = null;
+      if (line.productId || line.sku) {
+        product = await this.prisma.product.findFirst({
+          where: line.productId ? { id: line.productId } : { sku: line.sku },
+        });
+      }
+
+      if (product) {
+        if (!product.isActive) {
+          throw new BadRequestException(`${product.name} is no longer available`);
+        }
+        if (line.quantity > product.stock) {
+          throw new BadRequestException(
+            `Only ${product.stock} unit(s) of ${product.name} are available`,
+          );
+        }
+        resolved.push({
+          productId: product.id,
+          quantity: line.quantity,
+          price: Number(product.price),
+          productName: product.name,
+          productImage: product.images[0] ?? null,
+          decrementStock: true,
+        });
+      } else if (line.name && line.price != null) {
+        // Catalog-less storefront item — store as a snapshot, no stock change.
+        resolved.push({
+          productId: null,
+          quantity: line.quantity,
+          price: line.price,
+          productName: line.name,
+          productImage: line.image ?? null,
+          decrementStock: false,
+        });
+      } else {
         throw new BadRequestException(
-          `Product not found: ${line.productId ?? line.sku ?? 'unknown'}`,
+          `Order line is missing a productId/sku or a name+price: ${line.name ?? line.sku ?? line.productId ?? 'unknown'}`,
         );
       }
-      if (line.quantity > product.stock) {
-        throw new BadRequestException(
-          `Only ${product.stock} unit(s) of ${product.name} are available`,
-        );
-      }
-      resolved.push({ product, quantity: line.quantity });
     }
 
     // 2. Find or create a lightweight customer keyed by email.
     const guest = await this.resolveGuestUser(dto.customer, dto.email, dto.phone);
 
     // 3. Totals.
-    const subtotal = resolved.reduce(
-      (sum, r) => sum + Number(r.product.price) * r.quantity,
-      0,
-    );
+    const subtotal = resolved.reduce((sum, r) => sum + r.price * r.quantity, 0);
     const breakdown = this.pricing.calculate(subtotal);
 
     const shippingAddress = {
@@ -211,21 +239,24 @@ export class OrdersService {
           notes: dto.notes,
           items: {
             create: resolved.map((r) => ({
-              productId: r.product.id,
+              productId: r.productId,
               quantity: r.quantity,
-              price: r.product.price,
-              productName: r.product.name,
-              productImage: r.product.images[0] ?? null,
+              price: r.price,
+              productName: r.productName,
+              productImage: r.productImage,
             })),
           },
         },
         include: { items: true },
       });
+      // Decrement stock only for lines linked to a catalog product.
       for (const r of resolved) {
-        await tx.product.update({
-          where: { id: r.product.id },
-          data: { stock: { decrement: r.quantity } },
-        });
+        if (r.decrementStock && r.productId) {
+          await tx.product.update({
+            where: { id: r.productId },
+            data: { stock: { decrement: r.quantity } },
+          });
+        }
       }
       return created;
     });
@@ -304,8 +335,9 @@ export class OrdersService {
     }
 
     const updated = await this.prisma.$transaction(async (tx) => {
-      // Restore stock.
+      // Restore stock (only for catalog-linked lines).
       for (const item of order.items) {
+        if (!item.productId) continue;
         await tx.product.update({
           where: { id: item.productId },
           data: { stock: { increment: item.quantity } },
@@ -385,9 +417,10 @@ export class OrdersService {
     }
 
     const updated = await this.prisma.$transaction(async (tx) => {
-      // Restore stock when an order is cancelled.
+      // Restore stock when an order is cancelled (catalog-linked lines only).
       if (dto.status === OrderStatus.CANCELLED) {
         for (const item of order.items) {
+          if (!item.productId) continue;
           await tx.product.update({
             where: { id: item.productId },
             data: { stock: { increment: item.quantity } },
