@@ -2422,3 +2422,18 @@ a, button, [role="button"], label, summary, select,
 html[dir="rtl"] body { font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
 html[dir="rtl"] .continue-link:hover { transform: translateX(2px); }
 html[dir="rtl"] .promo-track { direction: ltr; }
+
+/* Arabic is cursive — letter-spacing severs the joins. Reset it for the toggle
+   and any tracked utility text while in RTL. */
+html[dir="rtl"] .lang-toggle { letter-spacing: 0; text-transform: none; }
+html[dir="rtl"] [class*="tracking-"] { letter-spacing: 0 !important; }
+
+/* ---------- Motion cursor (shared: landing + dashboard) ---------- */
+/* When the JS cursor is mounted it tags its root with this class; hide the
+   native pointer everywhere inside so only the dot + ring show. */
+.app-cursor-active,
+.app-cursor-active * { cursor: none !important; }
+@media (prefers-reduced-motion: reduce) {
+    .app-cursor-active,
+    .app-cursor-active * { cursor: auto !important; }
+}

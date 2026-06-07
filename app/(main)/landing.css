@@ -1,0 +1,135 @@
+/* ============================================================
+   SARAYO ALWADIYA — LANDING (scoped)
+   Everything is namespaced under .landing-root so none of this
+   leaks into the existing yellow site, and the site's globals
+   don't bleed in here.
+   ============================================================ */
+
+.landing-root {
+    position: relative;
+    min-height: 100vh;
+    background: #D7261E;            /* dominant warm red */
+    color: #fff;
+    overflow-x: clip;
+    font-family: var(--font-grotesk), system-ui, sans-serif;
+    /* Reset the site-wide custom cursor for a clean, high-end feel. */
+    cursor: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.landing-root a,
+.landing-root button {
+    cursor: pointer;
+}
+
+.landing-root ::selection {
+    background: #FFD400;
+    color: #8E0E06;
+}
+
+/* Film grain overlay — subtle texture over the flat red. */
+.landing-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Marquee strip */
+.landing-marquee {
+    display: flex;
+    width: max-content;
+    animation: landing-marquee 32s linear infinite;
+}
+@keyframes landing-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* Big oversized headline tuning */
+.landing-display {
+    font-family: var(--font-anton), Impact, sans-serif;
+    text-transform: uppercase;
+    line-height: 0.86;
+    letter-spacing: -0.01em;
+}
+
+/* ----------  Arabic typography (RTL)  ----------
+   Anton + Space Grotesk are Latin-only, so swap in Cairo (loaded in the root
+   layout) for both display and body when the document switches to Arabic.
+   Reset letter-spacing everywhere — Arabic letters are joined and tracking
+   breaks them apart. */
+html[lang="ar"] .landing-root {
+    font-family: 'Cairo', var(--font-grotesk), system-ui, sans-serif;
+}
+html[lang="ar"] .landing-display,
+html[lang="ar"] .hero-ghost {
+    font-family: 'Cairo', var(--font-anton), sans-serif;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: 0;
+}
+html[lang="ar"] .landing-root * {
+    letter-spacing: 0 !important;
+}
+
+/* Ghost wordmark behind the hero */
+.hero-ghost {
+    font-family: var(--font-anton), Impact, sans-serif;
+    text-transform: uppercase;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.14);
+    color: transparent;
+    white-space: nowrap;
+}
+
+/* ----------  Custom cursor  ---------- */
+.landing-root.cursor-none,
+.landing-root.cursor-none * {
+    cursor: none !important;
+}
+.landing-cursor-ring {
+    width: 42px;
+    height: 42px;
+    margin-left: -21px;
+    margin-top: -21px;
+    border: 1.5px solid #ffd400;
+    border-radius: 9999px;
+    will-change: transform;
+}
+.landing-cursor-dot {
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    margin-top: -4px;
+    border-radius: 9999px;
+    background: #ffd400;
+    will-change: transform;
+}
+
+/* ----------  Feature spotlight  ---------- */
+.feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        240px circle at var(--mx, 50%) var(--my, 0%),
+        rgba(255, 212, 0, 0.16),
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .landing-marquee { animation: none; }
+    .landing-root.cursor-none,
+    .landing-root.cursor-none * { cursor: auto !important; }
+}
