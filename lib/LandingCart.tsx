@@ -67,7 +67,9 @@ export default function LandingCartProvider({ children }: { children: ReactNode 
             if (found) return prev.map((l) => (l.name === p.name ? { ...l, qty: l.qty + 1 } : l));
             return [...prev, { name: p.name, src: p.src, flavor: p.flavor, price: p.priceValue, qty: 1 }];
         });
-        setIsOpen(true);
+        // Intentionally NOT auto-opening the drawer on every add — doing so
+        // covered the catalog and made it feel like only one item could be added.
+        // The cart-icon badge gives feedback; the user opens the cart when ready.
     };
     const inc = (name: string) =>
         setItems((prev) => prev.map((l) => (l.name === name ? { ...l, qty: l.qty + 1 } : l)));

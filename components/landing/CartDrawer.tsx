@@ -6,31 +6,79 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useLandingCart } from '@/lib/LandingCart';
 import { useLanguage } from '@/lib/LanguageContext';
 import { PRODUCTS, localizeProduct, formatPrice } from '@/lib/landingData';
+import { placeGuestOrder } from '@/lib/storefrontApi';
 import CartIcon from './CartIcon';
 import Chip from './Chip';
+
+type Phase = 'cart' | 'form' | 'done';
 
 export default function CartDrawer() {
     const { items, count, subtotal, isOpen, close, inc, dec, remove, clear } = useLandingCart();
     const { t, locale } = useLanguage();
-    const [done, setDone] = useState(false);
+    const ar = locale === 'ar';
+
+    const [phase, setPhase] = useState<Phase>('cart');
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+    const [placing, setPlacing] = useState(false);
+    const [error, setError] = useState('');
+    const [orderRef, setOrderRef] = useState('');
 
     // Cart lines are keyed by the English product name; map back to the catalog
     // so names/flavors render in the active locale.
-    const lineText = (name: string, fallbackFlavor: string) => {
-        const prod = PRODUCTS.find((p) => p.name === name);
+    const lineText = (lname: string, fallbackFlavor: string) => {
+        const prod = PRODUCTS.find((p) => p.name === lname);
         const l = prod ? localizeProduct(prod, locale) : null;
-        return { name: l ? l.name : name, flavor: l ? l.flavor : fallbackFlavor };
+        return { name: l ? l.name : lname, flavor: l ? l.flavor : fallbackFlavor };
     };
 
-    const checkout = () => {
+    const placeOrder = async () => {
         if (!items.length) return;
-        setDone(true); // success screen is shown based on `done`, so clearing now is safe
-        clear();
+        if (!name.trim()) {
+            setError(ar ? 'الاسم مطلوب' : 'Please enter your name');
+            return;
+        }
+        setError('');
+        setPlacing(true);
+        try {
+            const order = await placeGuestOrder({
+                customer: name.trim(),
+                email: email.trim() || undefined,
+                phone: phone.trim() || undefined,
+                address: address.trim() || undefined,
+                method: 'cod',
+                items: items.map((l) => ({
+                    name: l.name,
+                    price: l.price,
+                    image: l.src,
+                    quantity: l.qty,
+                })),
+            });
+            setOrderRef(order.orderNumber || order.id);
+            clear();
+            setPhase('done');
+        } catch (e) {
+            setError((e as Error).message || (ar ? 'تعذّر إتمام الطلب' : 'Could not place order'));
+        } finally {
+            setPlacing(false);
+        }
     };
-    const keepShopping = () => {
-        setDone(false);
+
+    const reset = () => {
+        setPhase('cart');
+        setError('');
+        setName('');
+        setPhone('');
+        setEmail('');
+        setAddress('');
+        setOrderRef('');
         close();
     };
+
+    const inputClass =
+        'w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 font-grotesk text-sm text-white placeholder-white/40 outline-none transition-colors focus:border-brand-yellow';
 
     return (
         <AnimatePresence>
@@ -40,7 +88,7 @@ export default function CartDrawer() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={keepShopping}
+                        onClick={reset}
                         className="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm"
                     />
                     <motion.aside
@@ -55,10 +103,12 @@ export default function CartDrawer() {
                             <div className="flex items-center gap-3">
                                 <CartIcon className="h-5 w-5 text-brand-yellow" />
                                 <h2 className="landing-display text-2xl">{t('lnd.cart.title')}</h2>
-                                {count > 0 && <Chip variant="yellow" size="sm" interactive={false}>{count}</Chip>}
+                                {count > 0 && phase !== 'done' && (
+                                    <Chip variant="yellow" size="sm" interactive={false}>{count}</Chip>
+                                )}
                             </div>
                             <button
-                                onClick={keepShopping}
+                                onClick={reset}
                                 aria-label={t('lnd.cart.close')}
                                 data-cursor="hover"
                                 className="grid h-9 w-9 place-items-center rounded-full border border-white/30 text-white transition-colors hover:bg-white hover:text-brand-red"
@@ -67,8 +117,8 @@ export default function CartDrawer() {
                             </button>
                         </div>
 
-                        {/* Success */}
-                        {done ? (
+                        {phase === 'done' ? (
+                            /* Success */
                             <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
                                 <motion.span
                                     initial={{ scale: 0.5, opacity: 0 }}
@@ -81,11 +131,16 @@ export default function CartDrawer() {
                                     </svg>
                                 </motion.span>
                                 <h3 className="landing-display text-3xl">{t('lnd.cart.placed')}</h3>
+                                {orderRef && (
+                                    <p className="mt-2 font-grotesk text-sm text-brand-yellow">
+                                        {ar ? 'رقم الطلب' : 'Order'} {orderRef}
+                                    </p>
+                                )}
                                 <p className="mt-3 max-w-xs font-grotesk text-sm text-white/75">
                                     {t('lnd.cart.placedBody')}
                                 </p>
                                 <button
-                                    onClick={keepShopping}
+                                    onClick={reset}
                                     data-cursor="hover"
                                     className="mt-8 rounded-full bg-brand-yellow px-8 py-3.5 font-grotesk text-xs font-bold uppercase tracking-wider text-brand-red-deep transition-transform hover:scale-105"
                                 >
@@ -104,16 +159,82 @@ export default function CartDrawer() {
                                 </p>
                                 <a
                                     href="/products"
-                                    onClick={keepShopping}
+                                    onClick={reset}
                                     data-cursor="hover"
                                     className="mt-8 rounded-full bg-brand-yellow px-8 py-3.5 font-grotesk text-xs font-bold uppercase tracking-wider text-brand-red-deep transition-transform hover:scale-105"
                                 >
                                     {t('lnd.cart.browse')}
                                 </a>
                             </div>
-                        ) : (
+                        ) : phase === 'form' ? (
+                            /* Checkout form */
                             <>
-                                {/* Items */}
+                                <div className="flex-1 overflow-y-auto px-6 py-5">
+                                    <h3 className="landing-display mb-4 text-2xl">
+                                        {ar ? 'تفاصيل التوصيل' : 'Delivery details'}
+                                    </h3>
+                                    <div className="flex flex-col gap-3">
+                                        <input
+                                            className={inputClass}
+                                            placeholder={ar ? 'الاسم الكامل *' : 'Full name *'}
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
+                                        <input
+                                            className={inputClass}
+                                            placeholder={ar ? 'رقم الهاتف' : 'Phone number'}
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            inputMode="tel"
+                                        />
+                                        <input
+                                            className={inputClass}
+                                            placeholder={ar ? 'البريد الإلكتروني' : 'Email'}
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            inputMode="email"
+                                        />
+                                        <textarea
+                                            className={inputClass}
+                                            placeholder={ar ? 'العنوان' : 'Delivery address'}
+                                            value={address}
+                                            onChange={(e) => setAddress(e.target.value)}
+                                            rows={2}
+                                        />
+                                    </div>
+                                    {error && (
+                                        <p className="mt-4 rounded-lg border border-white/30 bg-white/10 px-3 py-2 font-grotesk text-sm text-white">
+                                            {error}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="border-t border-white/15 px-6 py-5">
+                                    <div className="mb-4 flex items-baseline justify-between">
+                                        <span className="font-grotesk text-sm uppercase tracking-wider text-white/70">{t('lnd.cart.subtotal')}</span>
+                                        <span className="landing-display text-3xl text-white">{formatPrice(subtotal, locale)}</span>
+                                    </div>
+                                    <button
+                                        onClick={placeOrder}
+                                        disabled={placing}
+                                        data-cursor="hover"
+                                        className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-yellow py-4 font-grotesk text-sm font-bold uppercase tracking-wider text-brand-red-deep transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-60"
+                                    >
+                                        {placing
+                                            ? (ar ? 'جارٍ الإرسال…' : 'Placing order…')
+                                            : `${ar ? 'تأكيد الطلب' : 'Place order'} · ${formatPrice(subtotal, locale)}`}
+                                    </button>
+                                    <button
+                                        onClick={() => { setPhase('cart'); setError(''); }}
+                                        data-cursor="hover"
+                                        className="mt-3 w-full text-center font-grotesk text-xs uppercase tracking-wider text-white/55 hover:text-white"
+                                    >
+                                        {ar ? 'العودة للسلة' : 'Back to cart'}
+                                    </button>
+                                </div>
+                            </>
+                        ) : (
+                            /* Cart items */
+                            <>
                                 <div className="flex-1 overflow-y-auto px-6 py-5">
                                     <AnimatePresence initial={false}>
                                         {items.map((l) => (
@@ -153,7 +274,7 @@ export default function CartDrawer() {
                                         <span className="landing-display text-3xl text-white">{formatPrice(subtotal, locale)}</span>
                                     </div>
                                     <button
-                                        onClick={checkout}
+                                        onClick={() => { setError(''); setPhase('form'); }}
                                         data-cursor="hover"
                                         className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-yellow py-4 font-grotesk text-sm font-bold uppercase tracking-wider text-brand-red-deep transition-transform hover:scale-[1.02] active:scale-95"
                                     >
