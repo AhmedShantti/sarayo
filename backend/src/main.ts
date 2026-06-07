@@ -26,12 +26,33 @@ async function bootstrap(): Promise<void> {
   });
 
   // CORS — storefront + dashboard origins, credentials allowed.
+  // We allow the explicitly-configured origins, localhost (dev), and any
+  // *.vercel.app host so production + preview deployments work without having
+  // to re-set env vars every time Vercel mints a new preview URL.
   const allowedOrigins = [
     config.get<string>('frontendUrl'),
     config.get<string>('dashboardUrl'),
   ].filter((o): o is string => Boolean(o));
+
   app.enableCors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Non-browser requests (curl, server-to-server, same-origin) send no Origin.
+      if (!origin) return callback(null, true);
+      let hostname = '';
+      try {
+        hostname = new URL(origin).hostname;
+      } catch {
+        return callback(new Error('Invalid origin'), false);
+      }
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1' ||
+        hostname.endsWith('.vercel.app');
+      return isAllowed
+        ? callback(null, true)
+        : callback(new Error(`Origin ${origin} not allowed by CORS`), false);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
   });
