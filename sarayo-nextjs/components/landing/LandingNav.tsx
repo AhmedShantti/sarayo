@@ -5,13 +5,16 @@ import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import Chip from './Chip';
 import CartIcon from './CartIcon';
+import LangToggle from '@/components/LangToggle';
 import { useLandingCart } from '@/lib/LandingCart';
+import { useLanguage } from '@/lib/LanguageContext';
 import { NAV_LINKS } from '@/lib/landingData';
 
 export default function LandingNav() {
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
     const { count, open: openCart } = useLandingCart();
+    const { t, locale } = useLanguage();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 24);
@@ -33,7 +36,7 @@ export default function LandingNav() {
         >
             <nav className="mx-auto flex h-20 max-w-[1280px] items-center justify-between px-5 sm:px-8">
                 {/* Logo */}
-                <a href="/" className="flex items-center gap-3" aria-label="Sarayo Alwadiya — home">
+                <a href="/" className="flex items-center gap-3" aria-label={t('lnd.nav.homeAria')}>
                     <span className="grid h-12 w-12 place-items-center sm:h-14 sm:w-14">
                         <Image
                             src="/images.png"
@@ -55,7 +58,7 @@ export default function LandingNav() {
                         <li key={link.href}>
                             <a href={link.href} className="group block px-1">
                                 <Chip variant="outline" size="md" className="transition-colors group-hover:bg-white group-hover:text-brand-red">
-                                    {link.label}
+                                    {locale === 'ar' ? link.labelAr : link.label}
                                 </Chip>
                             </a>
                         </li>
@@ -64,10 +67,11 @@ export default function LandingNav() {
 
                 {/* CTA + burger */}
                 <div className="flex items-center gap-3">
+                    <LangToggle className="hidden text-white/90 hover:text-white sm:inline-flex" />
                     <button
                         type="button"
                         onClick={openCart}
-                        aria-label={`Open cart (${count} items)`}
+                        aria-label={t('lnd.nav.cartAria', { n: count })}
                         className="relative grid h-11 w-11 place-items-center rounded-full border border-white/30 text-white transition-colors hover:bg-white hover:text-brand-red"
                     >
                         <CartIcon className="h-5 w-5" />
@@ -78,12 +82,12 @@ export default function LandingNav() {
                         )}
                     </button>
                     <a href="/products" className="hidden sm:block">
-                        <Chip variant="yellow" size="md">Grab a Bag</Chip>
+                        <Chip variant="yellow" size="md">{t('lnd.nav.cta')}</Chip>
                     </a>
                     <button
                         type="button"
                         onClick={() => setOpen((v) => !v)}
-                        aria-label="Toggle menu"
+                        aria-label={t('lnd.nav.menuAria')}
                         aria-expanded={open}
                         className="grid h-11 w-11 place-items-center rounded-full border border-white/30 text-white md:hidden"
                     >
@@ -113,14 +117,15 @@ export default function LandingNav() {
                                         onClick={() => setOpen(false)}
                                         className="landing-display block text-2xl text-white/90"
                                     >
-                                        {link.label}
+                                        {locale === 'ar' ? link.labelAr : link.label}
                                     </a>
                                 </li>
                             ))}
-                            <li className="pt-2">
+                            <li className="flex items-center gap-3 pt-2">
                                 <a href="/products" onClick={() => setOpen(false)}>
-                                    <Chip variant="yellow" size="lg">Grab a Bag</Chip>
+                                    <Chip variant="yellow" size="lg">{t('lnd.nav.cta')}</Chip>
                                 </a>
+                                <LangToggle className="text-white/90 hover:text-white" />
                             </li>
                         </ul>
                     </motion.div>

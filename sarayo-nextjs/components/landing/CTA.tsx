@@ -6,8 +6,10 @@ import Chip from './Chip';
 import Magnetic from './Magnetic';
 import TextReveal from './TextReveal';
 import CartIcon from './CartIcon';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function CTA() {
+    const { t } = useLanguage();
     return (
         <section id="cta" className="relative px-5 py-24 sm:px-8 sm:py-32">
             <motion.div
@@ -27,19 +29,19 @@ export default function CTA() {
                 />
                 <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-brand-yellow/20 blur-[100px]" />
 
-                <Chip variant="yellow" size="sm" float delay={0} interactive={false} className="absolute left-8 top-10 rotate-[-10deg] hidden sm:flex">Crunchy</Chip>
-                <Chip variant="white" size="sm" float delay={0.7} interactive={false} className="absolute right-10 top-16 rotate-[8deg] hidden sm:flex">Flavorful</Chip>
-                <Chip variant="outline" size="sm" float delay={1.2} interactive={false} className="absolute bottom-12 left-16 rotate-[6deg] hidden sm:flex">Irresistible</Chip>
+                <Chip variant="yellow" size="sm" float delay={0} interactive={false} className="absolute left-8 top-10 rotate-[-10deg] hidden sm:flex">{t('lnd.word.crunchy')}</Chip>
+                <Chip variant="white" size="sm" float delay={0.7} interactive={false} className="absolute right-10 top-16 rotate-[8deg] hidden sm:flex">{t('lnd.word.flavorful')}</Chip>
+                <Chip variant="outline" size="sm" float delay={1.2} interactive={false} className="absolute bottom-12 left-16 rotate-[6deg] hidden sm:flex">{t('lnd.word.irresistible')}</Chip>
 
                 <span className="relative mx-auto mb-8 grid h-24 w-24 place-items-center">
                     <Image src="/images.png" alt="Sarayo Alwadiya logo" width={96} height={96} className="h-full w-full object-contain" />
                 </span>
 
                 <h2 className="landing-display relative text-[clamp(2.75rem,8vw,6.5rem)] leading-[0.9] text-white">
-                    <TextReveal text="Hungry yet?" />
+                    <TextReveal text={t('lnd.cta.title')} />
                 </h2>
                 <p className="relative mx-auto mt-5 max-w-md text-base text-white/80">
-                    Grab a bag of Sarayo Alwadiya and find out what the crunch is about.
+                    {t('lnd.cta.sub')}
                 </p>
 
                 <div className="relative mt-10 flex justify-center">
@@ -49,7 +51,7 @@ export default function CTA() {
                             className="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-10 py-5 font-grotesk text-sm font-bold uppercase tracking-wider text-brand-red-deep shadow-2xl shadow-black/30"
                         >
                             <CartIcon className="h-4 w-4" />
-                            Grab a bag
+                            {t('lnd.cta.btn')}
                         </a>
                     </Magnetic>
                 </div>
