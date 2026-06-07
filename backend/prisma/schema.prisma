@@ -12,7 +12,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  // Pooled connection (PgBouncer/Supavisor, port 6543) used at runtime.
   url      = env("DATABASE_URL")
+  // Direct connection (port 5432) used by `prisma migrate` / introspection.
+  // On Supabase this points at the session pooler / direct host.
+  directUrl = env("DIRECT_URL")
 }
 
 // ──────────────────────────────────────────────
