@@ -1,6 +1,7 @@
 import DashboardNav from '@/components/DashboardNav';
 import DashboardTopbar from '@/components/DashboardTopbar';
 import DashboardSidebarLabels from '@/components/DashboardSidebarLabels';
+import DashboardAuthGate from '@/components/DashboardAuthGate';
 import Cursor from '@/components/landing/Cursor';
 
 export const metadata = {
@@ -10,6 +11,7 @@ export const metadata = {
 
 export default function DashboardLayout({children}) {
     return (
+        <DashboardAuthGate>
         <div className="dashboard-root min-h-screen bg-neutral-50 grid grid-cols-1 md:grid-cols-[240px_1fr] text-ink">
             {/* Same motion cursor as the marketing site. */}
             <Cursor rootSelector=".dashboard-root" />
@@ -30,5 +32,6 @@ export default function DashboardLayout({children}) {
                 <main className="flex-1 p-6 md:p-8 overflow-x-hidden">{children}</main>
             </div>
         </div>
+        </DashboardAuthGate>
     );
 }

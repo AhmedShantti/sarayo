@@ -3,6 +3,7 @@
 import {usePathname} from 'next/navigation';
 import {useLanguage} from '@/lib/LanguageContext';
 import LangToggle from '@/components/LangToggle';
+import {logout} from '@/lib/adminApi';
 
 const TITLE_KEYS = {
     '/dashboard':            'dash.nav.overview',
@@ -24,6 +25,12 @@ export default function DashboardTopbar() {
         year: 'numeric',
     });
 
+    function handleLogout() {
+        logout();
+        // Full reload so the auth gate re-checks the cleared session.
+        window.location.href = '/dashboard';
+    }
+
     return (
         <div className="bg-white border-b border-neutral-200">
             <div className="px-6 md:px-8 py-3.5 flex items-center justify-between gap-4">
@@ -35,6 +42,13 @@ export default function DashboardTopbar() {
                 <div className="flex items-center gap-3">
                     <span className="text-xs text-neutral-500 hidden sm:inline">{today}</span>
                     <LangToggle className="text-neutral-700 hover:text-ink" />
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="text-xs font-medium text-neutral-600 hover:text-brand-red transition border border-neutral-200 rounded-lg px-2.5 py-1.5"
+                    >
+                        {t('dash.logout')}
+                    </button>
                 </div>
             </div>
         </div>
