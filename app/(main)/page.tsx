@@ -12,10 +12,10 @@ import { readContent } from '@/lib/contentStore';
 
 export const dynamic = 'force-dynamic';
 
-export default function LandingPage() {
-    // Read live content from JSON files — reflects CMS edits immediately on next load.
-    const products = readContent('products');
-    const features = readContent('features');
+export default async function LandingPage() {
+    // Read live content from the store — reflects CMS edits immediately on next load.
+    const products = await readContent('products');
+    const features = await readContent('features');
 
     return (
         <main>

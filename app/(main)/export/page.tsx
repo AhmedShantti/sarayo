@@ -6,15 +6,15 @@ import LandingFooter from '@/components/landing/LandingFooter';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    const data = readContent('pages/export');
+    const data = await readContent('pages/export');
     return {
         title: data.meta?.titleEn || 'Export — Sarayo Alwadiya',
         description: data.meta?.descEn || '',
     };
 }
 
-export default function ExportRoute() {
-    const data = readContent('pages/export');
+export default async function ExportRoute() {
+    const data = await readContent('pages/export');
     return (
         <main>
             <LandingNav />

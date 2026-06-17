@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(req, { params }) {
     try {
         const section = Array.isArray(params.section) ? params.section.join('/') : params.section;
-        const data = readContent(section);
+        const data = await readContent(section);
         return Response.json(data);
     } catch (e) {
         return Response.json({ error: e.message }, { status: 400 });
@@ -17,7 +17,7 @@ export async function PUT(req, { params }) {
     try {
         const section = Array.isArray(params.section) ? params.section.join('/') : params.section;
         const body = await req.json();
-        writeContent(section, body);
+        await writeContent(section, body);
         revalidatePath('/');
         revalidatePath('/products');
         revalidatePath('/about');

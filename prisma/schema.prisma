@@ -1,0 +1,28 @@
+// Prisma schema for the Next.js frontend (Vercel).
+//
+// The frontend only needs to persist editable CMS content. The full
+// relational model (users, products, orders, …) lives in the separate
+// backend service's schema (backend/prisma/schema.prisma) and is owned by it.
+// Both point at the same Supabase Postgres database.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Pooled connection (PgBouncer/Supavisor, port 6543) used at runtime on Vercel.
+  url       = env("DATABASE_URL")
+  // Direct connection (port 5432) used by `prisma migrate` / `db push`.
+  directUrl = env("DIRECT_URL")
+}
+
+// One row per CMS section (e.g. "pages/about", "hero", "products").
+// `data` holds the section's JSON, matching the shape the pages consume.
+model SiteContent {
+  section   String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+
+  @@map("site_content")
+}
