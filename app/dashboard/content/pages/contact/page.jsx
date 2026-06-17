@@ -21,13 +21,27 @@ export default function ContactEditor() {
     const [data, setData] = useState(null);
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [error, setError] = useState(null);
 
-    useEffect(() => { fetch('/api/content/pages/contact').then(r => r.json()).then(setData); }, []);
+    useEffect(() => {
+        fetch('/api/content/pages/contact')
+            .then(async r => { if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || `Load failed (${r.status})`); return r.json(); })
+            .then(setData)
+            .catch(e => setError(e.message));
+    }, []);
 
     async function save() {
-        setSaving(true);
-        await fetch('/api/content/pages/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-        setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000);
+        if (!data) { setError('Content not loaded yet — nothing to save.'); return; }
+        setSaving(true); setError(null);
+        try {
+            const res = await fetch('/api/content/pages/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Save failed (${res.status})`);
+            setSaved(true); setTimeout(() => setSaved(false), 2000);
+        } catch (e) {
+            setError(e.message);
+        } finally {
+            setSaving(false);
+        }
     }
 
     function set(path, value) {
@@ -52,6 +66,12 @@ export default function ContactEditor() {
                     {saving ? 'Saving…' : saved ? 'Saved ✓' : 'Save'}
                 </button>
             </div>
+
+            {error && (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {error}
+                </div>
+            )}
 
             <section className="rounded-2xl border border-neutral-200 p-6 space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Hero</p>

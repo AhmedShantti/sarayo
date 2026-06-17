@@ -6,19 +6,30 @@ export default function BrandEditor() {
     const [data, setData] = useState(null);
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [error, setError] = useState(null);
     const [uploading, setUploading] = useState(false);
     const fileRef = useRef(null);
 
     useEffect(() => {
-        fetch('/api/content/brand').then(r => r.json()).then(setData);
+        fetch('/api/content/brand')
+            .then(async r => { if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || `Load failed (${r.status})`); return r.json(); })
+            .then(setData)
+            .catch(e => setError(e.message));
     }, []);
 
     async function save() {
-        setSaving(true);
-        await fetch('/api/content/brand', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-        setSaving(false);
-        setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
+        if (!data) { setError('Content not loaded yet — nothing to save.'); return; }
+        setSaving(true); setError(null);
+        try {
+            const res = await fetch('/api/content/brand', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Save failed (${res.status})`);
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2000);
+        } catch (e) {
+            setError(e.message);
+        } finally {
+            setSaving(false);
+        }
     }
 
     async function uploadLogo(e) {
@@ -61,6 +72,12 @@ export default function BrandEditor() {
                     {saving ? 'Saving…' : saved ? 'Saved ✓' : 'Save'}
                 </button>
             </div>
+
+            {error && (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {error}
+                </div>
+            )}
 
             {/* Logo preview */}
             <div className="rounded-2xl border border-neutral-200 p-6 mb-6 bg-neutral-50">

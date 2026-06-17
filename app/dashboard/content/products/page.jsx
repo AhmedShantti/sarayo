@@ -149,6 +149,7 @@ export default function ProductsContentPage() {
 
     async function load() {
         const r = await fetch('/api/content/products');
+        if (!r.ok) { showToast(`Load failed (${r.status})`); return; }
         setProducts(await r.json());
     }
 
@@ -158,24 +159,36 @@ export default function ProductsContentPage() {
     }
 
     async function save(updated) {
+        if (!products) { showToast('Content not loaded yet — nothing to save.'); return; }
         setSaving(true);
         const next = editing !== null
             ? products.map((p, i) => i === editing ? updated : p)
             : [...products, updated];
-        await fetch('/api/content/products', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next) });
-        setProducts(next);
-        setEditing(null);
-        setAdding(false);
-        setSaving(false);
-        showToast('Saved! Reload the site to see changes.');
+        try {
+            const res = await fetch('/api/content/products', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next) });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Save failed (${res.status})`);
+            setProducts(next);
+            setEditing(null);
+            setAdding(false);
+            showToast('Saved! Reload the site to see changes.');
+        } catch (e) {
+            showToast(`Save failed: ${e.message}`);
+        } finally {
+            setSaving(false);
+        }
     }
 
     async function remove(i) {
         if (!confirm('Delete this product?')) return;
         const next = products.filter((_, j) => j !== i);
-        await fetch('/api/content/products', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next) });
-        setProducts(next);
-        showToast('Product deleted.');
+        try {
+            const res = await fetch('/api/content/products', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next) });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Delete failed (${res.status})`);
+            setProducts(next);
+            showToast('Product deleted.');
+        } catch (e) {
+            showToast(`Delete failed: ${e.message}`);
+        }
     }
 
     return (

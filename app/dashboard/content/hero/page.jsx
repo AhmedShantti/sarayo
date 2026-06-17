@@ -32,6 +32,7 @@ export default function HeroContentPage() {
 
     async function load() {
         const r = await fetch('/api/content/hero');
+        if (!r.ok) { showToast(`Load failed (${r.status})`); return; }
         setData(await r.json());
     }
 
@@ -73,10 +74,17 @@ export default function HeroContentPage() {
     }
 
     async function save() {
+        if (!data) { showToast('Content not loaded yet — nothing to save.'); return; }
         setSaving(true);
-        await fetch('/api/content/hero', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-        setSaving(false);
-        showToast('Saved! Reload the site to see changes.');
+        try {
+            const res = await fetch('/api/content/hero', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Save failed (${res.status})`);
+            showToast('Saved! Reload the site to see changes.');
+        } catch (e) {
+            showToast(`Save failed: ${e.message}`);
+        } finally {
+            setSaving(false);
+        }
     }
 
     if (!data) return <div className="p-10 text-center text-sm text-neutral-400">Loading…</div>;

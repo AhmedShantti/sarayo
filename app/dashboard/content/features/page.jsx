@@ -27,6 +27,7 @@ export default function FeaturesContentPage() {
 
     async function load() {
         const r = await fetch('/api/content/features');
+        if (!r.ok) { showToast(`Load failed (${r.status})`); return; }
         setFeatures(await r.json());
     }
 
@@ -37,11 +38,17 @@ export default function FeaturesContentPage() {
     const setD = (k, v) => setDraft(d => ({ ...d, [k]: v }));
 
     async function save() {
+        if (!features) { showToast('Content not loaded yet — nothing to save.'); return; }
         const next = features.map((f, i) => i === editing ? draft : f);
-        await fetch('/api/content/features', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next) });
-        setFeatures(next);
-        setEditing(null);
-        showToast('Saved! Reload the site to see changes.');
+        try {
+            const res = await fetch('/api/content/features', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next) });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Save failed (${res.status})`);
+            setFeatures(next);
+            setEditing(null);
+            showToast('Saved! Reload the site to see changes.');
+        } catch (e) {
+            showToast(`Save failed: ${e.message}`);
+        }
     }
 
     const ICON_PATHS = {

@@ -23,6 +23,7 @@ export default function StatsContentPage() {
 
     async function load() {
         const r = await fetch('/api/content/stats');
+        if (!r.ok) { showToast(`Load failed (${r.status})`); return; }
         setStats(await r.json());
     }
 
@@ -33,10 +34,17 @@ export default function StatsContentPage() {
     }
 
     async function save() {
+        if (!stats) { showToast('Content not loaded yet — nothing to save.'); return; }
         setSaving(true);
-        await fetch('/api/content/stats', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(stats) });
-        setSaving(false);
-        showToast('Saved! Reload the site to see changes.');
+        try {
+            const res = await fetch('/api/content/stats', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(stats) });
+            if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Save failed (${res.status})`);
+            showToast('Saved! Reload the site to see changes.');
+        } catch (e) {
+            showToast(`Save failed: ${e.message}`);
+        } finally {
+            setSaving(false);
+        }
     }
 
     return (
