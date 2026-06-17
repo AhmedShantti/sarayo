@@ -1,0 +1,22 @@
+{
+  "navLinks": [
+    { "label": "Chipsy", "labelAr": "شيبسي", "href": "/products" },
+    { "label": "Wafer", "labelAr": "ويفر", "href": "/wafer" },
+    { "label": "Export Products", "labelAr": "منتجات التصدير", "href": "/export" },
+    { "label": "Careers", "labelAr": "وظائف", "href": "/careers" },
+    { "label": "About Us", "labelAr": "من نحن", "href": "/about" },
+    { "label": "Contact Us", "labelAr": "تواصل معنا", "href": "/contact" }
+  ],
+  "chipsyProducts": [
+    { "name": "Cornice", "nameAr": "كورنيس", "href": "/products/cornice", "img": "/products-chipsy/cornice.png", "sub": "Crisps", "subAr": "شيبس" },
+    { "name": "Taco", "nameAr": "تاكو", "href": "/products/taco", "img": "/products-chipsy/taco.png", "sub": "Tortilla", "subAr": "تورتيلا" },
+    { "name": "Flipi", "nameAr": "فليبي", "href": "/products/flipi", "img": "/products-chipsy/flipi.png", "sub": "Puffs", "subAr": "بافز" },
+    { "name": "Pop Cornice", "nameAr": "بوب كورنيس", "href": "/products/popcornice", "img": "/products-chipsy/popcornice.png", "sub": "Popcorn", "subAr": "بوب كورن" }
+  ],
+  "waferProducts": [
+    { "name": "Choco Hazel", "nameAr": "شوكو هيزل", "href": "/wafer/choco-hazel", "img": "/wafer-products/wafer-choco.png", "sub": "Choco & Hazelnut", "subAr": "شوكولاتة وهيزل" },
+    { "name": "Lemon", "nameAr": "ليمون", "href": "/wafer/lemon", "img": "/wafer-products/wafer-lemon.png", "sub": "Lemon Cream", "subAr": "كريمة ليمون" },
+    { "name": "Strawberry", "nameAr": "فراولة", "href": "/wafer/strawberry", "img": "/wafer-products/wafer-strewberry.png", "sub": "Strawberry Cream", "subAr": "كريمة فراولة" },
+    { "name": "Chocolate", "nameAr": "شوكولاتة", "href": "/wafer/chocolate", "img": "/wafer-products/wafer-choco-bun.png", "sub": "Pure Chocolate", "subAr": "شوكولاتة خالصة" }
+  ]
+}

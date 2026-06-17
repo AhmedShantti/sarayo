@@ -1,0 +1,6 @@
+[
+  { "id": "years",   "value": 24,      "suffix": "",   "labelEn": "Years of crunch",     "labelAr": "سنوات من القرمشة" },
+  { "id": "flavors", "value": 6,       "suffix": "",   "labelEn": "Signature flavors",   "labelAr": "نكهات مميزة" },
+  { "id": "loud",    "value": 100,     "suffix": "%",  "labelEn": "Loud flavor",         "labelAr": "نكهة جريئة" },
+  { "id": "bags",    "value": 1000000, "suffix": "+",  "labelEn": "Bags devoured",       "labelAr": "كيس تم التهامه" }
+]

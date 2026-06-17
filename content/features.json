@@ -1,0 +1,42 @@
+[
+  {
+    "id": "crunch",
+    "title": "Cut Thick, Fried Crisp",
+    "titleAr": "شرائح سميكة، مقلية ومقرمشة",
+    "text": "Every chip is sliced thick and fried to a loud, shattering crunch you can hear across the room.",
+    "textAr": "كل شريحة تُقطع سميكة وتُقلى حتى قرمشة صاخبة تُسمع عبر الغرفة.",
+    "chip": "The Crunch",
+    "chipAr": "القرمشة",
+    "icon": "spark"
+  },
+  {
+    "id": "flavor",
+    "title": "Real, Loud Flavor",
+    "titleAr": "نكهة حقيقية وجريئة",
+    "text": "Spices toasted in small batches and tumbled on warm — never dusted with a whisper.",
+    "textAr": "بهارات مُحمّصة على دفعات صغيرة وتُقلّب وهي دافئة — لا مجرد رشّة خفيفة.",
+    "chip": "Big Taste",
+    "chipAr": "طعم كبير",
+    "icon": "flame"
+  },
+  {
+    "id": "clean",
+    "title": "Clean Ingredients",
+    "titleAr": "مكونات نظيفة",
+    "text": "No mystery list. Potatoes, oil, and seasoning you can actually pronounce.",
+    "textAr": "لا قائمة غامضة. بطاطس وزيت وتتبيلة تستطيع نطقها فعلًا.",
+    "chip": "Honest",
+    "chipAr": "صادق",
+    "icon": "leaf"
+  },
+  {
+    "id": "heritage",
+    "title": "Crunched Since 2002",
+    "titleAr": "نقرمش منذ ٢٠٠٢",
+    "text": "Two decades of getting the snack right — now shipped fresh across the region.",
+    "textAr": "عقدان من إتقان السناك — والآن يُشحن طازجًا عبر المنطقة.",
+    "chip": "Since 2002",
+    "chipAr": "منذ ٢٠٠٢",
+    "icon": "globe"
+  }
+]

@@ -1,0 +1,49 @@
+{
+  "desc": {
+    "en": "Crunchy. Flavorful. Irresistible. Hand-seasoned chips, made loud and shipped fresh across Egypt.",
+    "ar": "مقرمش. نكهة غنية. لا يُقاوم. شيبس متبّل يدويًا، نكهة جريئة ويُشحن طازجًا في كل مصر."
+  },
+  "tagline": {
+    "en": "Crunch in style",
+    "ar": "قرمشة بأناقة"
+  },
+  "since": {
+    "en": "Since 2002",
+    "ar": "منذ ٢٠٠٢"
+  },
+  "copyright": {
+    "en": "© 2026 Sarayo Alwadiya. All rights reserved.",
+    "ar": "© ٢٠٢٦ سرايو الوادية. جميع الحقوق محفوظة."
+  },
+  "contact": {
+    "location": { "en": "Cairo, Egypt", "ar": "القاهرة، مصر" },
+    "phone": "0123 456 7890",
+    "email": "hello@sarayo.com"
+  },
+  "social": [
+    { "id": "instagram", "label": "Instagram", "href": "#" },
+    { "id": "facebook",  "label": "Facebook",  "href": "#" },
+    { "id": "tiktok",    "label": "TikTok",    "href": "#" },
+    { "id": "x",         "label": "X",         "href": "#" }
+  ],
+  "columns": {
+    "products": {
+      "titleEn": "Products",
+      "titleAr": "المنتجات",
+      "links": [
+        { "labelEn": "Chipsy",           "labelAr": "شيبسي",          "href": "/products" },
+        { "labelEn": "Wafer",            "labelAr": "ويفر",            "href": "/wafer" },
+        { "labelEn": "Export Products",  "labelAr": "منتجات التصدير", "href": "/export" }
+      ]
+    },
+    "company": {
+      "titleEn": "Company",
+      "titleAr": "الشركة",
+      "links": [
+        { "labelEn": "About Us",   "labelAr": "من نحن",     "href": "/about" },
+        { "labelEn": "Careers",    "labelAr": "وظائف",      "href": "/careers" },
+        { "labelEn": "Contact Us", "labelAr": "تواصل معنا", "href": "/contact" }
+      ]
+    }
+  }
+}

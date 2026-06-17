@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Chip from './Chip';
 import { useLanguage } from '@/lib/LanguageContext';
-import { PRODUCTS, localizeProduct } from '@/lib/landingData';
 
 const SOCIALS = [
     {
@@ -37,13 +36,15 @@ const SOCIALS = [
 export default function LandingFooter() {
     const { t, locale } = useLanguage();
 
-    // Shop column = first five flavors (localized); Company column = static links.
-    const shopLinks = PRODUCTS.slice(0, 5).map((p) => localizeProduct(p, locale).name);
+    const productLinks = [
+        { label: t('lnd.footer.chipsy'), href: '/products' },
+        { label: t('lnd.footer.wafer'), href: '/wafer' },
+        { label: t('lnd.footer.export'), href: '/export' },
+    ];
     const companyLinks = [
-        t('lnd.footer.ourStory'),
-        t('lnd.footer.careers'),
-        t('lnd.footer.wholesale'),
-        t('lnd.footer.press'),
+        { label: t('lnd.footer.aboutUs'), href: '/about' },
+        { label: t('lnd.footer.careers'), href: '/careers' },
+        { label: t('lnd.footer.contactUs'), href: '/contact' },
     ];
     const contact = [
         { label: 'hello@sarayoalwadiya.com', href: 'mailto:hello@sarayoalwadiya.com' },
@@ -51,7 +52,7 @@ export default function LandingFooter() {
         { label: t('lnd.footer.location'), href: null as string | null },
     ];
     const columns = [
-        { title: t('lnd.footer.shop'), links: shopLinks },
+        { title: t('lnd.footer.products'), links: productLinks },
         { title: t('lnd.footer.company'), links: companyLinks },
     ];
 
@@ -99,8 +100,8 @@ export default function LandingFooter() {
                             <h4 className="landing-display mb-4 text-sm uppercase tracking-wider text-brand-yellow">{col.title}</h4>
                             <ul className="space-y-2.5">
                                 {col.links.map((link) => (
-                                    <li key={link}>
-                                        <a href="/products" className="text-sm text-white/65 transition-colors hover:text-white">{link}</a>
+                                    <li key={link.label}>
+                                        <a href={link.href} className="text-sm text-white/65 transition-colors hover:text-white">{link.label}</a>
                                     </li>
                                 ))}
                             </ul>

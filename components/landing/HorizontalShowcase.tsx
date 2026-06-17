@@ -13,10 +13,7 @@ const TONE: Record<Product['tone'], string> = {
     yellow: 'bg-brand-yellow text-brand-red-deep',
 };
 
-// Home shows a curated 4; the full lineup lives on /products.
-const SHOWCASE = PRODUCTS.slice(0, 4);
-
-function Panel({ p, index }: { p: Product; index: number }) {
+function Panel({ p, index, total }: { p: Product; index: number; total: number }) {
     const { locale } = useLanguage();
     const pl = localizeProduct(p, locale);
     return (
@@ -31,7 +28,7 @@ function Panel({ p, index }: { p: Product; index: number }) {
             <div className="relative z-10 flex items-center justify-between">
                 <Chip variant={p.tone === 'deep' ? 'outline' : 'red'} size="sm">{pl.tag}</Chip>
                 <span className="font-grotesk text-xs uppercase tracking-[0.2em] opacity-50">
-                    {String(index + 1).padStart(2, '0')} / {String(SHOWCASE.length).padStart(2, '0')}
+                    {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
                 </span>
             </div>
 
@@ -53,7 +50,9 @@ function Panel({ p, index }: { p: Product; index: number }) {
     );
 }
 
-export default function HorizontalShowcase() {
+export default function HorizontalShowcase({ products: productsProp }: { products?: Product[] }) {
+    const ALL_PRODUCTS = productsProp || PRODUCTS;
+    const SHOWCASE = ALL_PRODUCTS.slice(0, 4);
     const { t } = useLanguage();
     const sectionRef = useRef<HTMLElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
@@ -103,7 +102,7 @@ export default function HorizontalShowcase() {
                 <div dir="ltr" className="mt-8 flex snap-x gap-6 overflow-x-auto px-5 pb-6 sm:px-8" style={{ height: '80vh' }}>
                     {SHOWCASE.map((p, i) => (
                         <div key={p.name} className="snap-center">
-                            <Panel p={p} index={i} />
+                            <Panel p={p} index={i} total={SHOWCASE.length} />
                         </div>
                     ))}
                 </div>
@@ -123,7 +122,7 @@ export default function HorizontalShowcase() {
                 {/* dir=ltr keeps the scroll-driven reveal identical in Arabic. */}
                 <motion.div ref={trackRef} dir="ltr" style={{ x }} className="flex h-[68vh] gap-6 px-5 sm:px-8">
                     {SHOWCASE.map((p, i) => (
-                        <Panel key={p.name} p={p} index={i} />
+                        <Panel key={p.name} p={p} index={i} total={SHOWCASE.length} />
                     ))}
                     <a
                         href="/products"
@@ -131,7 +130,7 @@ export default function HorizontalShowcase() {
                         className="group flex h-full w-[82vw] shrink-0 flex-col items-start justify-center gap-5 rounded-[2rem] border border-white/15 bg-brand-red-deep p-6 transition-colors hover:border-brand-yellow/50 sm:w-[48vw] sm:p-10 lg:w-[34vw]"
                     >
                         <span className="landing-display text-[clamp(5rem,12vw,8rem)] text-brand-yellow" style={{ lineHeight: 1 }}>
-                            {PRODUCTS.length}
+                            {ALL_PRODUCTS.length}
                         </span>
                         <span className="landing-display text-[clamp(1.75rem,3.5vw,2.75rem)] text-white" style={{ lineHeight: 1.15 }}>
                             {t('lnd.showcase.fullLineup')}

@@ -1,0 +1,10 @@
+{
+  "line1": { "en": "Crunch in", "ar": "قرمشة" },
+  "line2": { "en": "Style", "ar": "بأناقة" },
+  "cta1": { "en": "Shop the flavors", "ar": "تسوّق النكهات" },
+  "cta2": { "en": "Our crunch", "ar": "قرمشتنا" },
+  "words": {
+    "en": ["Crunchy", "Flavorful", "Irresistible", "Cut Thick", "Fried Crisp", "Loud Flavor"],
+    "ar": ["مقرمش", "نكهة غنية", "لا يُقاوم", "شرائح سميكة", "مقلي ومقرمش", "نكهة جريئة"]
+  }
+}

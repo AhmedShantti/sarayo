@@ -11,10 +11,9 @@ import {
 } from 'framer-motion';
 import Chip from './Chip';
 import Magnetic from './Magnetic';
-import { PRODUCTS, localizeProduct, formatPrice } from '@/lib/landingData';
+import { PRODUCTS, localizeProduct, formatPrice, type Product } from '@/lib/landingData';
 import { useLanguage } from '@/lib/LanguageContext';
 
-const FLAVORS = PRODUCTS;
 
 // Short brand "items" the eyebrow chip rotates through every 3s (i18n keys).
 const CHIP_KEYS = [
@@ -22,7 +21,8 @@ const CHIP_KEYS = [
     'lnd.word.cutThick', 'lnd.word.friedCrisp', 'lnd.word.loudFlavor',
 ];
 
-export default function Hero() {
+export default function Hero({ products }: { products?: Product[] }) {
+    const FLAVORS = products || PRODUCTS;
     const { t, locale } = useLanguage();
     const [i, setI] = useState(0);
     const [paused, setPaused] = useState(false);

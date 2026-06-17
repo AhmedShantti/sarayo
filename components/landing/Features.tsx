@@ -31,7 +31,8 @@ function spotlight(e: React.MouseEvent<HTMLElement>) {
     el.style.setProperty('--my', `${e.clientY - r.top}px`);
 }
 
-export default function Features() {
+export default function Features({ features: featuresProp }: { features?: Feature[] }) {
+    const FEATURES_DATA = featuresProp || FEATURES;
     const { t, locale } = useLanguage();
     return (
         <section id="features" className="relative py-24 sm:py-32">
@@ -53,7 +54,7 @@ export default function Features() {
                     viewport={{ once: true, amount: 0.2 }}
                     className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
                 >
-                    {FEATURES.map((f) => {
+                    {FEATURES_DATA.map((f) => {
                         const fl = localizeFeature(f, locale);
                         return (
                         <motion.article
