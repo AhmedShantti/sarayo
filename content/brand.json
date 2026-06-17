@@ -1,0 +1,16 @@
+{
+  "logo": {
+    "src": "/images.png",
+    "altEn": "Sarayo Alwadiya",
+    "altAr": "سرايو الوادية",
+    "width": 48,
+    "height": 48
+  },
+  "siteNameEn": "Sarayo Alwadiya",
+  "siteNameAr": "سرايو الوادية",
+  "taglineEn": "Crunch in style",
+  "taglineAr": "قرمشة بأناقة",
+  "since": "2002",
+  "primaryColor": "#C8102E",
+  "accentColor": "#FFD400"
+}

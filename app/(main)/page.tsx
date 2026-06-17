@@ -8,18 +8,25 @@ import Features from '@/components/landing/Features';
 import HorizontalShowcase from '@/components/landing/HorizontalShowcase';
 import CTA from '@/components/landing/CTA';
 import LandingFooter from '@/components/landing/LandingFooter';
+import { readContent } from '@/lib/contentStore';
+
+export const dynamic = 'force-dynamic';
 
 export default function LandingPage() {
+    // Read live content from JSON files — reflects CMS edits immediately on next load.
+    const products = readContent('products');
+    const features = readContent('features');
+
     return (
         <main>
             <Loader />
             <Cursor />
             <LandingNav />
-            <Hero />
+            <Hero products={products} />
             <Marquee />
             <Stats />
-            <Features />
-            <HorizontalShowcase />
+            <Features features={features} />
+            <HorizontalShowcase products={products} />
             <CTA />
             <LandingFooter />
         </main>

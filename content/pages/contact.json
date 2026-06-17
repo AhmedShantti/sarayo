@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "titleEn": "Contact Us — Sarayo Alwadiya",
+    "titleAr": "تواصل معنا — سرايو الوادية",
+    "descEn": "Get in touch with the Sarayo Alwadiya team.",
+    "descAr": "تواصل مع فريق سرايو الوادية."
+  },
+  "hero": {
+    "chipEn": "Get in Touch",
+    "chipAr": "تواصل معنا",
+    "headlineEn": "Say Hello",
+    "headlineAr": "قل مرحباً",
+    "subEn": "Questions, partnerships, export enquiries — we're always listening.",
+    "subAr": "أسئلة، شراكات، استفسارات تصدير — نحن نستمع دائماً."
+  },
+  "cards": [
+    {
+      "id": "location",
+      "icon": "map",
+      "labelEn": "Head Office",
+      "labelAr": "المقر الرئيسي",
+      "valueEn": "Industrial District, Cairo, Egypt",
+      "valueAr": "المنطقة الصناعية، القاهرة، مصر",
+      "href": ""
+    },
+    {
+      "id": "phone",
+      "icon": "phone",
+      "labelEn": "Phone",
+      "labelAr": "الهاتف",
+      "valueEn": "+20 123 456 7890",
+      "valueAr": "٢٠+ ١٢٣ ٤٥٦ ٧٨٩٠",
+      "href": "tel:+201234567890"
+    },
+    {
+      "id": "email",
+      "icon": "mail",
+      "labelEn": "Email",
+      "labelAr": "البريد الإلكتروني",
+      "valueEn": "hello@sarayo.com",
+      "valueAr": "hello@sarayo.com",
+      "href": "mailto:hello@sarayo.com"
+    },
+    {
+      "id": "hours",
+      "icon": "clock",
+      "labelEn": "Business Hours",
+      "labelAr": "ساعات العمل",
+      "valueEn": "Sun – Thu, 9 AM – 5 PM",
+      "valueAr": "الأحد – الخميس، ٩ ص – ٥ م",
+      "href": ""
+    }
+  ],
+  "social": [
+    { "id": "instagram", "label": "Instagram", "href": "#" },
+    { "id": "facebook",  "label": "Facebook",  "href": "#" },
+    { "id": "tiktok",    "label": "TikTok",     "href": "#" },
+    { "id": "x",         "label": "X",          "href": "#" }
+  ],
+  "form": {
+    "titleEn": "Send a Message",
+    "titleAr": "أرسل رسالة",
+    "subEn": "We'll get back to you within one business day.",
+    "subAr": "سنردّ عليك خلال يوم عمل واحد.",
+    "nameLabelEn": "Your name",
+    "nameLabelAr": "اسمك",
+    "emailLabelEn": "Email address",
+    "emailLabelAr": "البريد الإلكتروني",
+    "subjectLabelEn": "Subject",
+    "subjectLabelAr": "الموضوع",
+    "messageLabelEn": "Message",
+    "messageLabelAr": "الرسالة",
+    "submitEn": "Send message",
+    "submitAr": "إرسال الرسالة",
+    "successEn": "Message sent! We'll be in touch soon.",
+    "successAr": "تم إرسال الرسالة! سنتواصل معك قريباً."
+  },
+  "mapEmbed": ""
+}

@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "titleEn": "Careers — Sarayo Alwadiya",
+    "titleAr": "وظائف — سرايو الوادية",
+    "descEn": "Join the team behind Egypt's boldest snack brand.",
+    "descAr": "انضم إلى الفريق خلف أجرأ علامة سناك في مصر."
+  },
+  "hero": {
+    "chipEn": "Join the Team",
+    "chipAr": "انضم للفريق",
+    "headlineEn": "Work at Sarayo",
+    "headlineAr": "اعمل في سرايو",
+    "subEn": "We're building Egypt's boldest snack brand — and we're looking for bold people to do it with.",
+    "subAr": "نبني أجرأ علامة سناك في مصر — ونبحث عن أشخاص جريئين للقيام بذلك معنا."
+  },
+  "culture": {
+    "titleEn": "Why Sarayo",
+    "titleAr": "لماذا سرايو",
+    "itemsEn": [
+      "Fast-moving brand with real ownership",
+      "Work directly with founders and senior leadership",
+      "Competitive salaries and performance bonuses",
+      "Free snacks. Obviously."
+    ],
+    "itemsAr": [
+      "علامة تجارية سريعة الحركة مع ملكية حقيقية",
+      "اعمل مباشرة مع المؤسسين والقيادة العليا",
+      "رواتب تنافسية ومكافآت أداء",
+      "سناك مجاني. بالطبع."
+    ]
+  },
+  "jobs": [
+    {
+      "id": "brand-manager",
+      "titleEn": "Brand Manager",
+      "titleAr": "مدير العلامة التجارية",
+      "deptEn": "Marketing",
+      "deptAr": "التسويق",
+      "locationEn": "Cairo, Egypt",
+      "locationAr": "القاهرة، مصر",
+      "typeEn": "Full-time",
+      "typeAr": "دوام كامل",
+      "descEn": "Own the Sarayo brand voice across all channels — social, packaging, campaigns and retail. You'll work directly with the founders to shape how the brand looks, sounds and feels.",
+      "descAr": "امتلك صوت علامة سرايو التجارية عبر جميع القنوات — وسائل التواصل الاجتماعي، التغليف، الحملات والتجزئة. ستعمل مباشرة مع المؤسسين لتشكيل شكل العلامة وصوتها وإحساسها.",
+      "applyUrl": "mailto:careers@sarayo.com?subject=Brand Manager Application",
+      "active": true
+    },
+    {
+      "id": "sales-exec",
+      "titleEn": "Sales Executive",
+      "titleAr": "مندوب مبيعات",
+      "deptEn": "Sales",
+      "deptAr": "المبيعات",
+      "locationEn": "Cairo & Delta Region",
+      "locationAr": "القاهرة ومنطقة الدلتا",
+      "typeEn": "Full-time",
+      "typeAr": "دوام كامل",
+      "descEn": "Drive distribution and sell-through for the Sarayo portfolio across modern trade and traditional retail channels in Cairo and the Delta.",
+      "descAr": "قيادة التوزيع وتعزيز المبيعات لمحفظة سرايو عبر قنوات التجارة الحديثة والتجزئة التقليدية في القاهرة والدلتا.",
+      "applyUrl": "mailto:careers@sarayo.com?subject=Sales Executive Application",
+      "active": true
+    },
+    {
+      "id": "qa-technician",
+      "titleEn": "QA Technician",
+      "titleAr": "فني ضبط الجودة",
+      "deptEn": "Production",
+      "deptAr": "الإنتاج",
+      "locationEn": "Cairo Factory",
+      "locationAr": "مصنع القاهرة",
+      "typeEn": "Full-time",
+      "typeAr": "دوام كامل",
+      "descEn": "Keep the crunch consistent. Monitor production quality, conduct sensory checks and maintain ISO documentation on the factory floor.",
+      "descAr": "حافظ على ثبات القرمشة. راقب جودة الإنتاج، وأجرِ الفحوصات الحسية، وحافظ على وثائق ISO في أرضية المصنع.",
+      "applyUrl": "mailto:careers@sarayo.com?subject=QA Technician Application",
+      "active": true
+    }
+  ],
+  "noJobs": {
+    "titleEn": "No open roles right now",
+    "titleAr": "لا توجد وظائف شاغرة حالياً",
+    "subEn": "Drop us a line anyway — we're always interested in exceptional people.",
+    "subAr": "أرسل لنا على أي حال — نحن مهتمون دائماً بالأشخاص الاستثنائيين.",
+    "emailEn": "careers@sarayo.com",
+    "emailAr": "careers@sarayo.com"
+  },
+  "cta": {
+    "titleEn": "Don't see your role?",
+    "titleAr": "لا ترى دورك؟",
+    "subEn": "Send a speculative application to careers@sarayo.com and tell us what you'd bring.",
+    "subAr": "أرسل طلباً استكشافياً إلى careers@sarayo.com وأخبرنا بما ستضيفه."
+  }
+}
