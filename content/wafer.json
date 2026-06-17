@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "titleEn": "Wafer — Sarayo Alwadiya",
+    "titleAr": "ويفر — سرايو الوادية",
+    "descEn": "Four wafer flavors — crispy layers, rich fillings, made to satisfy.",
+    "descAr": "أربع نكهات ويفر — طبقات مقرمشة وحشوات غنية، مصنوعة لإرضائك."
+  },
+  "hero": {
+    "chipEn": "Wafer Line",
+    "chipAr": "تشكيلة ويفر",
+    "headlineEn": "The Wafer Range",
+    "headlineAr": "تشكيلة ويفر",
+    "subEn": "Crispy layers, rich fillings — four flavors to satisfy every craving.",
+    "subAr": "طبقات مقرمشة وحشوات غنية — أربع نكهات لإرضاء كل رغبة."
+  },
+  "products": [
+    {
+      "id": "choco-hazel",
+      "src": "/wafer-products/wafer-choco.png",
+      "nameEn": "Choco Hazel",
+      "nameAr": "شوكو هيزل",
+      "subEn": "Choco & Hazelnut",
+      "subAr": "شوكولاتة وهيزل",
+      "flavorEn": "Dark Chocolate & Hazelnut",
+      "flavorAr": "شوكولاتة داكنة وهيزل",
+      "tagEn": "Bestseller",
+      "tagAr": "الأكثر مبيعاً",
+      "descEn": "Rich dark chocolate meets roasted hazelnut in every crispy wafer layer.",
+      "descAr": "الشوكولاتة الداكنة الغنية تلتقي بالهيزل المحمّص في كل طبقة ويفر مقرمشة.",
+      "price": "22 EGP",
+      "priceValue": 22,
+      "href": "/wafer/choco-hazel",
+      "active": true
+    },
+    {
+      "id": "lemon",
+      "src": "/wafer-products/wafer-lemon.png",
+      "nameEn": "Lemon",
+      "nameAr": "ليمون",
+      "subEn": "Lemon Cream",
+      "subAr": "كريمة ليمون",
+      "flavorEn": "Zesty Lemon Cream",
+      "flavorAr": "كريمة ليمون منعشة",
+      "tagEn": "Refreshing",
+      "tagAr": "منعش",
+      "descEn": "Bright, tangy lemon cream layered between ultra-thin crispy wafers.",
+      "descAr": "كريمة ليمون منعشة ولاذعة بين طبقات ويفر رقيقة ومقرمشة.",
+      "price": "20 EGP",
+      "priceValue": 20,
+      "href": "/wafer/lemon",
+      "active": true
+    },
+    {
+      "id": "strawberry",
+      "src": "/wafer-products/wafer-strewberry.png",
+      "nameEn": "Strawberry",
+      "nameAr": "فراولة",
+      "subEn": "Strawberry Cream",
+      "subAr": "كريمة فراولة",
+      "flavorEn": "Sweet Strawberry Cream",
+      "flavorAr": "كريمة فراولة حلوة",
+      "tagEn": "Fan Fave",
+      "tagAr": "المفضّل",
+      "descEn": "Sweet strawberry cream filling in a perfectly crunchy wafer shell.",
+      "descAr": "حشوة كريمة فراولة حلوة في قشرة ويفر مقرمشة تماماً.",
+      "price": "20 EGP",
+      "priceValue": 20,
+      "href": "/wafer/strawberry",
+      "active": true
+    },
+    {
+      "id": "chocolate",
+      "src": "/wafer-products/wafer-choco-bun.png",
+      "nameEn": "Chocolate",
+      "nameAr": "شوكولاتة",
+      "subEn": "Pure Chocolate",
+      "subAr": "شوكولاتة خالصة",
+      "flavorEn": "Rich Milk Chocolate",
+      "flavorAr": "شوكولاتة حليب غنية",
+      "tagEn": "Classic",
+      "tagAr": "كلاسيك",
+      "descEn": "Pure milk chocolate cream — the classic wafer flavor, done right.",
+      "descAr": "كريمة شوكولاتة حليب خالصة — نكهة الويفر الكلاسيكية، بإتقان.",
+      "price": "20 EGP",
+      "priceValue": 20,
+      "href": "/wafer/chocolate",
+      "active": true
+    }
+  ]
+}

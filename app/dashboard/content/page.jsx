@@ -4,6 +4,14 @@ import Link from 'next/link';
 
 const SECTIONS = [
     {
+        href: '/dashboard/content/brand',
+        icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+        title: 'Brand & Logo',
+        desc: 'Logo image, site name, tagline, and brand colours',
+        count: 'Identity',
+        color: 'bg-neutral-100 text-neutral-600',
+    },
+    {
         href: '/dashboard/content/products',
         icon: 'M4 7 L12 3 L20 7 V17 L12 21 L4 17 Z M4 7 L12 11 L20 7 M12 11 V21',
         title: 'Products',
@@ -66,6 +74,54 @@ const SECTIONS = [
         desc: 'Upload and manage images used across the site',
         count: 'Images & files',
         color: 'bg-pink-50 text-pink-600',
+    },
+    {
+        href: '/dashboard/content/chipsy',
+        icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z',
+        title: 'Chipsy Catalog',
+        desc: 'Chipsy branded products — names, flavors, images, pricing',
+        count: 'Chipsy products',
+        color: 'bg-red-50 text-red-600',
+    },
+    {
+        href: '/dashboard/content/wafer',
+        icon: 'M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18',
+        title: 'Wafer Catalog',
+        desc: 'Wafer branded products — names, flavors, images, pricing',
+        count: 'Wafer products',
+        color: 'bg-yellow-50 text-yellow-600',
+    },
+    {
+        href: '/dashboard/content/pages/about',
+        icon: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z',
+        title: 'About Us',
+        desc: 'Hero, story paragraphs, milestones timeline, values, and CTA',
+        count: 'About page',
+        color: 'bg-teal-50 text-teal-600',
+    },
+    {
+        href: '/dashboard/content/pages/contact',
+        icon: 'M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z',
+        title: 'Contact Us',
+        desc: 'Contact cards, social links, and all contact form labels',
+        count: 'Contact page',
+        color: 'bg-indigo-50 text-indigo-600',
+    },
+    {
+        href: '/dashboard/content/pages/careers',
+        icon: 'M21 13.255A23.931 23.931 0 0 1 12 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2m4 6h.01M5 20h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z',
+        title: 'Careers',
+        desc: 'Job listings, culture section, and "no openings" fallback text',
+        count: 'Jobs page',
+        color: 'bg-lime-50 text-lime-600',
+    },
+    {
+        href: '/dashboard/content/pages/export',
+        icon: 'M3 15a4 4 0 0 0 4 4h9a5 5 0 0 0 1.82-9.61 6 6 0 0 0-11.4-1.59A4 4 0 0 0 3 15z',
+        title: 'Export',
+        desc: 'Export markets, certifications, why-us cards, and contact info',
+        count: 'Export page',
+        color: 'bg-sky-50 text-sky-600',
     },
 ];
 

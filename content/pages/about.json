@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "titleEn": "About Us — Sarayo Alwadiya",
+    "titleAr": "من نحن — سرايو الوادية",
+    "descEn": "Two decades of bold flavor and honest crunch — the story behind Sarayo Alwadiya.",
+    "descAr": "عقدان من النكهة الجريئة والقرمشة الصادقة — قصة سرايو الوادية."
+  },
+  "hero": {
+    "chipEn": "Our Story",
+    "chipAr": "قصتنا",
+    "headlineEn": "Born to Crunch",
+    "headlineAr": "وُلدنا لنقرمش",
+    "subEn": "Two decades of getting the snack exactly right — from Cairo's kitchens to crunch lovers across the region.",
+    "subAr": "عقدان من إتقان السناك بدقة — من مطابخ القاهرة إلى محبّي القرمشة في كل أنحاء المنطقة."
+  },
+  "story": {
+    "titleEn": "The Sarayo Story",
+    "titleAr": "قصة سرايو",
+    "paragraphsEn": [
+      "Sarayo Alwadiya was born in Cairo in 2002 with one obsession: making the loudest, most honest chip on the shelf. No shortcuts, no mystery ingredients — just real potatoes, real seasoning, and a commitment to crunch.",
+      "Over two decades we've grown from a single production line to supplying snack lovers across Egypt and the broader region. The recipe hasn't changed. The ambition hasn't either.",
+      "Today we carry the full Lay's lineup plus our own Chipsy and Wafer ranges — all made to the same standard that got us here. Loud flavor. Honest crunch. Snacking done right."
+    ],
+    "paragraphsAr": [
+      "وُلدت سرايو الوادية في القاهرة عام ٢٠٠٢ بهاجس واحد: صنع الشيبس الأعلى صوتاً والأكثر أصالة على الرف. لا اختصارات، لا مكونات غامضة — فقط بطاطس حقيقية، وتتبيلة حقيقية، والتزام بالقرمشة.",
+      "على مدى عقدين نمونا من خط إنتاج واحد إلى تزويد محبّي السناك في أنحاء مصر والمنطقة. الوصفة لم تتغير. الطموح كذلك.",
+      "اليوم نحمل تشكيلة ليز الكاملة بالإضافة إلى مجموعتي شيبسي وويفر الخاصتين بنا — كلها مصنوعة بنفس المعيار الذي أوصلنا إلى هنا. نكهة جريئة. قرمشة صادقة. سناك بإتقان."
+    ]
+  },
+  "milestones": [
+    { "year": "2002", "titleEn": "Founded in Cairo", "titleAr": "التأسيس في القاهرة", "textEn": "First production line launched in Cairo's industrial district.", "textAr": "إطلاق أول خط إنتاج في المنطقة الصناعية بالقاهرة." },
+    { "year": "2007", "titleEn": "Lay's Partnership", "titleAr": "شراكة ليز", "textEn": "Became the official regional distributor for the Lay's lineup.", "textAr": "أصبحنا الموزع الإقليمي الرسمي لتشكيلة ليز." },
+    { "year": "2012", "titleEn": "Chipsy Launch", "titleAr": "إطلاق شيبسي", "textEn": "Launched the Chipsy range — our own brand, our own flavors.", "textAr": "أطلقنا تشكيلة شيبسي — علامتنا التجارية ونكهاتنا الخاصة." },
+    { "year": "2018", "titleEn": "Wafer Range Added", "titleAr": "إضافة تشكيلة ويفر", "textEn": "Expanded into wafers with four signature flavors.", "textAr": "توسعنا إلى الويفر بأربع نكهات مميزة." },
+    { "year": "2024", "titleEn": "Regional Export", "titleAr": "التصدير الإقليمي", "textEn": "Now shipping fresh to six countries across the MENA region.", "textAr": "نشحن الآن طازجاً إلى ست دول في منطقة الشرق الأوسط وشمال أفريقيا." }
+  ],
+  "values": [
+    { "id": "quality", "icon": "spark", "titleEn": "Uncompromising Quality", "titleAr": "جودة بلا تنازلات", "textEn": "Every batch is checked against the same strict standard — no exceptions.", "textAr": "كل دفعة تُفحص وفق نفس المعيار الصارم — بلا استثناءات." },
+    { "id": "flavor", "icon": "flame", "titleEn": "Loud, Real Flavor", "titleAr": "نكهة حقيقية وجريئة", "textEn": "We don't whisper. Our seasoning is bold, toasted, and applied thick.", "textAr": "لا نهمس. تتبيلتنا جريئة، محمّصة، ومُطبَّقة بكثافة." },
+    { "id": "honest", "icon": "leaf", "titleEn": "Honest Ingredients", "titleAr": "مكونات صادقة", "textEn": "Short ingredient lists you can actually read. Nothing hidden.", "textAr": "قوائم مكونات قصيرة تستطيع قراءتها فعلاً. لا شيء مخفي." },
+    { "id": "region", "icon": "globe", "titleEn": "Made for the Region", "titleAr": "مصنوع للمنطقة", "textEn": "Flavors designed for MENA palates — spicy, tangy and bold.", "textAr": "نكهات مصمّمة لأذواق منطقة الشرق الأوسط وشمال أفريقيا — حارة ولاذعة وجريئة." }
+  ],
+  "cta": {
+    "titleEn": "Want to work with us?",
+    "titleAr": "تريد العمل معنا؟",
+    "subEn": "We're always looking for great people and great partners.",
+    "subAr": "نبحث دائماً عن أشخاص رائعين وشركاء رائعين.",
+    "btn1En": "See open roles",
+    "btn1Ar": "الوظائف المتاحة",
+    "btn1Href": "/careers",
+    "btn2En": "Export enquiries",
+    "btn2Ar": "استفسارات التصدير",
+    "btn2Href": "/export"
+  }
+}
