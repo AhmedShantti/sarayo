@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getCategories } from '@/lib/adminApi';
 
 const TONES = ['deep', 'cream', 'yellow'];
+// Fallback list used only if the managed categories can't be loaded.
 const CATEGORIES = ['Classic', 'Cheesy', 'Spicy', 'Tangy'];
 const ICONS = ['spark', 'flame', 'leaf', 'globe'];
 
@@ -26,12 +28,17 @@ function Field({ label, children }) {
 const input = 'w-full px-3 py-2 rounded-lg border border-neutral-200 text-sm text-ink bg-white focus:outline-none focus:ring-2 focus:ring-ink/10 focus:border-ink/30';
 const textarea = `${input} resize-none`;
 
-function ProductForm({ product, onSave, onCancel, isNew }) {
+function ProductForm({ product, onSave, onCancel, isNew, categoryOptions }) {
     const [form, setForm] = useState(product);
     const [saving, setSaving] = useState(false);
     const [imgPreview, setImgPreview] = useState(product.src);
 
     const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+    // Always include the product's current category so a legacy value isn't lost.
+    const catOptions = form.category && !categoryOptions.includes(form.category)
+        ? [form.category, ...categoryOptions]
+        : categoryOptions;
 
     async function handleImageUpload(e) {
         const file = e.target.files[0];
@@ -100,7 +107,7 @@ function ProductForm({ product, onSave, onCancel, isNew }) {
 
                 <Field label="Category">
                     <select className={input} value={form.category} onChange={e => set('category', e.target.value)}>
-                        {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                        {catOptions.map(c => <option key={c}>{c}</option>)}
                     </select>
                 </Field>
 
@@ -144,8 +151,23 @@ export default function ProductsContentPage() {
     const [adding, setAdding] = useState(false);
     const [saving, setSaving] = useState(false);
     const [toast, setToast] = useState('');
+    const [categoryOptions, setCategoryOptions] = useState(CATEGORIES);
 
     useEffect(() => { load(); }, []);
+
+    // Pull the managed categories so the dropdown matches the store. Falls back
+    // to the static list if the backend is unreachable or returns nothing.
+    useEffect(() => {
+        let alive = true;
+        getCategories()
+            .then(cats => {
+                if (!alive) return;
+                const names = (Array.isArray(cats) ? cats : []).map(c => c.name).filter(Boolean);
+                if (names.length) setCategoryOptions(names);
+            })
+            .catch(() => {});
+        return () => { alive = false; };
+    }, []);
 
     async function load() {
         const r = await fetch('/api/content/products');
@@ -219,7 +241,7 @@ export default function ProductsContentPage() {
             {adding && (
                 <div className="bg-white border border-neutral-200 rounded-xl p-6 mb-6">
                     <p className="text-sm font-semibold text-ink mb-5">New product</p>
-                    <ProductForm product={EMPTY} onSave={save} onCancel={() => setAdding(false)} isNew />
+                    <ProductForm product={EMPTY} onSave={save} onCancel={() => setAdding(false)} isNew categoryOptions={categoryOptions} />
                 </div>
             )}
 
@@ -232,7 +254,7 @@ export default function ProductsContentPage() {
                         {editing === i ? (
                             <div className="p-6">
                                 <p className="text-sm font-semibold text-ink mb-5">Editing: {p.name}</p>
-                                <ProductForm product={p} onSave={save} onCancel={() => setEditing(null)} />
+                                <ProductForm product={p} onSave={save} onCancel={() => setEditing(null)} categoryOptions={categoryOptions} />
                             </div>
                         ) : (
                             <div className="flex items-center gap-4 px-5 py-3.5">

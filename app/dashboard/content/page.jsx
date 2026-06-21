@@ -20,6 +20,14 @@ const SECTIONS = [
         color: 'bg-blue-50 text-blue-600',
     },
     {
+        href: '/dashboard/categories',
+        icon: 'M4 5 H10 V11 H4 Z M14 5 H20 V11 H14 Z M4 15 H10 V21 H4 Z M14 15 H20 V21 H14 Z',
+        title: 'Categories',
+        desc: 'Add, rename and remove product categories — used across the store and product editors',
+        count: 'All platforms',
+        color: 'bg-fuchsia-50 text-fuchsia-600',
+    },
+    {
         href: '/dashboard/content/features',
         icon: 'M13 2 4 14h6l-1 8 9-12h-6l1-8Z',
         title: 'Features',
