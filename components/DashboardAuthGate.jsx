@@ -20,6 +20,15 @@ export default function DashboardAuthGate({children}) {
 
     useEffect(() => {
         setAuthed(isAuthed());
+        // When an admin API call hits an unrecoverable 401, adminApi clears the
+        // session and fires this event — drop back to the login screen so the
+        // user can sign in again instead of seeing silent 401s.
+        function onForcedLogout() {
+            setAuthed(false);
+            setError('Your session expired. Please sign in again.');
+        }
+        window.addEventListener('sarayo-admin-logout', onForcedLogout);
+        return () => window.removeEventListener('sarayo-admin-logout', onForcedLogout);
     }, []);
 
     async function handleSubmit(e) {
