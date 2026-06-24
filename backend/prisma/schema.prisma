@@ -114,6 +114,12 @@ model Product {
   images         String[] @default([])
   flavor         String? // e.g. cheese, bbq, salt-vinegar, chili (frontend tag)
   weight         String? // e.g. "113g" / "4oz"
+  // Selling mode: products can be sold individually ("piece") or as a
+  // wholesale package of several bags ("package"). packagePrice is the price
+  // for one full package; null falls back to price * packageSize.
+  sellingUnit    String   @default("package") // "piece" | "package"
+  packageSize    Int      @default(12) // bags per package
+  packagePrice   Decimal? @db.Decimal(10, 2)
   isActive       Boolean  @default(true)
   isFeatured     Boolean  @default(false)
   createdAt      DateTime @default(now())

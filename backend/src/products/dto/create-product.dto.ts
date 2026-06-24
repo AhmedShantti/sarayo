@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
+  IsIn,
   IsInt,
   IsNumber,
   IsOptional,
@@ -84,6 +85,25 @@ export class CreateProductDto {
   @IsString()
   @MaxLength(30)
   weight?: string;
+
+  @ApiPropertyOptional({ example: 'package', enum: ['piece', 'package'], default: 'package' })
+  @IsOptional()
+  @IsIn(['piece', 'package'])
+  sellingUnit?: string;
+
+  @ApiPropertyOptional({ example: 12, description: 'Bags per package (when sold by package)' })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  packageSize?: number;
+
+  @ApiPropertyOptional({ example: 216, description: 'Price for one full package; defaults to price × packageSize' })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  packagePrice?: number;
 
   @ApiPropertyOptional({ default: true })
   @IsOptional()

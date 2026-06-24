@@ -37,6 +37,7 @@ function StockBadge({status, stock}) {
 const EMPTY_FORM = {
     sku: '', name: '', nameAr: '', price: '', stock: '', categoryId: '',
     flavor: '', weight: '', imageUrl: '', description: '', isActive: true, isFeatured: false,
+    sellingUnit: 'package', packageSize: '12', packagePrice: '',
 };
 
 export default function ProductsPage() {
@@ -47,6 +48,7 @@ export default function ProductsPage() {
     const [form, setForm] = useState(EMPTY_FORM);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
+    const [pkgPriceTouched, setPkgPriceTouched] = useState(false);
     const {t, locale} = useLanguage();
     const currency = locale === 'ar' ? 'جنيه' : 'EGP';
 
@@ -66,6 +68,7 @@ export default function ProductsPage() {
     function openCreate() {
         setEditingId(null);
         setForm({...EMPTY_FORM, categoryId: categories[0]?.id || ''});
+        setPkgPriceTouched(false);
         setError('');
         setModalOpen(true);
     }
@@ -85,13 +88,31 @@ export default function ProductsPage() {
             description: p.description || '',
             isActive: p.isActive !== false,
             isFeatured: !!p.isFeatured,
+            sellingUnit: p.sellingUnit || 'package',
+            packageSize: String(p.packageSize ?? 12),
+            packagePrice: p.packagePrice != null ? String(p.packagePrice) : '',
         });
+        // An existing product already has an explicit package price — don't
+        // auto-overwrite it as the admin tweaks other fields.
+        setPkgPriceTouched(true);
         setError('');
         setModalOpen(true);
     }
 
     function setField(k, v) {
         setForm((f) => ({...f, [k]: v}));
+    }
+
+    // Auto-fill the package price (price × size) until the admin edits it.
+    function autoPackagePrice(price, size) {
+        const v = Number(price) * Number(size);
+        return Number.isFinite(v) && v > 0 ? String(Number(v.toFixed(2))) : '';
+    }
+    function onPriceChange(v) {
+        setForm((f) => ({...f, price: v, packagePrice: pkgPriceTouched ? f.packagePrice : autoPackagePrice(v, f.packageSize)}));
+    }
+    function onPackageSizeChange(v) {
+        setForm((f) => ({...f, packageSize: v, packagePrice: pkgPriceTouched ? f.packagePrice : autoPackagePrice(f.price, v)}));
     }
 
     async function submit(e) {
@@ -103,6 +124,14 @@ export default function ProductsPage() {
         const stock = parseInt(form.stock, 10);
         if (!Number.isFinite(price) || price < 0) { setError('Enter a valid price'); return; }
         if (!Number.isFinite(stock) || stock < 0) { setError('Enter a valid stock quantity'); return; }
+
+        const byPackage = form.sellingUnit === 'package';
+        const packageSize = parseInt(form.packageSize, 10);
+        const packagePrice = Number(form.packagePrice);
+        if (byPackage) {
+            if (!Number.isFinite(packageSize) || packageSize < 1) { setError('Units per package must be at least 1'); return; }
+            if (!Number.isFinite(packagePrice) || packagePrice <= 0) { setError('Enter a valid package price'); return; }
+        }
 
         const payload = {
             sku: form.sku.trim(),
@@ -117,6 +146,9 @@ export default function ProductsPage() {
             images: form.imageUrl.trim() ? [form.imageUrl.trim()] : [],
             isActive: form.isActive,
             isFeatured: form.isFeatured,
+            sellingUnit: form.sellingUnit,
+            packageSize: byPackage ? packageSize : 1,
+            packagePrice: byPackage ? packagePrice : undefined,
         };
 
         setSaving(true);
@@ -185,7 +217,16 @@ export default function ProductsPage() {
                                 <tr key={p.id} className="border-t border-neutral-100 hover:bg-neutral-50">
                                     <td className="py-3 px-5 font-mono text-xs text-ink">{p.sku}</td>
                                     <td className="py-3 px-2 text-ink font-medium">{locale === 'ar' ? (p.nameAr || p.name) : p.name}</td>
-                                    <td className="py-3 px-2 text-ink">{p.price} {currency}</td>
+                                    <td className="py-3 px-2 text-ink">
+                                        {p.sellingUnit === 'package' && p.packagePrice != null ? (
+                                            <div className="flex flex-col leading-tight">
+                                                <span>{p.packagePrice} {currency}</span>
+                                                <span className="text-[11px] text-neutral-400">/ pack of {p.packageSize} · {p.price} {currency} ea</span>
+                                            </div>
+                                        ) : (
+                                            <span>{p.price} {currency}</span>
+                                        )}
+                                    </td>
                                     <td className="py-3 px-2"><StockBadge status={p.status} stock={p.stock} /></td>
                                     <td className="py-3 px-5">
                                         <div className="flex items-center justify-end gap-2">
@@ -230,8 +271,8 @@ export default function ProductsPage() {
                                 <input className={inputCls} value={form.nameAr} onChange={(e) => setField('nameAr', e.target.value)} dir="rtl" />
                             </label>
                             <label className="flex flex-col gap-1.5">
-                                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Price ({currency})</span>
-                                <input className={inputCls} type="number" step="0.01" min="0" value={form.price} onChange={(e) => setField('price', e.target.value)} required />
+                                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Unit price ({currency} / bag)</span>
+                                <input className={inputCls} type="number" step="0.01" min="0" value={form.price} onChange={(e) => onPriceChange(e.target.value)} required />
                             </label>
                             <label className="flex flex-col gap-1.5">
                                 <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Stock</span>
@@ -245,6 +286,51 @@ export default function ProductsPage() {
                                 <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Weight</span>
                                 <input className={inputCls} value={form.weight} onChange={(e) => setField('weight', e.target.value)} placeholder="113g" />
                             </label>
+                        </div>
+
+                        {/* Selling Options */}
+                        <div className="rounded-xl border border-neutral-200 bg-neutral-50/60 p-4 flex flex-col gap-3">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Selling options</span>
+                            <div className="flex flex-col gap-1.5">
+                                <span className="text-xs text-neutral-500">Sell by</span>
+                                <div className="inline-flex rounded-lg border border-neutral-300 overflow-hidden w-fit">
+                                    {['package', 'piece'].map((mode) => (
+                                        <button
+                                            key={mode}
+                                            type="button"
+                                            onClick={() => setField('sellingUnit', mode)}
+                                            className={
+                                                'px-4 py-1.5 text-sm font-medium capitalize transition-colors ' +
+                                                (form.sellingUnit === mode ? 'bg-ink text-white' : 'bg-white text-neutral-600 hover:bg-neutral-100')
+                                            }
+                                        >
+                                            {mode}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {form.sellingUnit === 'package' && (
+                                <>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <label className="flex flex-col gap-1.5">
+                                            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Units per package</span>
+                                            <input className={inputCls} type="number" min="1" step="1" value={form.packageSize} onChange={(e) => onPackageSizeChange(e.target.value)} placeholder="e.g. 12" />
+                                        </label>
+                                        <label className="flex flex-col gap-1.5">
+                                            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Package price ({currency})</span>
+                                            <input className={inputCls} type="number" min="0" step="0.01" value={form.packagePrice} onChange={(e) => { setPkgPriceTouched(true); setField('packagePrice', e.target.value); }} />
+                                        </label>
+                                    </div>
+                                    <p className="text-xs text-neutral-500">Auto-calculated from unit price × package size. You can override it.</p>
+                                    {Number(form.packagePrice) > 0 && Number(form.packageSize) >= 1 && (
+                                        <p className="text-xs text-neutral-600 bg-white border border-neutral-200 rounded-lg px-3 py-2">
+                                            Preview: <strong>{Number(form.packagePrice)} {currency}</strong> · per package of {Number(form.packageSize)} bags
+                                            {Number(form.price) > 0 && <span className="text-neutral-400"> (~{Number(form.price)} {currency} / bag)</span>}
+                                        </p>
+                                    )}
+                                </>
+                            )}
                         </div>
 
                         <label className="flex flex-col gap-1.5">

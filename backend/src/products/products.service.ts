@@ -117,6 +117,12 @@ export class ProductsService {
 
   async create(dto: CreateProductDto) {
     const slug = dto.slug ? slugify(dto.slug) : slugify(dto.name);
+    const sellingUnit = dto.sellingUnit ?? 'package';
+    const packageSize = dto.packageSize ?? 12;
+    // Default the package price to price × packageSize when not supplied.
+    const packagePrice =
+      dto.packagePrice ??
+      (sellingUnit === 'package' ? Number((dto.price * packageSize).toFixed(2)) : null);
     const product = await this.prisma.product.create({
       data: {
         sku: dto.sku,
@@ -131,6 +137,9 @@ export class ProductsService {
         images: dto.images ?? [],
         flavor: dto.flavor,
         weight: dto.weight,
+        sellingUnit,
+        packageSize,
+        packagePrice,
         isActive: dto.isActive ?? true,
         isFeatured: dto.isFeatured ?? false,
         categoryId: dto.categoryId,
@@ -218,6 +227,9 @@ export class ProductsService {
       images: product.images,
       flavor: product.flavor,
       weight: product.weight,
+      sellingUnit: product.sellingUnit,
+      packageSize: product.packageSize,
+      packagePrice: product.packagePrice !== null ? Number(product.packagePrice) : null,
       isActive: product.isActive,
       isFeatured: product.isFeatured,
       categoryId: product.categoryId,

@@ -70,7 +70,7 @@ export class OrdersService {
     }
 
     const subtotal = cart.items.reduce(
-      (sum, item) => sum + Number(item.product.price) * item.quantity,
+      (sum, item) => sum + this.effectiveUnitPrice(item.product) * item.quantity,
       0,
     );
     const breakdown = this.pricing.calculate(subtotal);
@@ -100,7 +100,7 @@ export class OrdersService {
             create: cart.items.map((item) => ({
               productId: item.productId,
               quantity: item.quantity,
-              price: item.product.price,
+              price: this.effectiveUnitPrice(item.product),
               productName: item.product.name,
               productImage: item.product.images[0] ?? null,
             })),
@@ -148,6 +148,20 @@ export class OrdersService {
   // Guest checkout (no auth) — used by the storefront
   // ──────────────────────────────────────────────
 
+  /**
+   * The price a customer pays per ordered unit. When a product is sold by the
+   * package this is the package price (falling back to price × packageSize);
+   * otherwise it's the per-piece price.
+   */
+  private effectiveUnitPrice(product: Product): number {
+    if (product.sellingUnit === 'package') {
+      return product.packagePrice !== null
+        ? Number(product.packagePrice)
+        : Number(product.price) * product.packageSize;
+    }
+    return Number(product.price);
+  }
+
   async createGuestOrder(dto: CreateGuestOrderDto) {
     // 1. Resolve every line. A line either links to a catalog product (by id or
     //    sku — stock is checked + decremented) or is a self-described snapshot
@@ -181,7 +195,7 @@ export class OrdersService {
         resolved.push({
           productId: product.id,
           quantity: line.quantity,
-          price: Number(product.price),
+          price: this.effectiveUnitPrice(product),
           productName: product.name,
           productImage: product.images[0] ?? null,
           decrementStock: true,

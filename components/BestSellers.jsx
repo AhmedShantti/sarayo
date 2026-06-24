@@ -75,6 +75,14 @@ export default function BestSellers() {
 
     const nameFor = (p) => (locale === 'ar' && p.nameAr ? p.nameAr : p.name);
 
+    // Per-package selling helpers (driven by the backend fields).
+    const cur = locale === 'ar' ? 'جنيه' : 'EGP';
+    const isPackage = (p) => p.sellingUnit === 'package';
+    const pkgSize = (p) => p.packageSize || 12;
+    // The price a customer actually pays for one orderable unit.
+    const effPriceOf = (p) =>
+        isPackage(p) ? (p.packagePrice != null ? p.packagePrice : p.price * pkgSize(p)) : p.price;
+
     function scroll(direction) {
         const target = scrollRef.current;
         if (!target) return;
@@ -88,7 +96,8 @@ export default function BestSellers() {
             id: product.id,
             sku: product.sku,
             name: label,
-            price: product.price,
+            // Charge the package price when the product is sold by package.
+            price: effPriceOf(product),
             image: (product.images && product.images[0]) || FALLBACK_IMG,
         });
         showToast(t('bs.added', {name: label}));
@@ -192,7 +201,7 @@ export default function BestSellers() {
                             return (
                                 <article key={p.id} className="product-card">
                                     <div className="product-image">
-                                        <span className="pack-badge">{packLabel}</span>
+                                        <span className="pack-badge">{isPackage(p) ? `📦 ${pkgSize(p)} ${locale === 'ar' ? 'كيس' : 'bags'}` : packLabel}</span>
                                         {p.isFeatured && (
                                             <span className="best-seller-ribbon">{t('bs.ribbon')}</span>
                                         )}
@@ -211,8 +220,14 @@ export default function BestSellers() {
                                         <h3 className="product-name">{productName}</h3>
                                         <p className="product-flavor">{label}</p>
                                         <div className="product-row">
-                                            <span className="product-meta">{sizeLabel}</span>
-                                            <span className="product-price">{p.price} {locale === 'ar' ? 'جنيه' : 'EGP'}</span>
+                                            <span className="product-meta">
+                                                {isPackage(p)
+                                                    ? (locale === 'ar'
+                                                        ? `علبة ${pkgSize(p)} كيس · ~${p.price} ${cur}/كيس`
+                                                        : `pack of ${pkgSize(p)} · ~${p.price} ${cur}/bag`)
+                                                    : sizeLabel}
+                                            </span>
+                                            <span className="product-price">{effPriceOf(p)} {cur}</span>
                                             <button
                                                 className="add-cart-btn"
                                                 aria-label={t('bs.addAria', {name: label})}
