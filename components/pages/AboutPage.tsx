@@ -18,7 +18,9 @@ export default function AboutPage({ data }: { data: any }) {
 
     const hero = data.hero;
     const story = data.story;
-    const milestones = data.milestones || [];
+    const vision = data.vision;
+    const mission = data.mission;
+    const pillars = data.pillars || [];
     const values = data.values || [];
     const cta = data.cta;
 
@@ -45,26 +47,47 @@ export default function AboutPage({ data }: { data: any }) {
                             </div>
                         </div>
 
-                        {/* Milestones */}
-                        <div className="space-y-0">
-                            {milestones.map((m: any, i: number) => (
-                                <motion.div key={m.year} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }}
-                                    className="flex gap-6 pb-8 last:pb-0">
-                                    <div className="flex flex-col items-center">
-                                        <span className="w-3 h-3 rounded-full bg-brand-yellow shrink-0 mt-1.5" />
-                                        {i < milestones.length - 1 && <span className="w-px flex-1 bg-white/10 mt-2" />}
-                                    </div>
-                                    <div className="pb-2">
-                                        <span className="font-grotesk text-xs uppercase tracking-[0.2em] text-brand-yellow">{m.year}</span>
-                                        <p className="font-semibold text-white mt-0.5">{ar ? m.titleAr : m.titleEn}</p>
-                                        <p className="text-sm text-white/60 mt-1">{ar ? m.textAr : m.textEn}</p>
-                                    </div>
+                        {/* Vision + Mission */}
+                        <div className="space-y-5">
+                            {[vision, mission].filter(Boolean).map((block: any, i: number) => (
+                                <motion.div key={block.titleEn} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.55 }}
+                                    className="rounded-3xl border border-white/12 bg-brand-red-deep/60 p-7 backdrop-blur-sm">
+                                    <span className="font-grotesk text-xs uppercase tracking-[0.2em] text-brand-yellow">
+                                        {ar ? block.titleAr : block.titleEn}
+                                    </span>
+                                    <p className="mt-3 text-white/80 leading-relaxed">{ar ? block.textAr : block.textEn}</p>
                                 </motion.div>
                             ))}
                         </div>
                     </div>
                 </div>
             </section>
+
+            {/* Strategic direction / quality / future */}
+            {pillars.length > 0 && (
+                <section className="py-20 sm:py-28 border-t border-white/8">
+                    <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            {pillars.map((p: any, i: number) => (
+                                <motion.div key={p.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.6 }}
+                                    className="rounded-3xl border border-white/12 bg-brand-red-deep/40 p-7 backdrop-blur-sm">
+                                    <span className="mb-5 grid h-12 w-12 place-items-center rounded-xl border border-white/20 text-brand-yellow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                                            <path d={ICON_PATHS[p.icon] || ICON_PATHS.spark} />
+                                        </svg>
+                                    </span>
+                                    <p className="landing-display text-2xl text-white mb-3">{ar ? p.titleAr : p.titleEn}</p>
+                                    <div className="space-y-3">
+                                        {(ar ? p.paragraphsAr : p.paragraphsEn).map((txt: string, j: number) => (
+                                            <p key={j} className="text-sm text-white/70 leading-relaxed">{txt}</p>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Values */}
             <section className="py-20 sm:py-28 border-t border-white/8">

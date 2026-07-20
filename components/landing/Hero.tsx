@@ -11,7 +11,7 @@ import {
 } from 'framer-motion';
 import Chip from './Chip';
 import Magnetic from './Magnetic';
-import { PRODUCTS, localizeProduct, formatPrice, type Product } from '@/lib/landingData';
+import { type Product } from '@/lib/landingData';
 import { useLanguage } from '@/lib/LanguageContext';
 
 
@@ -21,19 +21,11 @@ const CHIP_KEYS = [
     'lnd.word.cutThick', 'lnd.word.friedCrisp', 'lnd.word.loudFlavor',
 ];
 
-export default function Hero({ products }: { products?: Product[] }) {
-    const FLAVORS = products || PRODUCTS;
-    const { t, locale } = useLanguage();
-    const [i, setI] = useState(0);
-    const [paused, setPaused] = useState(false);
+// `products` is still accepted so the page-level call site stays unchanged, but the
+// hero now shows one combined product banner instead of cycling individual packs.
+export default function Hero(_props: { products?: Product[] }) {
+    const { t } = useLanguage();
     const [chip, setChip] = useState(0);
-
-    // Auto-cycle the hero bag through the Lay's lineup (5s).
-    useEffect(() => {
-        if (paused) return;
-        const id = setInterval(() => setI((p) => (p + 1) % FLAVORS.length), 5000);
-        return () => clearInterval(id);
-    }, [paused]);
 
     // Rotate the eyebrow chip's item every 3s.
     useEffect(() => {
@@ -55,16 +47,13 @@ export default function Hero({ products }: { products?: Product[] }) {
         py.set((e.clientY / window.innerHeight - 0.5) * 2);
     };
 
-    const active = FLAVORS[i];
-    const activeL = localizeProduct(active, locale);
-    const activePrice = formatPrice(active.priceValue, locale);
     const chipLabel = t(CHIP_KEYS[chip]);
 
     return (
         <section
             id="top"
             onMouseMove={onMove}
-            className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-5 pt-24 pb-12 text-center sm:px-8 sm:pt-32 sm:pb-16"
+            className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-5 pt-28 pb-12 text-center sm:px-8 sm:pt-36 sm:pb-16"
         >
             {/* Ghost wordmark */}
             <motion.div style={{ x: ghostX }} className="pointer-events-none absolute inset-x-0 top-[18%] z-0 flex justify-center">
@@ -107,11 +96,7 @@ export default function Hero({ products }: { products?: Product[] }) {
                 </motion.h1>
 
                 {/* Stage: outline word behind, cycling bag in front */}
-                <div
-                    className="relative my-2 flex h-[34vh] min-h-[220px] w-full items-center justify-center sm:h-[46vh]"
-                    onMouseEnter={() => setPaused(true)}
-                    onMouseLeave={() => setPaused(false)}
-                >
+                <div className="relative my-2 flex min-h-[200px] w-full items-center justify-center sm:min-h-[280px]">
                     <span
                         aria-hidden
                         className="landing-display pointer-events-none absolute inset-0 flex items-center justify-center text-[clamp(3rem,10vw,8.5rem)] leading-none"
@@ -120,65 +105,25 @@ export default function Hero({ products }: { products?: Product[] }) {
                         {t('lnd.hero.line2')}
                     </span>
 
-                    <motion.div style={{ x: bagX, y: bagY }} className="relative z-10 h-full w-[60%] max-w-[320px]">
-                        <AnimatePresence mode="popLayout">
-                            <motion.div
-                                key={active.src}
-                                initial={{ opacity: 0, x: 70, rotate: 8 }}
-                                animate={{ opacity: 1, x: 0, rotate: -3 }}
-                                exit={{ opacity: 0, x: -70, rotate: -10 }}
-                                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                                className="absolute inset-0"
-                            >
-                                <Image
-                                    src={active.src}
-                                    alt={`Sarayo Alwadiya ${activeL.name} — ${activeL.flavor}`}
-                                    fill
-                                    priority
-                                    sizes="(max-width: 768px) 60vw, 320px"
-                                    className="object-contain drop-shadow-[0_30px_45px_rgba(0,0,0,0.5)]"
-                                />
-                            </motion.div>
-                        </AnimatePresence>
-
-                        {/* floating flavor label */}
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={active.name}
-                                initial={{ opacity: 0, y: 8 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
-                                transition={{ duration: 0.35 }}
-                                className="absolute -right-2 top-2 flex flex-col items-end gap-1.5 sm:right-0"
-                            >
-                                <Chip variant="white" size="sm" interactive={false}>{activeL.flavor}</Chip>
-                                <Chip variant="yellow" size="sm" interactive={false}>{activePrice}</Chip>
-                            </motion.div>
-                        </AnimatePresence>
+                    {/* One combined banner of the full range, in place of the old per-pack carousel. */}
+                    <motion.div
+                        style={{ x: bagX, y: bagY }}
+                        initial={{ opacity: 0, y: 30, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="relative z-10 w-full max-w-[980px]"
+                    >
+                        <Image
+                            src="/products-banner.png"
+                            alt="Sarayo Alwadiya product range"
+                            width={2347}
+                            height={467}
+                            priority
+                            sizes="(max-width: 768px) 95vw, 980px"
+                            className="h-auto w-full object-contain drop-shadow-[0_28px_40px_rgba(0,0,0,0.45)]"
+                        />
                     </motion.div>
                 </div>
-
-                {/* Flavor switcher dots */}
-                <div className="relative z-10 mb-1 flex items-center gap-3">
-                    {FLAVORS.map((f, idx) => (
-                        <button
-                            key={f.name}
-                            onClick={() => setI(idx)}
-                            aria-label={t('lnd.hero.showAria', { name: localizeProduct(f, locale).name })}
-                            data-cursor="hover"
-                            className="group flex flex-col items-center gap-2"
-                        >
-                            <span
-                                className={`h-2 rounded-full transition-all duration-300 ${
-                                    idx === i ? 'w-8 bg-brand-yellow' : 'w-2 bg-white/30 group-hover:bg-white/60'
-                                }`}
-                            />
-                        </button>
-                    ))}
-                </div>
-                <p className="relative z-10 mt-3 font-grotesk text-xs uppercase tracking-[0.3em] text-white/60">
-                    {activeL.name} · <span className="text-brand-yellow">{activePrice}</span>
-                </p>
             </div>
 
             {/* CTAs */}

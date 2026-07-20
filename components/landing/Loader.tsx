@@ -44,9 +44,11 @@ export default function Loader() {
                         initial={{ scale: 0.7, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="mb-8 grid h-28 w-28 place-items-center"
+                        className="mb-8 flex items-center justify-center"
                     >
-                        <Image src="/images.png" alt="Sarayo Alwadiya" width={112} height={112} priority className="h-full w-full object-contain" />
+                        {/* Height must sit on the image itself — a grid parent gives it no definite
+                            height to resolve `h-full` against, so it fell back to intrinsic width. */}
+                        <Image src="/sarayo-logo.png" alt="Sarayo Alwadiya" width={900} height={514} priority className="h-20 w-auto object-contain sm:h-24" />
                     </motion.span>
 
                     <div className="landing-display flex items-end gap-1 text-white">

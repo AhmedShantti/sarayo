@@ -1,44 +1,93 @@
 {
   "meta": {
-    "titleEn": "About Us — Sarayo Alwadiya",
-    "titleAr": "من نحن — سرايو الوادية",
-    "descEn": "Two decades of bold flavor and honest crunch — the story behind Sarayo Alwadiya.",
-    "descAr": "عقدان من النكهة الجريئة والقرمشة الصادقة — قصة سرايو الوادية."
+    "titleEn": "About Us — Sarayo Egypt",
+    "titleAr": "من نحن — سرايو مصر",
+    "descEn": "Sarayo Egypt — founded in late 2018 as a strategic partnership between the Sarayo Alwadiya Group (Palestine, est. 1985) and the Ahmed Saber El-Sherif Group of Companies.",
+    "descAr": "سرايو مصر — تأسست في أواخر عام 2018 كشراكة استراتيجية بين مجموعة سرايو الوادية (فلسطين، تأسست 1985) ومجموعة شركات أحمد صابر الشريف."
   },
   "hero": {
-    "chipEn": "Our Story",
-    "chipAr": "قصتنا",
-    "headlineEn": "Born to Crunch",
-    "headlineAr": "وُلدنا لنقرمش",
-    "subEn": "Two decades of getting the snack exactly right — from Cairo's kitchens to crunch lovers across the region.",
-    "subAr": "عقدان من إتقان السناك بدقة — من مطابخ القاهرة إلى محبّي القرمشة في كل أنحاء المنطقة."
+    "chipEn": "About Us",
+    "chipAr": "من نحن",
+    "headlineEn": "Sarayo Egypt",
+    "headlineAr": "سرايو مصر",
+    "subEn": "Snacks built on decades of manufacturing expertise — brought to the Egyptian market.",
+    "subAr": "وجبات خفيفة مبنية على عقود من الخبرة الصناعية — إلى السوق المصري."
   },
   "story": {
-    "titleEn": "The Sarayo Story",
-    "titleAr": "قصة سرايو",
+    "titleEn": "Who We Are",
+    "titleAr": "من نحن",
     "paragraphsEn": [
-      "Sarayo Alwadiya was born in Cairo in 2002 with one obsession: making the loudest, most honest chip on the shelf. No shortcuts, no mystery ingredients — just real potatoes, real seasoning, and a commitment to crunch.",
-      "Over two decades we've grown from a single production line to supplying snack lovers across Egypt and the broader region. The recipe hasn't changed. The ambition hasn't either.",
-      "Today we carry the full Lay's lineup plus our own Chipsy and Wafer ranges — all made to the same standard that got us here. Loud flavor. Honest crunch. Snacking done right."
+      "In a fast-paced world, snacks have become an inseparable part of daily life — and that places a real responsibility on us to deliver products that combine high quality, distinctive taste, and the reliability consumers trust.",
+      "Sarayo Egypt draws on a deep-rooted industrial heritage tracing back to Sarayo Alwadiya – Palestine, founded in 1985 under the leadership of Dr. Wael Mohammed Alwadiya and his sons, which over decades built specialised expertise in snack manufacturing to the highest quality standards.",
+      "Building on that legacy, Sarayo Egypt was established in late 2018 as a strategic partnership between the Sarayo Alwadiya Group in Palestine and the Ahmed Saber El-Sherif Group of Companies in Egypt, with the aim of transferring this expertise to the Egyptian market and offering products that meet local consumer expectations.",
+      "Since launching, the company has worked to localise this expertise and develop its operations in line with the needs of the Egyptian market, while preserving the standards that formed the foundation of its regional success."
     ],
     "paragraphsAr": [
-      "وُلدت سرايو الوادية في القاهرة عام ٢٠٠٢ بهاجس واحد: صنع الشيبس الأعلى صوتاً والأكثر أصالة على الرف. لا اختصارات، لا مكونات غامضة — فقط بطاطس حقيقية، وتتبيلة حقيقية، والتزام بالقرمشة.",
-      "على مدى عقدين نمونا من خط إنتاج واحد إلى تزويد محبّي السناك في أنحاء مصر والمنطقة. الوصفة لم تتغير. الطموح كذلك.",
-      "اليوم نحمل تشكيلة ليز الكاملة بالإضافة إلى مجموعتي شيبسي وويفر الخاصتين بنا — كلها مصنوعة بنفس المعيار الذي أوصلنا إلى هنا. نكهة جريئة. قرمشة صادقة. سناك بإتقان."
+      "في عالم سريع الإيقاع، أصبحت الوجبات الخفيفة جزءًا لا يتجزأ من نمط الحياة اليومي، وهو ما يضع على عاتقنا مسؤولية حقيقية لتقديم منتجات تجمع بين الجودة العالية، المذاق المميز، والاعتمادية التي يثق بها المستهلك.",
+      "تستند «سرايو مصر» إلى خبرة صناعية عريقة تعود إلى شركة سرايو الوادية – فلسطين، التي تأسست عام 1985 بقيادة الدكتور وائل محمد الوادية وأبنائه، حيث نجحت على مدار عقود في بناء معرفة متخصصة في صناعة الوجبات الخفيفة وفق أعلى معايير الجودة.",
+      "وانطلاقًا من هذا الإرث، تم تأسيس «سرايو مصر» في أواخر عام 2018 كشراكة استراتيجية بين مجموعة سرايو الوادية في فلسطين ومجموعة شركات أحمد صابر الشريف في مصر، بهدف نقل هذه الخبرات إلى السوق المصري وتقديم منتجات تلبي تطلعات المستهلك المحلي.",
+      "ومنذ انطلاقتها، عملت الشركة على توطين هذه الخبرات وتطوير عملياتها بما يتماشى مع احتياجات السوق المصري، مع الحفاظ على المعايير التي شكلت أساس نجاحها إقليميًا."
     ]
   },
-  "milestones": [
-    { "year": "2002", "titleEn": "Founded in Cairo", "titleAr": "التأسيس في القاهرة", "textEn": "First production line launched in Cairo's industrial district.", "textAr": "إطلاق أول خط إنتاج في المنطقة الصناعية بالقاهرة." },
-    { "year": "2007", "titleEn": "Lay's Partnership", "titleAr": "شراكة ليز", "textEn": "Became the official regional distributor for the Lay's lineup.", "textAr": "أصبحنا الموزع الإقليمي الرسمي لتشكيلة ليز." },
-    { "year": "2012", "titleEn": "Chipsy Launch", "titleAr": "إطلاق شيبسي", "textEn": "Launched the Chipsy range — our own brand, our own flavors.", "textAr": "أطلقنا تشكيلة شيبسي — علامتنا التجارية ونكهاتنا الخاصة." },
-    { "year": "2018", "titleEn": "Wafer Range Added", "titleAr": "إضافة تشكيلة ويفر", "textEn": "Expanded into wafers with four signature flavors.", "textAr": "توسعنا إلى الويفر بأربع نكهات مميزة." },
-    { "year": "2024", "titleEn": "Regional Export", "titleAr": "التصدير الإقليمي", "textEn": "Now shipping fresh to six countries across the MENA region.", "textAr": "نشحن الآن طازجاً إلى ست دول في منطقة الشرق الأوسط وشمال أفريقيا." }
+  "vision": {
+    "titleEn": "Our Vision",
+    "titleAr": "رؤيتنا",
+    "textEn": "To be among the leading companies in the snack industry in Egypt and the region, and to establish our position as a trusted brand delivering high-quality products that add real value for the consumer.",
+    "textAr": "أن نكون من الشركات الرائدة في صناعة الوجبات الخفيفة في مصر والمنطقة، وأن نرسخ مكانتنا كعلامة تجارية موثوقة تقدم منتجات عالية الجودة تضيف قيمة حقيقية للمستهلك."
+  },
+  "mission": {
+    "titleEn": "Our Mission",
+    "titleAr": "رسالتنا",
+    "textEn": "To deliver wafer, snack and puff products of consistent quality and distinctive taste that meet consumer needs and keep pace with their daily lifestyle.",
+    "textAr": "تقديم منتجات ويفر وسناكس وبافس بجودة مستقرة وطعم مميز، تلبي احتياجات المستهلك وتواكب نمط حياته اليومي."
+  },
+  "pillars": [
+    {
+      "id": "strategy",
+      "icon": "spark",
+      "titleEn": "Our Strategic Direction",
+      "titleAr": "توجهنا الاستراتيجي",
+      "paragraphsEn": [
+        "Sarayo Egypt is committed to developing and delivering innovative products in the snack sector, with a strategic focus on wafers, snacks and puffs, meeting the expectations of the modern consumer and keeping pace with the evolution of the market.",
+        "This direction rests on a deep understanding of the market, supported by an integrated operational approach that ensures efficiency and continuity in delivering products of consistent quality."
+      ],
+      "paragraphsAr": [
+        "تلتزم «سرايو مصر» بتطوير وتقديم منتجات مبتكرة في قطاع الوجبات الخفيفة، مع تركيز استراتيجي على الويفر والسناكس والبافس (Puffs)، بما يلبي تطلعات المستهلك العصري ويواكب تطور السوق.",
+        "ويعتمد هذا التوجه على فهم عميق للسوق، مدعوم بنهج تشغيلي متكامل يضمن الكفاءة والاستمرارية في تقديم منتجات بجودة ثابتة."
+      ]
+    },
+    {
+      "id": "quality",
+      "icon": "leaf",
+      "titleEn": "Our Commitment to Quality",
+      "titleAr": "التزامنا بالجودة",
+      "paragraphsEn": [
+        "At Sarayo Egypt we believe that quality and food safety are the cornerstone of building trust with the consumer. We therefore apply a rigorous control system covering every stage of production — from raw material selection, through manufacturing, to packaging and distribution.",
+        "We are equally committed to developing our products continuously using the latest technologies, to ensure a complete consumer experience meeting standards that rival international best practice."
+      ],
+      "paragraphsAr": [
+        "نؤمن في «سرايو مصر» أن الجودة وسلامة الغذاء تمثلان حجر الأساس في بناء الثقة مع المستهلك. لذلك، نطبق منظومة رقابة دقيقة تشمل كافة مراحل الإنتاج، بدءًا من اختيار المواد الخام، مرورًا بعمليات التصنيع، وصولًا إلى التعبئة والتوزيع.",
+        "كما نحرص على تطوير منتجاتنا باستمرار باستخدام أحدث التقنيات، لضمان تقديم تجربة استهلاكية متكاملة بمعايير تضاهي أفضل الممارسات العالمية."
+      ]
+    },
+    {
+      "id": "future",
+      "icon": "globe",
+      "titleEn": "Looking Ahead",
+      "titleAr": "تطلعنا للمستقبل",
+      "paragraphsEn": [
+        "Sarayo Egypt continues to invest in expanding its production capacity and strengthening its presence in the Egyptian market, drawing on the expertise of Sarayo Alwadiya to support sustainable growth and cement its position as a trusted company in the food sector."
+      ],
+      "paragraphsAr": [
+        "تواصل «سرايو مصر» الاستثمار في توسيع قدراتها الإنتاجية وتعزيز حضورها في السوق المصري، مع الاستفادة من خبرات سرايو الوادية لدعم نمو مستدام وترسيخ مكانتها كشركة موثوقة في قطاع الأغذية."
+      ]
+    }
   ],
   "values": [
-    { "id": "quality", "icon": "spark", "titleEn": "Uncompromising Quality", "titleAr": "جودة بلا تنازلات", "textEn": "Every batch is checked against the same strict standard — no exceptions.", "textAr": "كل دفعة تُفحص وفق نفس المعيار الصارم — بلا استثناءات." },
-    { "id": "flavor", "icon": "flame", "titleEn": "Loud, Real Flavor", "titleAr": "نكهة حقيقية وجريئة", "textEn": "We don't whisper. Our seasoning is bold, toasted, and applied thick.", "textAr": "لا نهمس. تتبيلتنا جريئة، محمّصة، ومُطبَّقة بكثافة." },
-    { "id": "honest", "icon": "leaf", "titleEn": "Honest Ingredients", "titleAr": "مكونات صادقة", "textEn": "Short ingredient lists you can actually read. Nothing hidden.", "textAr": "قوائم مكونات قصيرة تستطيع قراءتها فعلاً. لا شيء مخفي." },
-    { "id": "region", "icon": "globe", "titleEn": "Made for the Region", "titleAr": "مصنوع للمنطقة", "textEn": "Flavors designed for MENA palates — spicy, tangy and bold.", "textAr": "نكهات مصمّمة لأذواق منطقة الشرق الأوسط وشمال أفريقيا — حارة ولاذعة وجريئة." }
+    { "id": "quality",    "icon": "spark", "titleEn": "Quality",    "titleAr": "الجودة",   "textEn": "A commitment to high, consistent production standards.", "textAr": "التزام بمعايير إنتاج عالية وثابتة." },
+    { "id": "innovation", "icon": "flame", "titleEn": "Innovation", "titleAr": "الابتكار", "textEn": "Continuous development of our products.",                "textAr": "تطوير مستمر للمنتجات." },
+    { "id": "trust",      "icon": "leaf",  "titleEn": "Trust",      "titleAr": "الثقة",     "textEn": "Building a long-term relationship with the consumer.",  "textAr": "بناء علاقة طويلة الأمد مع المستهلك." },
+    { "id": "efficiency", "icon": "globe", "titleEn": "Efficiency", "titleAr": "الكفاءة",   "textEn": "Effective operations that ensure the best value for money.", "textAr": "تشغيل فعّال يضمن أفضل قيمة مقابل السعر." }
   ],
   "cta": {
     "titleEn": "Want to work with us?",

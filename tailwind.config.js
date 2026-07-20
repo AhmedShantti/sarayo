@@ -19,12 +19,14 @@ module.exports = {
                 // ----- Sarayo landing brand tokens -----
                 // Dominant: a rich, warm, confident red.
                 // Accents (used sparingly): a little white + a little yellow.
+                // Sampled directly from the Sarayo badge logo (public/sarayo-logo.png):
+                // badge red #E20C18, outline gold #FAB213. Deep/soft variants derived.
                 brand: {
-                    red:          '#D7261E',
-                    'red-deep':   '#8E0E06',
-                    'red-soft':   '#F0463C',
-                    yellow:       '#FFD400',
-                    'yellow-deep':'#F5B500',
+                    red:          '#E20C18',
+                    'red-deep':   '#A80A12',
+                    'red-soft':   '#F23B33',
+                    yellow:       '#FAB213',
+                    'yellow-deep':'#DE9605',
                     cream:        '#FFF6F1',
                     ink:          '#2A0A07',
                 },
