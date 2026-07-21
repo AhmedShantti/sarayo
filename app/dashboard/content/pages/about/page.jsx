@@ -61,9 +61,6 @@ export default function AboutEditor() {
     }
 
     function setParagraphs(lang, list) { set(`story.paragraphs${lang === 'en' ? 'En' : 'Ar'}`, list); }
-    function setMilestone(i, field, value) { setData(d => { const ms = [...d.milestones]; ms[i] = { ...ms[i], [field]: value }; return { ...d, milestones: ms }; }); }
-    function addMilestone() { setData(d => ({ ...d, milestones: [...(d.milestones || []), { year: '2025', titleEn: '', titleAr: '', textEn: '', textAr: '' }] })); }
-    function removeMilestone(i) { setData(d => ({ ...d, milestones: d.milestones.filter((_, idx) => idx !== i) })); }
 
     if (!data) return <div className="p-8 text-neutral-500">Loading…</div>;
 
@@ -122,25 +119,17 @@ export default function AboutEditor() {
                 </div>
             </section>
 
-            {/* Milestones */}
+            {/* Vision & Mission */}
             <section className="rounded-2xl border border-neutral-200 p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Milestones</p>
-                    <button onClick={addMilestone} className="text-xs text-neutral-600 border border-neutral-300 rounded-lg px-3 py-1.5 hover:bg-neutral-50">+ Add</button>
-                </div>
-                {(data.milestones || []).map((m, i) => (
-                    <div key={i} className="rounded-xl border border-neutral-200 p-4 space-y-3">
-                        <div className="flex items-center justify-between">
-                            <input value={m.year || ''} onChange={e => setMilestone(i, 'year', e.target.value)} placeholder="Year"
-                                className="w-24 border border-neutral-200 rounded-lg px-3 py-1.5 text-sm font-mono text-neutral-900 focus:outline-none" />
-                            <button onClick={() => removeMilestone(i)} className="text-neutral-400 hover:text-red-500 text-lg">×</button>
-                        </div>
-                        <BiField label="Title" enVal={m.titleEn} arVal={m.titleAr}
-                            onEn={v => setMilestone(i, 'titleEn', v)} onAr={v => setMilestone(i, 'titleAr', v)} />
-                        <BiField label="Text" enVal={m.textEn} arVal={m.textAr}
-                            onEn={v => setMilestone(i, 'textEn', v)} onAr={v => setMilestone(i, 'textAr', v)} multiline />
-                    </div>
-                ))}
+                <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Vision &amp; Mission</p>
+                <BiField label="Vision title" enVal={data.vision?.titleEn} arVal={data.vision?.titleAr}
+                    onEn={v => set('vision.titleEn', v)} onAr={v => set('vision.titleAr', v)} />
+                <BiField label="Vision text" enVal={data.vision?.textEn} arVal={data.vision?.textAr}
+                    onEn={v => set('vision.textEn', v)} onAr={v => set('vision.textAr', v)} multiline />
+                <BiField label="Mission title" enVal={data.mission?.titleEn} arVal={data.mission?.titleAr}
+                    onEn={v => set('mission.titleEn', v)} onAr={v => set('mission.titleAr', v)} />
+                <BiField label="Mission text" enVal={data.mission?.textEn} arVal={data.mission?.textAr}
+                    onEn={v => set('mission.textEn', v)} onAr={v => set('mission.textAr', v)} multiline />
             </section>
 
             {/* CTA */}

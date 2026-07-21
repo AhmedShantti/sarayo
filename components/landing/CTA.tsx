@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Chip from './Chip';
 import Magnetic from './Magnetic';
@@ -32,10 +31,6 @@ export default function CTA() {
                 <Chip variant="yellow" size="sm" float delay={0} interactive={false} className="absolute left-8 top-10 rotate-[-10deg] hidden sm:flex">{t('lnd.word.crunchy')}</Chip>
                 <Chip variant="white" size="sm" float delay={0.7} interactive={false} className="absolute right-10 top-16 rotate-[8deg] hidden sm:flex">{t('lnd.word.flavorful')}</Chip>
                 <Chip variant="outline" size="sm" float delay={1.2} interactive={false} className="absolute bottom-12 left-16 rotate-[6deg] hidden sm:flex">{t('lnd.word.irresistible')}</Chip>
-
-                <span className="relative mx-auto mb-8 grid h-24 w-24 place-items-center">
-                    <Image src="/images.png" alt="Sarayo Alwadiya logo" width={96} height={96} className="h-full w-full object-contain" />
-                </span>
 
                 <h2 className="landing-display relative text-[clamp(2.75rem,8vw,6.5rem)] leading-[0.9] text-white">
                     <TextReveal text={t('lnd.cta.title')} />

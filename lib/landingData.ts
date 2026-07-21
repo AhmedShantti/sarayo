@@ -33,7 +33,7 @@ export interface Feature {
 }
 
 export const NAV_LINKS = [
-    { label: 'Chipsy', labelAr: 'شيبسي', href: '/products' },
+    { label: 'Snacks', labelAr: 'وجبات خفيفة', href: '/products' },
     { label: 'Wafer', labelAr: 'ويفر', href: '/wafer' },
     { label: 'Export Products', labelAr: 'منتجات التصدير', href: '/export' },
     { label: 'Careers', labelAr: 'وظائف', href: '/careers' },

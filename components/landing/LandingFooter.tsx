@@ -62,9 +62,9 @@ export default function LandingFooter() {
                 <div className="grid grid-cols-2 gap-10 md:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
                     {/* Brand */}
                     <div className="col-span-2 md:col-span-1">
-                        <div className="mb-5 flex items-center gap-2">
-                            <Image src="/images.png" alt="Sarayo Alwadiya logo" width={56} height={56} className="h-14 w-14 object-contain" />
-                            <span className="landing-display text-lg text-white">Sarayo Alwadiya</span>
+                        <div className="mb-5 flex items-center">
+                            {/* Lockup includes the wordmark, so no adjacent text label. */}
+                            <Image src="/sarayo-logo.png" alt="Sarayo Alwadiya logo" width={900} height={514} className="h-14 w-auto object-contain" />
                         </div>
                         <p className="max-w-xs text-sm leading-relaxed text-white/65">
                             {t('lnd.footer.desc')}

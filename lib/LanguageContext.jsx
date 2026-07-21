@@ -4,7 +4,9 @@ import {createContext, useCallback, useContext, useEffect, useMemo, useState} fr
 import {dictionaries} from '@/lib/i18n/dictionaries';
 
 const STORAGE_KEY = 'sarayo_locale';
-const DEFAULT_LOCALE = 'en';
+// Arabic is the site's primary language — first-time visitors land in Arabic.
+// A previously chosen locale in localStorage still wins.
+const DEFAULT_LOCALE = 'ar';
 const LanguageContext = createContext(null);
 
 function readStoredLocale() {
