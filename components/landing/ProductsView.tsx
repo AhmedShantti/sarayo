@@ -8,12 +8,8 @@ import Magnetic from './Magnetic';
 import TextReveal from './TextReveal';
 import CartIcon from './CartIcon';
 import { useLandingCart } from '@/lib/LandingCart';
-<<<<<<< HEAD
 import { formatPrice } from '@/lib/landingData';
 import { fetchProducts, fetchCategories } from '@/lib/api';
-=======
-import { CATEGORIES, PRODUCTS, localizeProduct, type Product } from '@/lib/landingData';
->>>>>>> upstream/main
 import { useLanguage } from '@/lib/LanguageContext';
 
 const FALLBACK_IMG = '/lays-cheddar.png';
@@ -102,7 +98,6 @@ function Card({ p, tone }: { p: ApiProduct; tone: string }) {
                 </motion.div>
             </div>
 
-<<<<<<< HEAD
             <div className="mt-5 flex items-start justify-between gap-3">
                 <div>
                     <h3 className="landing-display text-2xl leading-none">{name}</h3>
@@ -121,12 +116,6 @@ function Card({ p, tone }: { p: ApiProduct; tone: string }) {
                         </>
                     )}
                 </div>
-=======
-            {/* Prices are intentionally not shown on the storefront for now. */}
-            <div className="mt-5">
-                <h3 className="landing-display text-2xl leading-none">{pl.name}</h3>
-                <p className="mt-1.5 text-sm opacity-70">{pl.flavor}</p>
->>>>>>> upstream/main
             </div>
 
             {description && <p className="mt-3 text-sm leading-relaxed opacity-65">{description}</p>}

@@ -6,10 +6,6 @@
       "dom.iterable",
       "esnext"
     ],
-<<<<<<< HEAD
-    "exclude": ["node_modules", "backend"]
-}
-=======
     "allowJs": true,
     "checkJs": false,
     "skipLibCheck": true,
@@ -20,7 +16,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -43,7 +39,7 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "backend"
   ]
 }
->>>>>>> upstream/main
