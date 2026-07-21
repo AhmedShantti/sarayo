@@ -4,15 +4,16 @@ import { CartProvider } from '@/lib/CartContext';
 import { ToastProvider } from '@/lib/ToastContext';
 import { FlavorProvider } from '@/lib/FlavorContext';
 import { LanguageProvider } from '@/lib/LanguageContext';
+import { arabicBody, arabicDisplay } from '@/lib/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
     title: 'Sarayo Alwadiya — Crunchy. Flavorful. Irresistible.',
     description: 'Sarayo Alwadiya — Crunchy, flavorful, irresistible chips since 2002.',
     icons: {
-        icon: '/images.png',
-        shortcut: '/images.png',
-        apple: '/images.png',
+        icon: '/sarayo-icon.png',
+        shortcut: '/sarayo-icon.png',
+        apple: '/sarayo-icon.png',
     },
 };
 
@@ -23,12 +24,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
-        <html lang="en">
+        <html lang="ar" dir="rtl" className={`${arabicBody.variable} ${arabicDisplay.variable}`}>
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <link
-                    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;900&family=Inter:wght@400;500;600;700&display=swap"
+                    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
                     rel="stylesheet"
                 />
             </head>

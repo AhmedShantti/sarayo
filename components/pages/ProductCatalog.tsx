@@ -75,7 +75,6 @@ export default function ProductCatalog({ data, section }: { data: any; section: 
                                             {ar ? p.nameAr : p.nameEn}
                                         </p>
                                         <p className="text-sm opacity-65">{ar ? p.flavorAr : p.flavorEn}</p>
-                                        <p className="text-sm opacity-65 mt-0.5">{p.price}</p>
 
                                         {p.descEn && (
                                             <p className="text-xs opacity-55 mt-2 leading-relaxed">

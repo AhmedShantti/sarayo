@@ -11,8 +11,8 @@ export default function DashboardSidebarLabels({children}) {
                 href="/"
                 className="flex items-center gap-3 px-5 py-5 border-b border-neutral-200 group"
             >
-                <span className="inline-flex w-9 h-9 rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-50 items-center justify-center ring-1 ring-neutral-200 group-hover:ring-ink transition-all">
-                    <img src="/images.png" alt={t('a11y.brandShort')} className="w-7 h-7 object-contain" />
+                <span className="inline-flex h-9 px-1.5 rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-50 items-center justify-center ring-1 ring-neutral-200 group-hover:ring-ink transition-all">
+                    <img src="/sarayo-logo.png" alt={t('a11y.brandShort')} className="h-6 w-auto object-contain" />
                 </span>
                 <div className="leading-tight">
                     <span className="block text-sm font-semibold tracking-tight">{t('dash.brand')}</span>

@@ -8,9 +8,11 @@
 .landing-root {
     position: relative;
     min-height: 100vh;
-    background: #D7261E;            /* dominant warm red */
+    background: #E20C18;            /* dominant warm red — sampled from the logo */
     color: #fff;
-    overflow-x: clip;
+    /* NO overflow here: `overflow-x: clip` clips position:fixed descendants,
+       which cut off and shifted the fixed header on scroll. Horizontal overflow
+       is handled by `body { overflow-x: hidden }` in globals.css instead. */
     font-family: var(--font-grotesk), system-ui, sans-serif;
     /* Reset the site-wide custom cursor for a clean, high-end feel. */
     cursor: auto;
@@ -58,19 +60,21 @@
 }
 
 /* ----------  Arabic typography (RTL)  ----------
-   Anton + Space Grotesk are Latin-only, so swap in Cairo (loaded in the root
-   layout) for both display and body when the document switches to Arabic.
-   Reset letter-spacing everywhere — Arabic letters are joined and tracking
-   breaks them apart. */
+   Anton + Space Grotesk are Latin-only, so swap in the Arabic pairing
+   (IBM Plex Sans Arabic for body, Almarai ExtraBold for display) when the
+   document switches to Arabic. Reset letter-spacing everywhere — Arabic
+   letters are joined and tracking breaks them apart. Also drop the uppercase
+   transform, which does nothing in Arabic but affects any Latin inside. */
 html[lang="ar"] .landing-root {
-    font-family: 'Cairo', var(--font-grotesk), system-ui, sans-serif;
+    font-family: var(--font-ar-body), 'IBM Plex Sans Arabic', system-ui, sans-serif;
 }
 html[lang="ar"] .landing-display,
 html[lang="ar"] .hero-ghost {
-    font-family: 'Cairo', var(--font-anton), sans-serif;
-    font-weight: 900;
-    line-height: 1.15;
+    font-family: var(--font-ar-display), 'Almarai', sans-serif;
+    font-weight: 800;
+    line-height: 1.25;
     letter-spacing: 0;
+    text-transform: none;
 }
 html[lang="ar"] .landing-root * {
     letter-spacing: 0 !important;
