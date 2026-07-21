@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import Chip from './Chip';
 import Magnetic from './Magnetic';
@@ -139,16 +140,28 @@ function Card({ p, tone }: { p: ApiProduct; tone: string }) {
     );
 }
 
-export default function ProductsView() {
+export interface ProductsViewProps {
+    /** Category slug from the route (/products/<slug>). Omitted on /products. */
+    category?: string;
+    /** Display name of that category, passed down so the heading never flickers. */
+    categoryName?: string;
+    categoryNameAr?: string | null;
+}
+
+export default function ProductsView({ category, categoryName, categoryNameAr }: ProductsViewProps = {}) {
     const { t, locale } = useLanguage();
     const [products, setProducts] = useState<ApiProduct[] | null>(null);
     const [categories, setCategories] = useState<ApiCategory[]>([]);
     const [error, setError] = useState(false);
-    const [cat, setCat] = useState<string>('all'); // category slug, or 'all'
+    // The active category comes from the route, not local state, so every
+    // category is a real shareable URL.
+    const cat = category || 'all';
 
     useEffect(() => {
         let active = true;
-        Promise.all([fetchProducts({ limit: 100 }), fetchCategories().catch(() => [])])
+        setProducts(null);
+        setError(false);
+        Promise.all([fetchProducts({ limit: 100, category }), fetchCategories().catch(() => [])])
             .then(([prods, cats]) => {
                 if (!active) return;
                 setProducts(prods);
@@ -163,12 +176,14 @@ export default function ProductsView() {
         return () => {
             active = false;
         };
-    }, []);
+    }, [category]);
 
-    const list = useMemo(() => {
-        if (!products) return [];
-        return cat === 'all' ? products : products.filter((p) => p.category?.slug === cat);
-    }, [products, cat]);
+    // The backend already filtered by category, so this is just what it returned.
+    const list = products || [];
+
+    const heading =
+        (category && (locale === 'ar' && categoryNameAr ? categoryNameAr : categoryName)) ||
+        t('lnd.products.title');
 
     const anyPackage = useMemo(() => (products || []).some(isPackage), [products]);
     const catLabel = (c: ApiCategory) => (locale === 'ar' && c.nameAr ? c.nameAr : c.name);
@@ -180,7 +195,7 @@ export default function ProductsView() {
                 <div className="mb-10">
                     <Chip variant="yellow" size="md" className="mb-5">{t('lnd.products.chip')}</Chip>
                     <h1 className="landing-display text-[clamp(3rem,9vw,7rem)] leading-[0.88] text-white">
-                        <TextReveal text={t('lnd.products.title')} />
+                        <TextReveal text={heading} />
                     </h1>
                     <p className="mt-5 max-w-lg font-grotesk text-base text-white/75">
                         {t('lnd.products.sub')}
@@ -197,13 +212,18 @@ export default function ProductsView() {
                 {/* Filter chips */}
                 {categories.length > 0 && (
                     <div className="mb-10 flex flex-wrap gap-2.5">
-                        <button onClick={() => setCat('all')} data-cursor="hover" aria-pressed={cat === 'all'}>
+                        <Link href="/products" data-cursor="hover" aria-current={cat === 'all' ? 'page' : undefined}>
                             <Chip variant={cat === 'all' ? 'yellow' : 'outline'} size="md">{t('lnd.cat.All')}</Chip>
-                        </button>
+                        </Link>
                         {categories.map((c) => (
-                            <button key={c.id} onClick={() => setCat(c.slug)} data-cursor="hover" aria-pressed={cat === c.slug}>
+                            <Link
+                                key={c.id}
+                                href={`/products/${c.slug}`}
+                                data-cursor="hover"
+                                aria-current={cat === c.slug ? 'page' : undefined}
+                            >
                                 <Chip variant={cat === c.slug ? 'yellow' : 'outline'} size="md">{catLabel(c)}</Chip>
-                            </button>
+                            </Link>
                         ))}
                     </div>
                 )}
