@@ -5,7 +5,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
     try {
-        const section = Array.isArray(params.section) ? params.section.join('/') : params.section;
+        const { section: raw } = await params;
+        const section = Array.isArray(raw) ? raw.join('/') : raw;
         const data = readContent(section);
         return Response.json(data);
     } catch (e) {
@@ -15,7 +16,8 @@ export async function GET(req, { params }) {
 
 export async function PUT(req, { params }) {
     try {
-        const section = Array.isArray(params.section) ? params.section.join('/') : params.section;
+        const { section: raw } = await params;
+        const section = Array.isArray(raw) ? raw.join('/') : raw;
         const body = await req.json();
         writeContent(section, body);
         revalidatePath('/');

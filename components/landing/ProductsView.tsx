@@ -8,7 +8,7 @@ import Magnetic from './Magnetic';
 import TextReveal from './TextReveal';
 import CartIcon from './CartIcon';
 import { useLandingCart } from '@/lib/LandingCart';
-import { CATEGORIES, PRODUCTS, localizeProduct, formatPrice, type Product } from '@/lib/landingData';
+import { CATEGORIES, PRODUCTS, localizeProduct, type Product } from '@/lib/landingData';
 import { useLanguage } from '@/lib/LanguageContext';
 
 const TONE: Record<Product['tone'], string> = {
@@ -48,12 +48,10 @@ function Card({ p }: { p: Product }) {
                 </motion.div>
             </div>
 
-            <div className="mt-5 flex items-start justify-between gap-3">
-                <div>
-                    <h3 className="landing-display text-2xl leading-none">{pl.name}</h3>
-                    <p className="mt-1.5 text-sm opacity-70">{pl.flavor}</p>
-                </div>
-                <span className="landing-display whitespace-nowrap text-xl">{formatPrice(p.priceValue, locale)}</span>
+            {/* Prices are intentionally not shown on the storefront for now. */}
+            <div className="mt-5">
+                <h3 className="landing-display text-2xl leading-none">{pl.name}</h3>
+                <p className="mt-1.5 text-sm opacity-70">{pl.flavor}</p>
             </div>
 
             <p className="mt-3 text-sm leading-relaxed opacity-65">{pl.description}</p>

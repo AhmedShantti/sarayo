@@ -7,7 +7,7 @@ export default function BrandLogo() {
     const {t, hydrated} = useLanguage();
     return (
         <img
-            src="/images.png"
+            src="/sarayo-logo.png"
             alt={hydrated ? t('a11y.brandAlt') : 'Sarayo Alwadiya'}
             className="brand-img"
         />

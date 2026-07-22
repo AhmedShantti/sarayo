@@ -1,16 +1,16 @@
 {
   "logo": {
-    "src": "/images.png",
+    "src": "/sarayo-logo.png",
     "altEn": "Sarayo Alwadiya",
     "altAr": "سرايو الوادية",
-    "width": 48,
-    "height": 48
+    "width": 900,
+    "height": 514
   },
   "siteNameEn": "Sarayo Alwadiya",
   "siteNameAr": "سرايو الوادية",
   "taglineEn": "Crunch in style",
   "taglineAr": "قرمشة بأناقة",
   "since": "2002",
-  "primaryColor": "#C8102E",
-  "accentColor": "#FFD400"
+  "primaryColor": "#E20C18",
+  "accentColor": "#FAB213"
 }

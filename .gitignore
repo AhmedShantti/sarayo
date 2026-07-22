@@ -27,3 +27,9 @@ yarn-error.log*
 
 # Vercel
 .vercel
+
+# Claude Code local settings
+.claude/
+
+# Leftover nested copy of the pre-TypeScript site (superseded by 5d9ccd8)
+/sarayo-nextjs/
