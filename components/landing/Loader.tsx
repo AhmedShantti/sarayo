@@ -18,13 +18,17 @@ export default function Loader() {
 
     useEffect(() => {
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const duration = reduce ? 0.4 : 1.7;
         document.body.style.overflow = 'hidden';
         const controls = animate(count, 100, {
-            duration: reduce ? 0.4 : 1.7,
+            duration,
             ease: [0.22, 1, 0.36, 1],
             onComplete: () => setTimeout(() => setDone(true), 250),
         });
-        return () => controls.stop();
+        // Safety net: rAF-driven animations can stall (throttled/background tabs,
+        // dev-mode double-effects) and strand the curtain over the page forever.
+        const fallback = setTimeout(() => setDone(true), duration * 1000 + 1500);
+        return () => { controls.stop(); clearTimeout(fallback); };
     }, [count]);
 
     useEffect(() => {
