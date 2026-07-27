@@ -7,53 +7,15 @@ import CartIcon from './CartIcon';
 import LangToggle from '@/components/LangToggle';
 import { useLandingCart } from '@/lib/LandingCart';
 import { useLanguage } from '@/lib/LanguageContext';
-import { NAV_LINKS } from '@/lib/landingData';
+import type { NavItem } from '@/lib/landingData';
 
-/* ─── Product data ─────────────────────────────────────────── */
-// NOTE: mini-cornice and private-label reuse cornice.png as a stand-in —
-// they still need their own artwork in /public/products-chipsy/.
-const SNACK_PRODUCTS = [
-    { name: 'Cornice',       nameAr: 'كورنايس',       href: '/products/cornice',       img: '/products-chipsy/cornice.png',    sub: 'Crisps',        subAr: 'شيبس' },
-    { name: 'Mini Cornice',  nameAr: 'ميني كورنايس',  href: '/products/mini-cornice',  img: '/products-chipsy/cornice.png',    sub: 'Mini Crisps',   subAr: 'شيبس ميني' },
-    { name: 'Pop Cornice',   nameAr: 'بوب كورنايس',   href: '/products/pop-cornice',   img: '/products-chipsy/popcornice.png', sub: 'Popcorn',       subAr: 'بوب كورن' },
-    { name: 'Flipi Puffs',   nameAr: 'فلايبي بافس',   href: '/products/flipi-puffs',   img: '/products-chipsy/flipi.png',      sub: 'Puffs',         subAr: 'بافز' },
-    { name: 'Taco',          nameAr: 'تاكو',          href: '/products/taco',          img: '/products-chipsy/taco.png',       sub: 'Tortilla',      subAr: 'تورتيلا' },
-    { name: 'Private Label', nameAr: 'برايفت ليبيل',  href: '/products/private-label', img: '/products-chipsy/cornice.png',    sub: 'Contract Mfg.', subAr: 'تصنيع لدى الغير' },
-];
-
-// Sarayo's own wafer, plus the two private-label brands we produce.
-// The sub-label carries the grouping, since the menu renders a flat card grid.
-const WAFER_PRODUCTS = [
-    { name: 'Sarayo Wafer',    nameAr: 'ويفر سرايو',     href: '/wafer',               img: '/wafer-products/wafer-choco.png',      sub: 'Our Brand',     subAr: 'علامتنا' },
-    { name: 'Abu Auf Wafer',   nameAr: 'ويفر أبو عوف',   href: '/wafer/abu-auf',       img: '/wafer-products/wafer-lemon.png',      sub: 'Private Label', subAr: 'برايفت ليبيل' },
-    { name: 'Americana Wafer', nameAr: 'ويفر أمريكانا',  href: '/wafer/americana',     img: '/wafer-products/wafer-strewberry.png', sub: 'Private Label', subAr: 'برايفت ليبيل' },
-];
-
-const MENUS = {
-    snacks: {
-        products : SNACK_PRODUCTS,
-        label    : 'Snack Products',
-        labelAr  : 'منتجات الوجبات الخفيفة',
-        viewAll  : '/products',
-        viewAllAr: 'عرض كل الوجبات الخفيفة ←',
-        viewAllEn: 'View all Snacks →',
-    },
-    wafer: {
-        products : WAFER_PRODUCTS,
-        label    : 'Wafer Products',
-        labelAr  : 'منتجات الويفر',
-        viewAll  : '/wafer',
-        viewAllAr: 'عرض كل الويفر ←',
-        viewAllEn: 'View all Wafer →',
-    },
-} as const;
-
-type MenuKey = keyof typeof MENUS | null;
-
-const COMPANY_LINKS = NAV_LINKS.slice(2);
+type MenuKey = string | null;
 
 /* ─── Component ────────────────────────────────────────────── */
-export default function LandingNav() {
+export default function LandingNav({ nav = { items: [] } }: { nav?: { items: NavItem[] } }) {
+    const menuItems  = nav.items.filter(i => i.children && i.children.length > 0);
+    const plainItems = nav.items.filter(i => !i.children || i.children.length === 0);
+
     const [mobileOpen, setMobileOpen]       = useState(false);
     const [activeMenu, setActiveMenu]       = useState<MenuKey>(null);
     const [mobileExpanded, setMobileExpanded] = useState<MenuKey>(null);
@@ -75,7 +37,7 @@ export default function LandingNav() {
     const toggleMobile = (key: MenuKey) =>
         setMobileExpanded(prev => (prev === key ? null : key));
 
-    const currentMenu = activeMenu ? MENUS[activeMenu] : null;
+    const currentMenu = activeMenu ? menuItems.find(i => i.id === activeMenu) ?? null : null;
 
     return (
         <>
@@ -97,62 +59,44 @@ export default function LandingNav() {
                     {/* ── Top row ── */}
                     <div className="mx-auto flex h-[68px] w-full max-w-[1240px] items-center justify-between px-4 sm:h-[84px] sm:px-6 lg:h-[92px]">
 
-                        {/* Logo */}
+                        {/* Logo — icon only, sized up now that it no longer shares the lockup with a wordmark. */}
                         <a href="/" aria-label="Sarayo home" className="flex flex-shrink-0 items-center">
                             <motion.span
-                                whileHover={{ rotate: -3, scale: 1.06 }}
+                                whileHover={{ rotate: -10, scale: 1.12 }}
                                 transition={{ type: 'spring', stiffness: 400, damping: 13 }}
-                                className="block flex-shrink-0"
+                                className="block h-12 w-12 flex-shrink-0 sm:h-16 sm:w-16 lg:h-[72px] lg:w-[72px]"
                             >
-                                {/* Badge lockup already carries the wordmark — no separate text label. */}
-                                <Image
-                                    src="/sarayo-logo.png"
-                                    alt="Sarayo"
-                                    width={900}
-                                    height={514}
-                                    className="h-[46px] w-auto object-contain sm:h-[64px] lg:h-[72px]"
-                                    priority
-                                />
+                                <Image src="/sarayo-icon.png" alt="Sarayo" width={144} height={144} className="h-full w-full object-contain" priority />
                             </motion.span>
                         </a>
 
                         {/* Desktop links */}
                         <ul className="hidden items-center gap-0.5 xl:flex">
 
-                            {/* Chipsy */}
-                            <motion.li initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                                       transition={{ delay: 0.12, duration: 0.4 }}
-                                       onMouseEnter={() => enterMenu('snacks')}>
-                                <a href="/products" className="group flex items-center gap-1 px-4 py-2.5">
-                                    <span className="landing-display text-[17px] text-brand-red-deep transition-colors group-hover:text-brand-red">
-                                        {locale === 'ar' ? NAV_LINKS[0].labelAr : NAV_LINKS[0].label}
-                                    </span>
-                                    <motion.span animate={{ rotate: activeMenu === 'snacks' ? 180 : 0 }}
-                                                 transition={{ duration: 0.2 }}
-                                                 className="mt-0.5 text-[9px] text-brand-red-deep/50 group-hover:text-brand-red">▾</motion.span>
-                                </a>
-                            </motion.li>
-
-                            {/* Wafer */}
-                            <motion.li initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                                       transition={{ delay: 0.17, duration: 0.4 }}
-                                       onMouseEnter={() => enterMenu('wafer')}>
-                                <a href="/wafer" className="group flex items-center gap-1 px-4 py-2.5">
-                                    <span className="landing-display text-[17px] text-brand-red-deep transition-colors group-hover:text-brand-red">
-                                        {locale === 'ar' ? NAV_LINKS[1].labelAr : NAV_LINKS[1].label}
-                                    </span>
-                                    <motion.span animate={{ rotate: activeMenu === 'wafer' ? 180 : 0 }}
-                                                 transition={{ duration: 0.2 }}
-                                                 className="mt-0.5 text-[9px] text-brand-red-deep/50 group-hover:text-brand-red">▾</motion.span>
-                                </a>
-                            </motion.li>
+                            {/* Dropdown/mega-menu items */}
+                            {menuItems.map((item, i) => (
+                                <motion.li key={item.id} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+                                           transition={{ delay: 0.12 + i * 0.05, duration: 0.4 }}
+                                           onMouseEnter={() => enterMenu(item.id)}>
+                                    <a href={item.href} className="group flex items-center gap-1 px-4 py-2.5">
+                                        <span className="landing-display text-[16px] text-brand-red-deep transition-colors group-hover:text-brand-red">
+                                            {locale === 'ar' ? item.labelAr : item.label}
+                                        </span>
+                                        <motion.span animate={{ rotate: activeMenu === item.id ? 180 : 0 }}
+                                                     transition={{ duration: 0.2 }}
+                                                     className="mt-0.5 text-[9px] text-brand-red-deep/50 group-hover:text-brand-red">▾</motion.span>
+                                    </a>
+                                </motion.li>
+                            ))}
 
                             {/* Separator */}
-                            <li className="mx-2 h-4 w-px bg-brand-ink/15" />
+                            {menuItems.length > 0 && plainItems.length > 0 && (
+                                <li className="mx-2 h-4 w-px bg-brand-ink/15" />
+                            )}
 
                             {/* Company links */}
-                            {COMPANY_LINKS.map((link, i) => (
-                                <motion.li key={link.href}
+                            {plainItems.map((link, i) => (
+                                <motion.li key={link.id}
                                            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
                                            transition={{ delay: 0.22 + i * 0.055, duration: 0.4 }}
                                            onMouseEnter={() => enterMenu(null)}>
@@ -168,9 +112,6 @@ export default function LandingNav() {
 
                         {/* Right actions */}
                         <div className="flex items-center gap-2">
-                            {/* Visibility is controlled by this wrapper: `.lang-toggle` hard-sets
-                                `display: inline-flex`, so `hidden`/`sm:inline-flex` on the button
-                                itself would be ignored. Colour is always brand red — never white. */}
                             <span className="hidden sm:block">
                                 <LangToggle className="text-brand-red hover:text-brand-red-deep" />
                             </span>
@@ -212,7 +153,7 @@ export default function LandingNav() {
                         </div>
                     </div>
 
-                    {/* ══ MEGA-MENU — expands the pill downward ══ */}
+                    {/* ══ MEGA-MENU — expands the bar downward ══ */}
                     <AnimatePresence mode="wait">
                         {currentMenu && (
                             <motion.div
@@ -231,21 +172,20 @@ export default function LandingNav() {
                                         <div className="flex items-center gap-2">
                                             <span className="h-2 w-2 rounded-full bg-brand-red" />
                                             <span className="landing-display text-[13px] text-brand-red">
-                                                {locale === 'ar' ? currentMenu.labelAr : currentMenu.label}
+                                                {locale === 'ar' ? (currentMenu.menuLabelAr ?? currentMenu.labelAr) : (currentMenu.menuLabel ?? currentMenu.label)}
                                             </span>
                                         </div>
-                                        <a href={currentMenu.viewAll}
+                                        <a href={currentMenu.href}
                                            className="font-grotesk text-[10px] font-bold uppercase tracking-[1.5px] text-brand-ink/45 transition-colors hover:text-brand-red">
-                                            {locale === 'ar' ? currentMenu.viewAllAr : currentMenu.viewAllEn}
+                                            {locale === 'ar' ? currentMenu.viewAllLabelAr : currentMenu.viewAllLabel}
                                         </a>
                                     </div>
 
-                                    {/* 4 landscape cards */}
-                                    {/* Exactly 4 items fill one row; everything else sits 3 per row. */}
-                                    <div className={`grid gap-3 ${currentMenu.products.length === 4 ? 'grid-cols-4' : 'grid-cols-3'}`}>
-                                        {currentMenu.products.map((p, i) => (
+                                    {/* Landscape cards — exactly 4 items fill one row; everything else sits 3 per row. */}
+                                    <div className={`grid gap-3 ${(currentMenu.children ?? []).length === 4 ? 'grid-cols-4' : 'grid-cols-3'}`}>
+                                        {(currentMenu.children ?? []).map((p, i) => (
                                             <motion.a
-                                                key={p.href}
+                                                key={p.id}
                                                 href={p.href}
                                                 initial={{ opacity: 0, y: 16 }}
                                                 animate={{ opacity: 1, y: 0  }}
@@ -254,22 +194,28 @@ export default function LandingNav() {
                                             >
                                                 <div className="relative aspect-[16/10] w-full">
                                                     <Image
-                                                        src={p.img}
-                                                        alt={p.name}
+                                                        src={p.img ?? ''}
+                                                        alt={p.label}
                                                         fill
                                                         className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                                        sizes="(max-width:1280px) 33vw, 390px"
+                                                        sizes="(max-width:1280px) 25vw, 290px"
                                                     />
                                                     {/* gradient */}
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent transition-all duration-300 group-hover:from-brand-red-deep/90" />
                                                     {/* yellow left bar */}
                                                     <div className="absolute inset-y-0 left-0 w-[4px] origin-bottom scale-y-0 rounded-r bg-brand-yellow transition-transform duration-300 group-hover:scale-y-100" />
+                                                    {/* private-label stamp */}
+                                                    {(locale === 'ar' ? p.badgeAr : p.badge) && (
+                                                        <span className="landing-display absolute right-2 top-2 rotate-[-4deg] rounded-full bg-brand-yellow px-2.5 py-1 text-[10px] text-brand-red-deep shadow-[0_2px_8px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-105">
+                                                            {locale === 'ar' ? p.badgeAr : p.badge}
+                                                        </span>
+                                                    )}
                                                     {/* text */}
                                                     <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between p-3">
                                                         <div>
                                                             <p className="landing-display text-[20px] text-white leading-none"
                                                                style={{ textShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
-                                                                {locale === 'ar' ? p.nameAr : p.name}
+                                                                {locale === 'ar' ? p.labelAr : p.label}
                                                             </p>
                                                             <p className="mt-0.5 font-grotesk text-[9px] uppercase tracking-[1.5px] text-brand-yellow/70 transition-colors group-hover:text-brand-yellow">
                                                                 {locale === 'ar' ? p.subAr : p.sub}
@@ -301,36 +247,38 @@ export default function LandingNav() {
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-brand-red xl:hidden"
                     >
-                        {/* Content starts below the fixed header bar. The burger itself
-                            morphs into an ✕, so no second close button is needed here. */}
-                        <div className="flex flex-1 flex-col px-5 pb-12 pt-[92px] sm:px-6 sm:pt-[112px]">
+                        {/* Yellow ribbon */}
+                        <div className="h-[4px] w-full flex-shrink-0 bg-brand-yellow" />
+
+                        {/* Header */}
+                        <div className="flex flex-shrink-0 items-center justify-between px-6 pt-5">
+                            <span className="landing-display text-[18px] text-white/35">Menu</span>
+                            <button type="button" onClick={() => setMobileOpen(false)}
+                                className="grid h-10 w-10 place-items-center rounded-xl border border-white/20 text-white">
+                                <span className="font-grotesk text-xl leading-none">✕</span>
+                            </button>
+                        </div>
+
+                        <div className="flex flex-1 flex-col px-6 pb-12 pt-8">
 
                             {/* PRODUCTS label */}
                             <p className="mb-5 font-grotesk text-[10px] font-bold uppercase tracking-[3px] text-white/35">
                                 {locale === 'ar' ? 'المنتجات' : 'Products'}
                             </p>
 
-                            {/* ── Chipsy accordion ── */}
-                            <MobileAccordion
-                                label={locale === 'ar' ? NAV_LINKS[0].labelAr : NAV_LINKS[0].label}
-                                isOpen={mobileExpanded === 'snacks'}
-                                onToggle={() => toggleMobile('snacks')}
-                                products={SNACK_PRODUCTS}
-                                locale={locale}
-                                onClose={() => setMobileOpen(false)}
-                                delay={0.06}
-                            />
-
-                            {/* ── Wafer accordion ── */}
-                            <MobileAccordion
-                                label={locale === 'ar' ? NAV_LINKS[1].labelAr : NAV_LINKS[1].label}
-                                isOpen={mobileExpanded === 'wafer'}
-                                onToggle={() => toggleMobile('wafer')}
-                                products={WAFER_PRODUCTS}
-                                locale={locale}
-                                onClose={() => setMobileOpen(false)}
-                                delay={0.12}
-                            />
+                            {/* ── Dropdown item accordions ── */}
+                            {menuItems.map((item, i) => (
+                                <MobileAccordion
+                                    key={item.id}
+                                    label={locale === 'ar' ? item.labelAr : item.label}
+                                    isOpen={mobileExpanded === item.id}
+                                    onToggle={() => toggleMobile(item.id)}
+                                    products={item.children ?? []}
+                                    locale={locale}
+                                    onClose={() => setMobileOpen(false)}
+                                    delay={0.06 + i * 0.06}
+                                />
+                            ))}
 
                             {/* COMPANY label */}
                             <p className="mb-4 mt-8 font-grotesk text-[10px] font-bold uppercase tracking-[3px] text-white/30">
@@ -338,13 +286,13 @@ export default function LandingNav() {
                             </p>
 
                             <ul>
-                                {COMPANY_LINKS.map((link, i) => (
-                                    <motion.li key={link.href}
+                                {plainItems.map((link, i) => (
+                                    <motion.li key={link.id}
                                         initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.2 + i * 0.06 }}>
                                         <a href={link.href} onClick={() => setMobileOpen(false)}
                                            className="group flex items-center justify-between border-b border-white/8 py-3">
-                                            <span className="landing-display text-[1.55rem] text-white/45 transition-colors group-hover:text-white sm:text-[2.1rem]">
+                                            <span className="landing-display text-[2.1rem] text-white/45 transition-colors group-hover:text-white">
                                                 {locale === 'ar' ? link.labelAr : link.label}
                                             </span>
                                             <span className="font-grotesk text-xl text-white/15 group-hover:text-white/40">›</span>
@@ -378,7 +326,7 @@ function MobileAccordion({
     label: string;
     isOpen: boolean;
     onToggle: () => void;
-    products: typeof SNACK_PRODUCTS;
+    products: NavItem[];
     locale: string;
     onClose: () => void;
     delay: number;
@@ -387,12 +335,12 @@ function MobileAccordion({
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}>
             <button type="button" onClick={onToggle}
                 className="group flex w-full items-center justify-between border-b border-white/10 pb-4">
-                <span className="landing-display text-[2.3rem] leading-none text-white sm:text-[3.2rem]"
+                <span className="landing-display text-[3.2rem] text-white leading-none"
                       style={{ textShadow: '3px 3px 0 rgba(0,0,0,0.2)' }}>
                     {label}
                 </span>
                 <motion.span animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}
-                             className="landing-display text-[1.7rem] text-brand-yellow/50 sm:text-[2.2rem]">›</motion.span>
+                             className="landing-display text-[2.2rem] text-brand-yellow/50">›</motion.span>
             </button>
 
             <AnimatePresence>
@@ -406,20 +354,25 @@ function MobileAccordion({
                     >
                         <div className="grid grid-cols-2 gap-3 py-4">
                             {products.map((p, i) => (
-                                <motion.a key={p.href} href={p.href} onClick={onClose}
+                                <motion.a key={p.id} href={p.href} onClick={onClose}
                                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.06 }}
                                     className="group relative overflow-hidden rounded-xl">
                                     <div className="relative aspect-[4/3] w-full">
-                                        <Image src={p.img} alt={p.name} fill
+                                        <Image src={p.img ?? ''} alt={p.label} fill
                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
                                                sizes="180px" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-brand-red-deep/90 via-black/10 to-transparent" />
                                         <div className="absolute inset-y-0 left-0 w-[4px] origin-bottom scale-y-0 rounded-r bg-brand-yellow transition-transform duration-300 group-hover:scale-y-100" />
+                                        {(locale === 'ar' ? p.badgeAr : p.badge) && (
+                                            <span className="landing-display absolute right-2 top-2 rotate-[-4deg] rounded-full bg-brand-yellow px-2 py-0.5 text-[9px] text-brand-red-deep shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+                                                {locale === 'ar' ? p.badgeAr : p.badge}
+                                            </span>
+                                        )}
                                         <div className="absolute bottom-0 left-0 right-0 p-3">
                                             <p className="landing-display text-[17px] text-white leading-none"
                                                style={{ textShadow: '2px 2px 0 rgba(0,0,0,0.4)' }}>
-                                                {locale === 'ar' ? p.nameAr : p.name}
+                                                {locale === 'ar' ? p.labelAr : p.label}
                                             </p>
                                             <p className="mt-0.5 font-grotesk text-[9px] uppercase tracking-wider text-brand-yellow/60">
                                                 {locale === 'ar' ? p.subAr : p.sub}

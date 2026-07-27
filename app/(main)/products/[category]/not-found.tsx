@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Cursor from '@/components/landing/Cursor';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import { useLanguage } from '@/lib/LanguageContext';
@@ -12,7 +11,6 @@ export default function CategoryNotFound() {
 
     return (
         <main>
-            <Cursor />
             <LandingNav />
             <section className="px-5 pb-28 pt-32 sm:px-8 sm:pt-40">
                 <div className="mx-auto max-w-[1280px]">

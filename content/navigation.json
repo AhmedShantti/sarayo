@@ -1,22 +1,141 @@
 {
-  "navLinks": [
-    { "label": "Chipsy", "labelAr": "شيبسي", "href": "/products" },
-    { "label": "Wafer", "labelAr": "ويفر", "href": "/wafer" },
-    { "label": "Export Products", "labelAr": "منتجات التصدير", "href": "/export" },
-    { "label": "Careers", "labelAr": "وظائف", "href": "/careers" },
-    { "label": "About Us", "labelAr": "من نحن", "href": "/about" },
-    { "label": "Contact Us", "labelAr": "تواصل معنا", "href": "/contact" }
-  ],
-  "chipsyProducts": [
-    { "name": "Cornice", "nameAr": "كورنيس", "href": "/products/cornice", "img": "/products-chipsy/cornice.png", "sub": "Crisps", "subAr": "شيبس" },
-    { "name": "Taco", "nameAr": "تاكو", "href": "/products/taco", "img": "/products-chipsy/taco.png", "sub": "Tortilla", "subAr": "تورتيلا" },
-    { "name": "Flipi", "nameAr": "فليبي", "href": "/products/flipi", "img": "/products-chipsy/flipi.png", "sub": "Puffs", "subAr": "بافز" },
-    { "name": "Pop Cornice", "nameAr": "بوب كورنيس", "href": "/products/popcornice", "img": "/products-chipsy/popcornice.png", "sub": "Popcorn", "subAr": "بوب كورن" }
-  ],
-  "waferProducts": [
-    { "name": "Choco Hazel", "nameAr": "شوكو هيزل", "href": "/wafer/choco-hazel", "img": "/wafer-products/wafer-choco.png", "sub": "Choco & Hazelnut", "subAr": "شوكولاتة وهيزل" },
-    { "name": "Lemon", "nameAr": "ليمون", "href": "/wafer/lemon", "img": "/wafer-products/wafer-lemon.png", "sub": "Lemon Cream", "subAr": "كريمة ليمون" },
-    { "name": "Strawberry", "nameAr": "فراولة", "href": "/wafer/strawberry", "img": "/wafer-products/wafer-strewberry.png", "sub": "Strawberry Cream", "subAr": "كريمة فراولة" },
-    { "name": "Chocolate", "nameAr": "شوكولاتة", "href": "/wafer/chocolate", "img": "/wafer-products/wafer-choco-bun.png", "sub": "Pure Chocolate", "subAr": "شوكولاتة خالصة" }
+  "items": [
+    {
+      "id": "snacks",
+      "label": "Snacks",
+      "labelAr": "وجبات خفيفة",
+      "href": "/products",
+      "menuLabel": "Snack Products",
+      "menuLabelAr": "منتجات الوجبات الخفيفة",
+      "viewAllLabel": "View all Snacks →",
+      "viewAllLabelAr": "عرض كل الوجبات الخفيفة ←",
+      "children": [
+        {
+          "id": "cornice",
+          "label": "Cornice",
+          "labelAr": "كورنايس",
+          "href": "/products/cornice",
+          "img": "/products-chipsy/cornice.png",
+          "sub": "Crisps",
+          "subAr": "شيبس"
+        },
+        {
+          "id": "mini-cornice",
+          "label": "Mini Cornice",
+          "labelAr": "ميني كورنايس",
+          "href": "/products/mini-cornice",
+          "img": "/products-chipsy/cornice.png",
+          "sub": "Mini Crisps",
+          "subAr": "شيبس ميني"
+        },
+        {
+          "id": "pop-cornice",
+          "label": "Pop Cornice",
+          "labelAr": "بوب كورنايس",
+          "href": "/products/pop-cornice",
+          "img": "/products-chipsy/popcornice.png",
+          "sub": "Popcorn",
+          "subAr": "بوب كورن"
+        },
+        {
+          "id": "flipi-puffs",
+          "label": "Flipi Puffs",
+          "labelAr": "فلايبي بافس",
+          "href": "/products/flipi-puffs",
+          "img": "/products-chipsy/flipi.png",
+          "sub": "Puffs",
+          "subAr": "بافز"
+        },
+        {
+          "id": "taco",
+          "label": "Taco",
+          "labelAr": "تاكو",
+          "href": "/products/taco",
+          "img": "/products-chipsy/taco.png",
+          "sub": "Tortilla",
+          "subAr": "تورتيلا"
+        },
+        {
+          "id": "private-label",
+          "label": "Private Label",
+          "labelAr": "برايفت ليبيل",
+          "href": "/products/private-label",
+          "img": "/products-chipsy/cornice.png",
+          "sub": "Contract Mfg.",
+          "subAr": "تصنيع لدى الغير"
+        }
+      ]
+    },
+    {
+      "id": "wafer",
+      "label": "Wafer",
+      "labelAr": "ويفر",
+      "href": "/wafer",
+      "menuLabel": "Wafer Products",
+      "menuLabelAr": "منتجات الويفر",
+      "viewAllLabel": "View all Wafer →",
+      "viewAllLabelAr": "عرض كل الويفر ←",
+      "children": [
+        {
+          "id": "sarayo-wafer",
+          "label": "Sarayo Wafer",
+          "labelAr": "ويفر سرايو",
+          "href": "/wafer",
+          "img": "/wafer-products/wafer-choco.png",
+          "sub": "Our Brand",
+          "subAr": "علامتنا"
+        },
+        {
+          "id": "abu-auf",
+          "label": "Abu Auf Wafer",
+          "labelAr": "ويفر أبو عوف",
+          "href": "/wafer/abu-auf",
+          "img": "/wafer-products/wafer-lemon.png",
+          "sub": "Lemon Cream",
+          "subAr": "كريمة ليمون",
+          "badge": "Private Label",
+          "badgeAr": "برايفت ليبيل"
+        },
+        {
+          "id": "americana",
+          "label": "Americana Wafer",
+          "labelAr": "ويفر أمريكانا",
+          "href": "/wafer/americana",
+          "img": "/wafer-products/wafer-strewberry.png",
+          "sub": "Strawberry Cream",
+          "subAr": "كريمة فراولة",
+          "badge": "Private Label",
+          "badgeAr": "برايفت ليبيل"
+        }
+      ]
+    },
+    {
+      "id": "export",
+      "label": "Export Products",
+      "labelAr": "منتجات التصدير",
+      "href": "/export",
+      "children": []
+    },
+    {
+      "id": "careers",
+      "label": "Careers",
+      "labelAr": "وظائف",
+      "href": "/careers",
+      "children": []
+    },
+    {
+      "id": "about",
+      "label": "About Us",
+      "labelAr": "من نحن",
+      "href": "/about",
+      "children": []
+    },
+    {
+      "id": "contact",
+      "label": "Contact Us",
+      "labelAr": "تواصل معنا",
+      "href": "/contact",
+      "children": []
+    }
   ]
 }

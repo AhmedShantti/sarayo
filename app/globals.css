@@ -1845,17 +1845,6 @@ input    { font: inherit; }
     box-shadow: 0 3px 0 var(--ink-deep);
 }
 
-/* Custom cursor (marketing site only) */
-body {
-    cursor: url('/cursor-arrow.png') 3 2, auto;
-}
-a, button, [role="button"], label, summary, select,
-.flavor-item, .product-card, .dot, .add-cart-btn,
-.qty-btn, .remove-btn, .cart-btn, .menu-toggle, .carousel-arrow,
-.back-to-top, .btn, .nav-link, .contact-link, .view-all, .continue-link {
-    cursor: url('/cursor-pointer.png') 12 12, pointer;
-}
-
 /* ----- Mobile drawer ----- */
 @media (max-width: 768px) {
     :root { --header-h: 60px; }
@@ -2432,12 +2421,3 @@ html[dir="rtl"] .promo-track { direction: ltr; }
 html[dir="rtl"] .lang-toggle { letter-spacing: 0; text-transform: none; }
 html[dir="rtl"] [class*="tracking-"] { letter-spacing: 0 !important; }
 
-/* ---------- Motion cursor (shared: landing + dashboard) ---------- */
-/* When the JS cursor is mounted it tags its root with this class; hide the
-   native pointer everywhere inside so only the dot + ring show. */
-.app-cursor-active,
-.app-cursor-active * { cursor: none !important; }
-@media (prefers-reduced-motion: reduce) {
-    .app-cursor-active,
-    .app-cursor-active * { cursor: auto !important; }
-}

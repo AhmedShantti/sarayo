@@ -2,17 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-
-const input = 'w-full px-3 py-2 rounded-lg border border-neutral-200 text-sm text-ink bg-white focus:outline-none focus:ring-2 focus:ring-ink/10 focus:border-ink/30';
-
-function Field({ label, children }) {
-    return (
-        <div className="flex flex-col gap-1">
-            <label className="text-[11px] uppercase tracking-widest font-semibold text-neutral-500">{label}</label>
-            {children}
-        </div>
-    );
-}
+import NavTreeEditor from '@/components/dashboard/NavTreeEditor';
 
 function SectionCard({ title, desc, children }) {
     return (
@@ -22,53 +12,6 @@ function SectionCard({ title, desc, children }) {
                 {desc && <p className="text-xs text-neutral-500 mt-0.5">{desc}</p>}
             </div>
             {children}
-        </div>
-    );
-}
-
-function LinkListEditor({ items, onChange, showImg }) {
-    function set(i, k, v) {
-        onChange(items.map((it, j) => j === i ? { ...it, [k]: v } : it));
-    }
-    function remove(i) { onChange(items.filter((_, j) => j !== i)); }
-    function add() {
-        onChange([...items, showImg
-            ? { name: '', nameAr: '', href: '', img: '', sub: '', subAr: '' }
-            : { label: '', labelAr: '', href: '' }]);
-    }
-
-    return (
-        <div className="space-y-3">
-            {items.map((it, i) => (
-                <div key={i} className="border border-neutral-100 rounded-lg p-4 space-y-3 bg-neutral-50">
-                    <div className="grid grid-cols-2 gap-3">
-                        <Field label={showImg ? 'Name (EN)' : 'Label (EN)'}>
-                            <input className={input} value={showImg ? it.name : it.label} onChange={e => set(i, showImg ? 'name' : 'label', e.target.value)} />
-                        </Field>
-                        <Field label={showImg ? 'Name (AR)' : 'Label (AR)'}>
-                            <input className={input} dir="rtl" value={showImg ? it.nameAr : it.labelAr} onChange={e => set(i, showImg ? 'nameAr' : 'labelAr', e.target.value)} />
-                        </Field>
-                        <Field label="URL / href">
-                            <input className={input} value={it.href} onChange={e => set(i, 'href', e.target.value)} placeholder="/products" />
-                        </Field>
-                        {showImg && (
-                            <>
-                                <Field label="Image path">
-                                    <input className={input} value={it.img} onChange={e => set(i, 'img', e.target.value)} placeholder="/products-chipsy/cornice.png" />
-                                </Field>
-                                <Field label="Subtitle (EN)">
-                                    <input className={input} value={it.sub} onChange={e => set(i, 'sub', e.target.value)} />
-                                </Field>
-                                <Field label="Subtitle (AR)">
-                                    <input className={input} dir="rtl" value={it.subAr} onChange={e => set(i, 'subAr', e.target.value)} />
-                                </Field>
-                            </>
-                        )}
-                    </div>
-                    <button onClick={() => remove(i)} className="text-xs text-rose-500 hover:text-rose-700 font-medium transition-colors">Remove</button>
-                </div>
-            ))}
-            <button onClick={add} className="text-xs font-medium text-neutral-500 hover:text-ink transition-colors">+ Add link</button>
         </div>
     );
 }
@@ -116,7 +59,7 @@ export default function NavigationContentPage() {
                         <span className="text-ink">Navigation</span>
                     </div>
                     <h1 className="text-[26px] font-semibold tracking-tight text-ink">Navigation</h1>
-                    <p className="text-sm text-neutral-500 mt-1">Top nav links and product sub-menus.</p>
+                    <p className="text-sm text-neutral-500 mt-1">Top nav links and dropdown menus. Reorder, add, or remove items — changes go live on save.</p>
                 </div>
                 <button onClick={save} disabled={saving} className="shrink-0 px-4 py-2 rounded-lg bg-ink text-white text-sm font-medium hover:bg-ink/80 disabled:opacity-50 transition-colors">
                     {saving ? 'Saving…' : 'Save changes'}
@@ -124,16 +67,8 @@ export default function NavigationContentPage() {
             </div>
 
             <div className="space-y-5">
-                <SectionCard title="Main Nav Links" desc="The top-level links in the header navigation.">
-                    <LinkListEditor items={data.navLinks} onChange={v => setData(d => ({ ...d, navLinks: v }))} />
-                </SectionCard>
-
-                <SectionCard title="Chipsy Products Sub-menu" desc="Products shown in the Chipsy dropdown menu.">
-                    <LinkListEditor items={data.chipsyProducts} onChange={v => setData(d => ({ ...d, chipsyProducts: v }))} showImg />
-                </SectionCard>
-
-                <SectionCard title="Wafer Products Sub-menu" desc="Products shown in the Wafer dropdown menu.">
-                    <LinkListEditor items={data.waferProducts} onChange={v => setData(d => ({ ...d, waferProducts: v }))} showImg />
+                <SectionCard title="Menu Items" desc="Top-level nav items. Items with dropdown items become mega-menus; items without become plain links.">
+                    <NavTreeEditor items={data.items} onChange={v => setData(d => ({ ...d, items: v }))} />
                 </SectionCard>
             </div>
         </>

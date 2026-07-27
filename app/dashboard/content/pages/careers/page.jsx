@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import ImagePicker from '@/components/dashboard/ImagePicker';
 
 function BiField({ label, enVal, arVal, onEn, onAr, multiline }) {
     const Tag = multiline ? 'textarea' : 'input';
@@ -80,6 +81,16 @@ export default function CareersEditor() {
                     {error}
                 </div>
             )}
+
+            <section className="rounded-2xl border border-neutral-200 p-6 space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">SEO</p>
+                <BiField label="Meta title" enVal={data.meta?.titleEn} arVal={data.meta?.titleAr} onEn={v => set('meta.titleEn', v)} onAr={v => set('meta.titleAr', v)} />
+                <BiField label="Meta description" enVal={data.meta?.descEn} arVal={data.meta?.descAr} onEn={v => set('meta.descEn', v)} onAr={v => set('meta.descAr', v)} multiline />
+                <div>
+                    <label className="block text-xs font-medium text-neutral-600 mb-1">Social share image (og:image)</label>
+                    <ImagePicker value={data.meta?.ogImage} onChange={v => set('meta.ogImage', v)} />
+                </div>
+            </section>
 
             <section className="rounded-2xl border border-neutral-200 p-6 space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Hero</p>

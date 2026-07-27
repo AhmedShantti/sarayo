@@ -1,5 +1,5 @@
 import { readContent, writeContent } from '@/lib/contentStore';
-import { revalidatePath } from 'next/cache';
+import { revalidateForSection } from '@/lib/revalidation';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,14 +20,7 @@ export async function PUT(req, { params }) {
         const section = Array.isArray(raw) ? raw.join('/') : raw;
         const body = await req.json();
         await writeContent(section, body);
-        revalidatePath('/');
-        revalidatePath('/products');
-        revalidatePath('/about');
-        revalidatePath('/contact');
-        revalidatePath('/careers');
-        revalidatePath('/export');
-        revalidatePath('/chipsy');
-        revalidatePath('/wafer');
+        revalidateForSection(section);
         return Response.json({ ok: true });
     } catch (e) {
         return Response.json({ error: e.message }, { status: 400 });

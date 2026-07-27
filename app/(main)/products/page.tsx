@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
-import Cursor from '@/components/landing/Cursor';
-import LandingNav from '@/components/landing/LandingNav';
+import { readContent } from '@/lib/contentStore';
+import LandingNav from '@/components/landing/LandingNavServer';
 import ProductsView from '@/components/landing/ProductsView';
 import LandingFooter from '@/components/landing/LandingFooter';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
     title: 'Shop — Sarayo Alwadiya',
@@ -10,11 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default function ProductsPage() {
+    const products = readContent('products');
     return (
         <main>
-            <Cursor />
             <LandingNav />
-            <ProductsView />
+            <ProductsView products={products} />
             <LandingFooter />
         </main>
     );

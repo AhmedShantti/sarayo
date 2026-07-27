@@ -1,6 +1,5 @@
 import Loader from '@/components/landing/Loader';
-import Cursor from '@/components/landing/Cursor';
-import LandingNav from '@/components/landing/LandingNav';
+import LandingNav from '@/components/landing/LandingNavServer';
 import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
 import Stats from '@/components/landing/Stats';
@@ -20,7 +19,6 @@ export default async function LandingPage() {
     return (
         <main>
             <Loader />
-            <Cursor />
             <LandingNav />
             <Hero products={products} />
             <Marquee />

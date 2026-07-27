@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Cursor from '@/components/landing/Cursor';
-import LandingNav from '@/components/landing/LandingNav';
+import LandingNav from '@/components/landing/LandingNavServer';
 import ProductsView from '@/components/landing/ProductsView';
 import LandingFooter from '@/components/landing/LandingFooter';
 import { fetchCategory } from '@/lib/api';
@@ -48,7 +47,6 @@ export default async function ProductsCategoryPage({ params }: CategoryPageProps
 
     return (
         <main>
-            <Cursor />
             <LandingNav />
             <ProductsView
                 category={category}
