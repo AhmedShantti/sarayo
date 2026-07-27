@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { readContent } from '@/lib/contentStore';
 import LandingNav from '@/components/landing/LandingNavServer';
 import ProductsView from '@/components/landing/ProductsView';
 import LandingFooter from '@/components/landing/LandingFooter';
@@ -12,11 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default function ProductsPage() {
-    const products = readContent('products');
     return (
         <main>
             <LandingNav />
-            <ProductsView products={products} />
+            <ProductsView />
             <LandingFooter />
         </main>
     );
