@@ -1,6 +1,5 @@
-'use client';
-
 import Link from 'next/link';
+import { listPages } from '@/lib/contentStore';
 
 const SECTIONS = [
     {
@@ -126,6 +125,8 @@ const SECTIONS = [
 ];
 
 export default function ContentPage() {
+    const customPages = listPages();
+
     return (
         <>
             <div className="mb-8">
@@ -160,6 +161,38 @@ export default function ContentPage() {
                     </Link>
                 ))}
             </div>
+
+            <div className="mt-10 mb-4 flex items-center justify-between">
+                <div>
+                    <h2 className="text-lg font-semibold tracking-tight text-ink">Custom Pages</h2>
+                    <p className="text-sm text-neutral-500 mt-0.5">Pages you've built from scratch with the section editor.</p>
+                </div>
+                <Link href="/dashboard/content/pages/new"
+                    className="px-4 py-2 rounded-lg bg-ink text-white text-sm font-medium hover:bg-ink/80 transition-colors">
+                    + New Page
+                </Link>
+            </div>
+
+            {customPages.length === 0 ? (
+                <div className="bg-white border border-dashed border-neutral-300 rounded-xl p-8 text-center text-sm text-neutral-400">
+                    No custom pages yet — create one to get started.
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {customPages.map(p => (
+                        <Link key={p.slug} href={`/dashboard/content/pages/${p.slug}`}
+                            className="group bg-white border border-neutral-200 rounded-xl p-5 flex flex-col gap-4 hover:border-neutral-300 hover:shadow-sm transition-all">
+                            <div>
+                                <p className="font-semibold text-ink group-hover:text-neutral-900">{p.title}</p>
+                                <p className="text-xs text-neutral-500 mt-0.5">/{p.slug}</p>
+                            </div>
+                            <div className="mt-auto text-xs font-medium text-neutral-400 group-hover:text-ink flex items-center gap-1 transition-colors">
+                                Edit →
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            )}
         </>
     );
 }

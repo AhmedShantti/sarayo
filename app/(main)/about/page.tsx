@@ -1,16 +1,14 @@
 import { readContent } from '@/lib/contentStore';
+import { buildPageMetadata } from '@/lib/seo';
 import AboutPage from '@/components/pages/AboutPage';
-import LandingNav from '@/components/landing/LandingNav';
+import LandingNav from '@/components/landing/LandingNavServer';
 import LandingFooter from '@/components/landing/LandingFooter';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
     const data = readContent('pages/about');
-    return {
-        title: data.meta?.titleEn || 'About Us — Sarayo Alwadiya',
-        description: data.meta?.descEn || '',
-    };
+    return buildPageMetadata(data.meta, { title: 'About Us — Sarayo Alwadiya', description: '' });
 }
 
 export default function AboutRoute() {

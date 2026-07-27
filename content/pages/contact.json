@@ -3,7 +3,8 @@
     "titleEn": "Contact Us — Sarayo Alwadiya",
     "titleAr": "تواصل معنا — سرايو الوادية",
     "descEn": "Get in touch with the Sarayo Alwadiya team.",
-    "descAr": "تواصل مع فريق سرايو الوادية."
+    "descAr": "تواصل مع فريق سرايو الوادية.",
+    "ogImage": ""
   },
   "hero": {
     "chipEn": "Get in Touch",
@@ -52,10 +53,26 @@
     }
   ],
   "social": [
-    { "id": "instagram", "label": "Instagram", "href": "#" },
-    { "id": "facebook",  "label": "Facebook",  "href": "#" },
-    { "id": "tiktok",    "label": "TikTok",     "href": "#" },
-    { "id": "x",         "label": "X",          "href": "#" }
+    {
+      "id": "instagram",
+      "label": "Instagram",
+      "href": "#"
+    },
+    {
+      "id": "facebook",
+      "label": "Facebook",
+      "href": "#"
+    },
+    {
+      "id": "tiktok",
+      "label": "TikTok",
+      "href": "#"
+    },
+    {
+      "id": "x",
+      "label": "X",
+      "href": "#"
+    }
   ],
   "form": {
     "titleEn": "Send a Message",

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import ImagePicker from '@/components/dashboard/ImagePicker';
 
 const TONE_OPTIONS = ['deep', 'cream', 'yellow'];
 
@@ -63,6 +64,25 @@ export default function ChipsyEditor() {
                     {saving ? 'Saving…' : saved ? 'Saved ✓' : 'Save'}
                 </button>
             </div>
+
+            {/* SEO */}
+            <section className="rounded-2xl border border-neutral-200 p-6 space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">SEO</p>
+                {[['meta.titleEn','meta.titleAr','Meta title'],['meta.descEn','meta.descAr','Meta description']].map(([en,ar,label]) => (
+                    <div key={en} className="grid grid-cols-2 gap-3">
+                        <div><label className="block text-xs font-medium text-neutral-600 mb-1">{label} (EN)</label>
+                            <input value={en.split('.').reduce((o,k)=>o?.[k],data)||''} onChange={e=>set(en,e.target.value)}
+                                className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm text-neutral-900 focus:outline-none" /></div>
+                        <div><label className="block text-xs font-medium text-neutral-600 mb-1">{label} (AR)</label>
+                            <input value={ar.split('.').reduce((o,k)=>o?.[k],data)||''} onChange={e=>set(ar,e.target.value)} dir="rtl"
+                                className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm text-neutral-900 focus:outline-none" /></div>
+                    </div>
+                ))}
+                <div>
+                    <label className="block text-xs font-medium text-neutral-600 mb-1">Social share image (og:image)</label>
+                    <ImagePicker value={data.meta?.ogImage} onChange={v => set('meta.ogImage', v)} />
+                </div>
+            </section>
 
             {/* Hero */}
             <section className="rounded-2xl border border-neutral-200 p-6 space-y-3">

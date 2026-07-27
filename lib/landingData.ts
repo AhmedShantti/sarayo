@@ -32,14 +32,22 @@ export interface Feature {
     icon: 'flame' | 'leaf' | 'spark' | 'globe';
 }
 
-export const NAV_LINKS = [
-    { label: 'Snacks', labelAr: 'وجبات خفيفة', href: '/products' },
-    { label: 'Wafer', labelAr: 'ويفر', href: '/wafer' },
-    { label: 'Export Products', labelAr: 'منتجات التصدير', href: '/export' },
-    { label: 'Careers', labelAr: 'وظائف', href: '/careers' },
-    { label: 'About Us', labelAr: 'من نحن', href: '/about' },
-    { label: 'Contact Us', labelAr: 'تواصل معنا', href: '/contact' },
-] as const;
+export interface NavItem {
+    id: string;
+    label: string;
+    labelAr: string;
+    href: string;
+    menuLabel?: string;
+    menuLabelAr?: string;
+    viewAllLabel?: string;
+    viewAllLabelAr?: string;
+    img?: string;
+    sub?: string;
+    subAr?: string;
+    badge?: string;
+    badgeAr?: string;
+    children?: NavItem[];
+}
 
 export const PRODUCTS: Product[] = [
     { src: '/lays-classic.png', name: 'Classic', nameAr: 'كلاسيك', flavor: 'Salted & Golden', flavorAr: 'مملّح وذهبي', tag: 'Best seller', tagAr: 'الأكثر مبيعًا', tone: 'deep', category: 'Classic', price: '25 EGP', priceValue: 25, description: 'The original golden crunch — thin-sliced potatoes fried crisp and lightly salted.', descriptionAr: 'القرمشة الذهبية الأصلية — شرائح بطاطس رفيعة مقلية حتى القرمشة ومملّحة قليلًا.' },

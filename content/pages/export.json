@@ -3,7 +3,8 @@
     "titleEn": "Export — Sarayo Alwadiya",
     "titleAr": "التصدير — سرايو الوادية",
     "descEn": "Bringing Egypt's boldest snacks to global markets.",
-    "descAr": "نجلب أجرأ سناكات مصر إلى الأسواق العالمية."
+    "descAr": "نجلب أجرأ سناكات مصر إلى الأسواق العالمية.",
+    "ogImage": ""
   },
   "hero": {
     "chipEn": "Global Reach",
@@ -14,29 +15,123 @@
     "subAr": "منتجات سرايو الوادية تُشحن طازجة إلى أسواق الشرق الأوسط وأفريقيا وأوروبا وما بعدها."
   },
   "markets": [
-    { "id": "ksa",    "nameEn": "Saudi Arabia",   "nameAr": "المملكة العربية السعودية", "flag": "🇸🇦", "active": true },
-    { "id": "uae",    "nameEn": "UAE",             "nameAr": "الإمارات العربية المتحدة", "flag": "🇦🇪", "active": true },
-    { "id": "jordan", "nameEn": "Jordan",          "nameAr": "الأردن",                   "flag": "🇯🇴", "active": true },
-    { "id": "libya",  "nameEn": "Libya",           "nameAr": "ليبيا",                    "flag": "🇱🇾", "active": true },
-    { "id": "kuwait", "nameEn": "Kuwait",          "nameAr": "الكويت",                   "flag": "🇰🇼", "active": true },
-    { "id": "uk",     "nameEn": "United Kingdom",  "nameAr": "المملكة المتحدة",          "flag": "🇬🇧", "active": false },
-    { "id": "de",     "nameEn": "Germany",         "nameAr": "ألمانيا",                  "flag": "🇩🇪", "active": false },
-    { "id": "us",     "nameEn": "United States",   "nameAr": "الولايات المتحدة",         "flag": "🇺🇸", "active": false }
+    {
+      "id": "ksa",
+      "nameEn": "Saudi Arabia",
+      "nameAr": "المملكة العربية السعودية",
+      "flag": "🇸🇦",
+      "active": true
+    },
+    {
+      "id": "uae",
+      "nameEn": "UAE",
+      "nameAr": "الإمارات العربية المتحدة",
+      "flag": "🇦🇪",
+      "active": true
+    },
+    {
+      "id": "jordan",
+      "nameEn": "Jordan",
+      "nameAr": "الأردن",
+      "flag": "🇯🇴",
+      "active": true
+    },
+    {
+      "id": "libya",
+      "nameEn": "Libya",
+      "nameAr": "ليبيا",
+      "flag": "🇱🇾",
+      "active": true
+    },
+    {
+      "id": "kuwait",
+      "nameEn": "Kuwait",
+      "nameAr": "الكويت",
+      "flag": "🇰🇼",
+      "active": true
+    },
+    {
+      "id": "uk",
+      "nameEn": "United Kingdom",
+      "nameAr": "المملكة المتحدة",
+      "flag": "🇬🇧",
+      "active": false
+    },
+    {
+      "id": "de",
+      "nameEn": "Germany",
+      "nameAr": "ألمانيا",
+      "flag": "🇩🇪",
+      "active": false
+    },
+    {
+      "id": "us",
+      "nameEn": "United States",
+      "nameAr": "الولايات المتحدة",
+      "flag": "🇺🇸",
+      "active": false
+    }
   ],
   "whyUs": {
     "titleEn": "Why Partner With Us",
     "titleAr": "لماذا تشارك معنا",
     "items": [
-      { "id": "fresh",   "icon": "leaf",  "titleEn": "Fresh Production", "titleAr": "إنتاج طازج",     "textEn": "Produced to order and shipped within 72 hours of manufacture.",   "textAr": "يُنتج حسب الطلب ويُشحن خلال ٧٢ ساعة من التصنيع." },
-      { "id": "cert",    "icon": "spark", "titleEn": "Certified Quality", "titleAr": "جودة معتمدة",   "textEn": "ISO 22000 certified facility with full HACCP compliance.",         "textAr": "منشأة معتمدة بمعيار ISO 22000 مع الامتثال الكامل لـ HACCP." },
-      { "id": "custom",  "icon": "globe", "titleEn": "Custom Packaging",  "titleAr": "تغليف مخصص",    "textEn": "Private label and custom packaging available for all SKUs.",       "textAr": "العلامة الخاصة والتغليف المخصص متاحان لجميع الأصناف." },
-      { "id": "support", "icon": "flame", "titleEn": "Dedicated Support",  "titleAr": "دعم متخصص",    "textEn": "A dedicated export account manager for every partner.",            "textAr": "مدير حساب تصدير متخصص لكل شريك." }
+      {
+        "id": "fresh",
+        "icon": "leaf",
+        "titleEn": "Fresh Production",
+        "titleAr": "إنتاج طازج",
+        "textEn": "Produced to order and shipped within 72 hours of manufacture.",
+        "textAr": "يُنتج حسب الطلب ويُشحن خلال ٧٢ ساعة من التصنيع."
+      },
+      {
+        "id": "cert",
+        "icon": "spark",
+        "titleEn": "Certified Quality",
+        "titleAr": "جودة معتمدة",
+        "textEn": "ISO 22000 certified facility with full HACCP compliance.",
+        "textAr": "منشأة معتمدة بمعيار ISO 22000 مع الامتثال الكامل لـ HACCP."
+      },
+      {
+        "id": "custom",
+        "icon": "globe",
+        "titleEn": "Custom Packaging",
+        "titleAr": "تغليف مخصص",
+        "textEn": "Private label and custom packaging available for all SKUs.",
+        "textAr": "العلامة الخاصة والتغليف المخصص متاحان لجميع الأصناف."
+      },
+      {
+        "id": "support",
+        "icon": "flame",
+        "titleEn": "Dedicated Support",
+        "titleAr": "دعم متخصص",
+        "textEn": "A dedicated export account manager for every partner.",
+        "textAr": "مدير حساب تصدير متخصص لكل شريك."
+      }
     ]
   },
   "certifications": [
-    { "id": "iso",   "nameEn": "ISO 22000",   "nameAr": "ISO ٢٢٠٠٠",   "descEn": "Food safety management",  "descAr": "إدارة سلامة الغذاء" },
-    { "id": "haccp", "nameEn": "HACCP",       "nameAr": "HACCP",        "descEn": "Hazard analysis control",  "descAr": "التحكم في تحليل المخاطر" },
-    { "id": "halal", "nameEn": "Halal",       "nameAr": "حلال",         "descEn": "Certified halal products", "descAr": "منتجات حلال معتمدة" }
+    {
+      "id": "iso",
+      "nameEn": "ISO 22000",
+      "nameAr": "ISO ٢٢٠٠٠",
+      "descEn": "Food safety management",
+      "descAr": "إدارة سلامة الغذاء"
+    },
+    {
+      "id": "haccp",
+      "nameEn": "HACCP",
+      "nameAr": "HACCP",
+      "descEn": "Hazard analysis control",
+      "descAr": "التحكم في تحليل المخاطر"
+    },
+    {
+      "id": "halal",
+      "nameEn": "Halal",
+      "nameAr": "حلال",
+      "descEn": "Certified halal products",
+      "descAr": "منتجات حلال معتمدة"
+    }
   ],
   "contact": {
     "titleEn": "Start an Export Conversation",

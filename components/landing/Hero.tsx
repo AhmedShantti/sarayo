@@ -14,15 +14,52 @@ import Magnetic from './Magnetic';
 import { type Product } from '@/lib/landingData';
 import { useLanguage } from '@/lib/LanguageContext';
 
-
 // Short brand "items" the eyebrow chip rotates through every 3s (i18n keys).
 const CHIP_KEYS = [
     'lnd.word.crunchy', 'lnd.word.flavorful', 'lnd.word.irresistible',
     'lnd.word.cutThick', 'lnd.word.friedCrisp', 'lnd.word.loudFlavor',
 ];
 
-// `products` is still accepted so the page-level call site stays unchanged, but the
-// hero now shows one combined product banner instead of cycling individual packs.
+// Real Sarayo packs cut out for the hero collage (no stock/placeholder art).
+// Position/size is expressed as % of the collage box so it holds up across breakpoints.
+const COLLAGE_ITEMS = [
+    {
+        src: '/uploads/1783218621522-cornice_chili_and_lemon_flavor_10_L.E-Photoroom.png',
+        width: 2000, height: 2000,
+        alt: 'Sarayo Cornice Chili & Limon crisps',
+        posClass: 'left-[8%] top-0 w-[36%]',
+        rotate: -10, z: 30, floatDelay: 0, floatDuration: 4.2,
+    },
+    {
+        src: '/wafer-products/wafer-lemon.png',
+        width: 2282, height: 1556,
+        alt: 'Sarayo Wafer Lemon Cream',
+        posClass: 'right-0 top-[8%] w-[42%]',
+        rotate: 12, z: 20, floatDelay: 0.6, floatDuration: 4.6,
+    },
+    {
+        src: '/uploads/1781697285378-____________________________-97.png',
+        width: 4288, height: 4216,
+        alt: 'Sarayo Cornice Mexican Chili crisps',
+        posClass: 'left-0 top-[36%] w-[40%]',
+        rotate: -15, z: 25, floatDelay: 1.1, floatDuration: 5,
+    },
+    {
+        src: '/wafer-products/wafer-choco.png',
+        width: 2282, height: 1556,
+        alt: 'Sarayo Wafer Chocolate Cream',
+        posClass: 'right-[2%] top-[42%] w-[42%]',
+        rotate: 8, z: 30, floatDelay: 0.3, floatDuration: 4.4,
+    },
+    {
+        src: '/wafer-products/wafer-strewberry.png',
+        width: 2282, height: 1556,
+        alt: 'Sarayo Wafer Strawberry Cream',
+        posClass: 'left-[22%] bottom-0 w-[40%]',
+        rotate: -6, z: 15, floatDelay: 1.6, floatDuration: 4.8,
+    },
+] as const;
+
 export default function Hero(_props: { products?: Product[] }) {
     const { t } = useLanguage();
     const [chip, setChip] = useState(0);
@@ -38,9 +75,9 @@ export default function Hero(_props: { products?: Product[] }) {
     const py = useMotionValue(0);
     const sx = useSpring(px, { stiffness: 120, damping: 20 });
     const sy = useSpring(py, { stiffness: 120, damping: 20 });
-    const bagX = useTransform(sx, [-1, 1], [-18, 18]);
-    const bagY = useTransform(sy, [-1, 1], [-14, 14]);
-    const ghostX = useTransform(sx, [-1, 1], [30, -30]);
+    const collageX = useTransform(sx, [-1, 1], [-16, 16]);
+    const collageY = useTransform(sy, [-1, 1], [-12, 12]);
+    const ghostX = useTransform(sx, [-1, 1], [24, -24]);
 
     const onMove = (e: React.MouseEvent<HTMLElement>) => {
         px.set((e.clientX / window.innerWidth - 0.5) * 2);
@@ -53,103 +90,138 @@ export default function Hero(_props: { products?: Product[] }) {
         <section
             id="top"
             onMouseMove={onMove}
-            className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-5 pt-28 pb-12 text-center sm:px-8 sm:pt-36 sm:pb-16"
+            className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-5 pt-32 pb-16 sm:px-8 lg:flex-row lg:items-center lg:justify-center lg:gap-4 lg:px-16 xl:px-24"
         >
             {/* Ghost wordmark */}
-            <motion.div style={{ x: ghostX }} className="pointer-events-none absolute inset-x-0 top-[18%] z-0 flex justify-center">
-                <span className="hero-ghost text-[22vw] leading-none">Sarayo</span>
+            <motion.div style={{ x: ghostX }} className="pointer-events-none absolute inset-x-0 top-[12%] z-0 flex justify-center">
+                <span className="hero-ghost text-[22vw] leading-none lg:text-[15vw]">Sarayo</span>
             </motion.div>
 
-            {/* Glow that follows the active flavor */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[55vmin] w-[55vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-red-soft/40 blur-[130px]" />
+            {/* Glow */}
+            <div className="pointer-events-none absolute right-[10%] top-1/2 h-[55vmin] w-[55vmin] -translate-y-1/2 rounded-full bg-brand-red-soft/40 blur-[130px] lg:right-[8%]" />
 
-            {/* Eyebrow */}
-            <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="relative z-10 mb-6 flex flex-wrap items-center justify-center gap-2"
-            >
-                <Chip variant="yellow" size="md">{t('lnd.since')}</Chip>
-                <AnimatePresence mode="wait">
-                    <motion.span
-                        key={chipLabel}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        <Chip variant="outline" size="md">{chipLabel}</Chip>
-                    </motion.span>
-                </AnimatePresence>
-            </motion.div>
+            <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center gap-12 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
 
-            {/* Headline + flavor stage */}
-            <div className="relative z-10 flex w-full max-w-[1100px] flex-col items-center">
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.2 }}
-                    className="landing-display text-[clamp(3rem,10vw,8.5rem)] leading-[0.85] text-white"
+                {/* Text column — slides in from the left as the hero lands. */}
+                <motion.div
+                    initial={{ opacity: 0, x: -80 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex w-full max-w-[600px] flex-col items-center text-center lg:items-start lg:text-start"
                 >
-                    {t('lnd.hero.line1')}
-                </motion.h1>
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        className="mb-6 flex flex-wrap items-center justify-center gap-2 lg:justify-start"
+                    >
+                        <Chip variant="yellow" size="md">{t('lnd.since')}</Chip>
+                        <AnimatePresence mode="wait">
+                            <motion.span
+                                key={chipLabel}
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <Chip variant="outline" size="md">{chipLabel}</Chip>
+                            </motion.span>
+                        </AnimatePresence>
+                    </motion.div>
 
-                {/* Stage: outline word behind, cycling bag in front */}
-                <div className="relative my-2 flex min-h-[200px] w-full items-center justify-center sm:min-h-[280px]">
-                    <span
-                        aria-hidden
-                        className="landing-display pointer-events-none absolute inset-0 flex items-center justify-center text-[clamp(3rem,10vw,8.5rem)] leading-none"
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.2 }}
+                        className="landing-display text-[clamp(3rem,9vw,6.5rem)] leading-[0.85] text-white"
+                    >
+                        {t('lnd.hero.line1')}
+                    </motion.h1>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.3 }}
+                        className="landing-display text-[clamp(3rem,9vw,6.5rem)] leading-[0.85]"
                         style={{ color: 'transparent', WebkitTextStroke: '2px #FFD400' }}
                     >
                         {t('lnd.hero.line2')}
-                    </span>
+                    </motion.h1>
 
-                    {/* One combined banner of the full range, in place of the old per-pack carousel. */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.4 }}
+                        className="mt-6 max-w-[440px] font-grotesk text-[15px] leading-relaxed text-white/70"
+                    >
+                        {t('lnd.hero.sub')}
+                    </motion.p>
+
                     <motion.div
-                        style={{ x: bagX, y: bagY }}
-                        initial={{ opacity: 0, y: 30, scale: 0.96 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative z-10 w-full max-w-[980px]"
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.5 }}
+                        className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
                     >
-                        <Image
-                            src="/products-banner.png"
-                            alt="Sarayo Alwadiya product range"
-                            width={2347}
-                            height={467}
-                            priority
-                            sizes="(max-width: 768px) 95vw, 980px"
-                            className="h-auto w-full object-contain drop-shadow-[0_28px_40px_rgba(0,0,0,0.45)]"
-                        />
+                        <Magnetic strength={0.5}>
+                            <a
+                                href="/products"
+                                className="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-8 py-4 font-grotesk text-sm font-bold uppercase tracking-wider text-brand-red-deep shadow-xl shadow-black/20"
+                            >
+                                {t('lnd.hero.cta1')}
+                            </a>
+                        </Magnetic>
+                        <Magnetic strength={0.4}>
+                            <a
+                                href="#features"
+                                className="inline-flex items-center gap-2 rounded-full border border-white/40 px-8 py-4 font-grotesk text-sm font-bold uppercase tracking-wider text-white"
+                            >
+                                {t('lnd.hero.cta2')}
+                            </a>
+                        </Magnetic>
                     </motion.div>
-                </div>
-            </div>
+                </motion.div>
 
-            {/* CTAs */}
-            <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
-                className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
-            >
-                <Magnetic strength={0.5}>
-                    <a
-                        href="/products"
-                        className="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-8 py-4 font-grotesk text-sm font-bold uppercase tracking-wider text-brand-red-deep shadow-xl shadow-black/20"
-                    >
-                        {t('lnd.hero.cta1')}
-                    </a>
-                </Magnetic>
-                <Magnetic strength={0.4}>
-                    <a
-                        href="#features"
-                        className="inline-flex items-center gap-2 rounded-full border border-white/40 px-8 py-4 font-grotesk text-sm font-bold uppercase tracking-wider text-white"
-                    >
-                        {t('lnd.hero.cta2')}
-                    </a>
-                </Magnetic>
-            </motion.div>
+                {/* Collage column — slides in from the right as the hero lands, then
+                    settles into its continuous mouse-parallax drift. */}
+                <motion.div
+                    initial={{ opacity: 0, x: 80 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative h-[340px] w-full max-w-[440px] shrink-0 sm:h-[420px] lg:h-[560px] lg:w-[46%] lg:max-w-[560px] xl:h-[600px]"
+                >
+                    <motion.div style={{ x: collageX, y: collageY }} className="absolute inset-0">
+                        {/* Organic blob backdrop */}
+                        <div className="absolute inset-[6%] rounded-[48%_52%_58%_42%/55%_42%_58%_45%] bg-brand-yellow/10 blur-2xl" />
+                        <div className="absolute inset-[18%] rounded-[42%_58%_45%_55%/58%_45%_55%_42%] bg-brand-cream/5" />
+
+                        {COLLAGE_ITEMS.map((item, i) => (
+                            <motion.div
+                                key={item.src}
+                                initial={{ opacity: 0, y: 40, scale: 0.85, rotate: item.rotate * 1.4 }}
+                                animate={{ opacity: 1, y: 0, scale: 1, rotate: item.rotate }}
+                                transition={{ duration: 0.7, delay: 0.5 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                                className={`absolute ${item.posClass}`}
+                                style={{ zIndex: item.z }}
+                            >
+                                <motion.div
+                                    animate={{ y: [0, -10, 0] }}
+                                    transition={{ duration: item.floatDuration, repeat: Infinity, ease: 'easeInOut', delay: item.floatDelay }}
+                                >
+                                    <Image
+                                        src={item.src}
+                                        alt={item.alt}
+                                        width={item.width}
+                                        height={item.height}
+                                        priority={i < 2}
+                                        sizes="(max-width: 1024px) 40vw, 260px"
+                                        className="h-auto w-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.45)]"
+                                    />
+                                </motion.div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </motion.div>
+            </div>
         </section>
     );
 }

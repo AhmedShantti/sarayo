@@ -69,10 +69,11 @@ function Card({ p }: { p: Product }) {
     );
 }
 
-export default function ProductsView() {
+export default function ProductsView({ products }: { products?: Product[] }) {
     const { t } = useLanguage();
     const [cat, setCat] = useState<string>('All');
-    const list = cat === 'All' ? PRODUCTS : PRODUCTS.filter((p) => p.category === cat);
+    const ALL_PRODUCTS = products || PRODUCTS;
+    const list = cat === 'All' ? ALL_PRODUCTS : ALL_PRODUCTS.filter((p) => p.category === cat);
 
     return (
         <section className="px-5 pb-28 pt-32 sm:px-8 sm:pt-40">

@@ -1,16 +1,14 @@
 import { readContent } from '@/lib/contentStore';
+import { buildPageMetadata } from '@/lib/seo';
 import CareersPage from '@/components/pages/CareersPage';
-import LandingNav from '@/components/landing/LandingNav';
+import LandingNav from '@/components/landing/LandingNavServer';
 import LandingFooter from '@/components/landing/LandingFooter';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
     const data = readContent('pages/careers');
-    return {
-        title: data.meta?.titleEn || 'Careers — Sarayo Alwadiya',
-        description: data.meta?.descEn || '',
-    };
+    return buildPageMetadata(data.meta, { title: 'Careers — Sarayo Alwadiya', description: '' });
 }
 
 export default function CareersRoute() {
