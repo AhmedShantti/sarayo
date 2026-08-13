@@ -137,3 +137,14 @@ html[lang="ar"] .landing-root * {
     .landing-root.cursor-none,
     .landing-root.cursor-none * { cursor: auto !important; }
 }
+
+/* Hero headline: Space Grotesk is Latin-only, so Arabic falls back to a
+   system face and loses the weight the layout is built around. Swap in the
+   Arabic display pairing, and give it a little more leading — Almarai's
+   ascenders and descenders need more room than the Latin 1.04 allows. */
+html[lang="ar"] .hero-welcome {
+    font-family: var(--font-ar-display), 'Almarai', sans-serif;
+    font-weight: 800;
+    line-height: 1.22;
+    letter-spacing: 0;
+}

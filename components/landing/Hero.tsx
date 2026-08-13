@@ -2,21 +2,21 @@
 
 import Image from 'next/image';
 import { type Product } from '@/lib/landingData';
+import { useLanguage } from '@/lib/LanguageContext';
 
 type Tile = {
     /** catalog page number */
     number: number;
     /** how far the pack spills past its grid cell — drives the overlap */
     scale: number;
-    /** small per-pack tilt on top of the mosaic's global tilt */
+    /** small per-pack tilt on top of the lattice's tilt */
     rotate: number;
     z: number;
 };
 
 /**
- * Packs are laid out on a tilted, brick-staggered grid so they read as one
- * continuous wall of product instead of a row of floating bags. Slim bars and
- * stick packs are seeded between the big bags to break up the rhythm.
+ * The bags sit on a brick-staggered lattice that the field tilts as a whole,
+ * so the rows rise to the right and the packs read as one continuous wall.
  */
 const MOSAIC: Tile[][] = [
     [
@@ -51,7 +51,7 @@ const MOSAIC: Tile[][] = [
 
 /**
  * Horizontal brick offset per row, in % of a row's width. Kept at or above 0
- * so no row reaches back past the mosaic's left edge and over the headline.
+ * so no row reaches back past the field's left edge and over the headline.
  */
 const ROW_SHIFT = [0, 4, 1, 5];
 
@@ -60,6 +60,8 @@ function getImageSrc(num: number) {
 }
 
 export default function Hero(_props: { products?: Product[] }) {
+    const { t } = useLanguage();
+
     return (
         <section
             id="top"
@@ -71,10 +73,15 @@ export default function Hero(_props: { products?: Product[] }) {
                 w-full
                 overflow-hidden
                 bg-brand-red-deep
+
+                lg:aspect-[2.1]
+                lg:h-auto
+                lg:max-h-[calc(100svh-90px)]
+                lg:min-h-[540px]
             "
         >
-            {/* LIGHT RED ORGANIC SHAPE — sits BEHIND the mosaic so the packs
-                overlap it, the way the reference layout reads */}
+            {/* LIGHT RED ORGANIC SHAPE — sits BEHIND the packs so they overlap
+                it, the way the reference layout reads */}
             <div
                 className="
                     pointer-events-none
@@ -83,10 +90,20 @@ export default function Hero(_props: { products?: Product[] }) {
                     top-[4%]
                     z-[5]
                     h-[120%]
-                    w-[58%]
+                    w-[64%]
                     -rotate-[7deg]
                     rounded-[48%_52%_60%_40%/40%_38%_62%_60%]
                     bg-brand-red-soft
+
+                    max-lg:-left-[24%]
+                    max-lg:-top-[2%]
+                    max-lg:h-[95%]
+                    max-lg:w-[95%]
+
+                    max-md:-left-[26%]
+                    max-md:-top-[10%]
+                    max-md:h-[66%]
+                    max-md:w-[112%]
                 "
             />
 
@@ -95,6 +112,7 @@ export default function Hero(_props: { products?: Product[] }) {
                 className="
                     pointer-events-none
                     absolute
+                    max-md:hidden
                     left-[36%]
                     top-[8%]
                     z-[6]
@@ -110,6 +128,7 @@ export default function Hero(_props: { products?: Product[] }) {
                 className="
                     pointer-events-none
                     absolute
+                    max-md:hidden
                     left-[43%]
                     top-[13%]
                     z-[6]
@@ -125,6 +144,7 @@ export default function Hero(_props: { products?: Product[] }) {
                 className="
                     pointer-events-none
                     absolute
+                    max-md:hidden
                     left-[40%]
                     top-[22%]
                     z-[6]
@@ -144,54 +164,76 @@ export default function Hero(_props: { products?: Product[] }) {
                     top-[30%]
                     z-[10]
 
+                    max-lg:top-[20%]
+
                     max-md:left-[5%]
-                    max-md:top-[18%]
+                    max-md:top-[15%]
                 "
             >
                 <h1
                     className="
+                        hero-welcome
                         font-grotesk
-                        text-[clamp(38px,4vw,62px)]
+                        text-[clamp(44px,5.4vw,86px)]
                         font-extrabold
                         leading-[1.04]
                         tracking-[-0.04em]
                         text-white
 
-                        max-md:text-[42px]
+                        max-lg:text-[clamp(44px,7vw,68px)]
+
+                        max-md:text-[clamp(38px,13vw,58px)]
                     "
                 >
-                    <span className="block">Welcome</span>
-                    <span className="block">to Sarayo</span>
+                    <span className="block">{t('lnd.hero.welcome1')}</span>
+                    <span className="block">{t('lnd.hero.welcome2')}</span>
                 </h1>
             </div>
 
-            {/* TILTED PRODUCT MOSAIC */}
+            {/* PRODUCT FIELD
+
+                Row height comes from the cell's aspect ratio, not from a share
+                of the hero's height — otherwise the cells stretch on tall
+                viewports (iPad portrait) and the packs no longer fill them.
+                The field is therefore always ~1.1x its own width tall, and we
+                only have to place it:
+                  - phone / tablet: full-bleed across the bottom, headline above
+                  - desktop:        vertically centred on the right */}
             <div
                 className="
                     pointer-events-none
                     absolute
-                    -right-[14%]
-                    -top-[28%]
+                    left-1/2
+                    bottom-[-16%]
                     z-[20]
                     flex
-                    h-[170%]
-                    w-[78%]
+                    w-[160%]
+                    -translate-x-1/2
                     -rotate-[13deg]
                     flex-col
 
-                    max-lg:-right-[22%]
-                    max-lg:w-[86%]
+                    md:bottom-[-15%]
+                    md:w-[105%]
 
-                    max-md:-right-[45%]
-                    max-md:top-[30%]
-                    max-md:h-[105%]
-                    max-md:w-[150%]
+                    lg:left-auto
+                    lg:bottom-auto
+                    lg:top-1/2
+                    lg:-right-[14%]
+                    lg:w-[78%]
+                    lg:-translate-y-1/2
+                    lg:translate-x-0
                 "
             >
                 {MOSAIC.map((row, rowIndex) => (
                     <div
                         key={rowIndex}
-                        className="flex w-full flex-1"
+                        /* the 4th row only fits on desktop, where the field is
+                           tall enough to show it */
+                        className={
+                            rowIndex === 3
+                                ? 'hidden w-full lg:flex'
+                                : 'flex w-full'
+                        }
                         style={{
                             transform: `translateX(${ROW_SHIFT[rowIndex]}%)`,
                             marginTop: rowIndex === 0 ? 0 : '-2.5%',
@@ -200,7 +242,7 @@ export default function Hero(_props: { products?: Product[] }) {
                         {row.map((tile) => (
                             <div
                                 key={`${rowIndex}-${tile.number}`}
-                                className="relative flex-1"
+                                className="relative aspect-[0.7] flex-1"
                                 style={{ zIndex: tile.z }}
                             >
                                 <Image

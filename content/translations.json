@@ -353,7 +353,9 @@
     "lnd.cart.inc": "Increase",
     "lnd.cart.subtotal": "Subtotal",
     "lnd.cart.checkout": "Checkout",
-    "lnd.cart.freeDelivery": "Free delivery over 150 EGP"
+    "lnd.cart.freeDelivery": "Free delivery over 150 EGP",
+    "lnd.hero.welcome1": "Welcome",
+    "lnd.hero.welcome2": "to Sarayo"
   },
   "ar": {
     "nav.menu": "القائمة",
@@ -709,6 +711,8 @@
     "lnd.cart.inc": "زيادة",
     "lnd.cart.subtotal": "المجموع الفرعي",
     "lnd.cart.checkout": "الدفع",
-    "lnd.cart.freeDelivery": "توصيل مجاني فوق ١٥٠ جنيه"
+    "lnd.cart.freeDelivery": "توصيل مجاني فوق ١٥٠ جنيه",
+    "lnd.hero.welcome1": "أهلاً بكم",
+    "lnd.hero.welcome2": "في سرايو"
   }
 }
