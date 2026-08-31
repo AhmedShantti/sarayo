@@ -37,7 +37,7 @@ export default function LandingFooter() {
     const { t, locale } = useLanguage();
 
     const productLinks = [
-        { label: t('lnd.footer.chipsy'), href: '/products' },
+        { label: t('lnd.footer.chipsy'), href: '/chipsy' },
         { label: t('lnd.footer.wafer'), href: '/wafer' },
         { label: t('lnd.footer.export'), href: '/export' },
     ];
