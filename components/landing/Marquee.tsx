@@ -15,7 +15,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 
 const WORD_KEYS = [
     'lnd.word.crunchy', 'lnd.word.flavorful', 'lnd.word.irresistible',
-    'lnd.word.cutThick', 'lnd.word.friedCrisp', 'lnd.since',
+    'lnd.tagline', 'lnd.word.cutThick', 'lnd.word.friedCrisp', 'lnd.since',
 ];
 
 function Row({ baseVelocity, reverse = false }: { baseVelocity: number; reverse?: boolean }) {
@@ -55,7 +55,7 @@ function Row({ baseVelocity, reverse = false }: { baseVelocity: number; reverse?
 
 export default function Marquee() {
     return (
-        <div className="relative border-y-2 border-brand-yellow bg-brand-red-deep py-5">
+        <div className="relative border-y-2 border-brand-yellow bg-gradient-to-r from-brand-red-deep/90 via-brand-red/80 to-brand-red-deep/90 py-5">
             <Row baseVelocity={3} />
         </div>
     );

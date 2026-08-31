@@ -4,6 +4,7 @@ import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
 import Stats from '@/components/landing/Stats';
 import Features from '@/components/landing/Features';
+import ShopSplit from '@/components/landing/ShopSplit';
 import HorizontalShowcase from '@/components/landing/HorizontalShowcase';
 import CTA from '@/components/landing/CTA';
 import LandingFooter from '@/components/landing/LandingFooter';
@@ -24,6 +25,7 @@ export default function LandingPage() {
             <Marquee />
             <Stats />
             <Features features={features} />
+            <ShopSplit />
             <HorizontalShowcase products={products} />
             <CTA />
             <LandingFooter />

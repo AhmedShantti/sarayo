@@ -1,63 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import Chip from './Chip';
 import { type Product } from '@/lib/landingData';
 import { useLanguage } from '@/lib/LanguageContext';
-
-type Tile = {
-    /** catalog page number */
-    number: number;
-    /** how far the pack spills past its grid cell — drives the overlap */
-    scale: number;
-    /** small per-pack tilt on top of the lattice's tilt */
-    rotate: number;
-    z: number;
-};
-
-/**
- * The bags sit on a brick-staggered lattice that the field tilts as a whole,
- * so the rows rise to the right and the packs read as one continuous wall.
- */
-const MOSAIC: Tile[][] = [
-    [
-        { number: 30, scale: 1.22, rotate: -3, z: 4 },
-        { number: 87, scale: 1.26, rotate: 2, z: 6 },
-        { number: 82, scale: 1.46, rotate: -4, z: 12 },
-        { number: 31, scale: 1.24, rotate: 3, z: 7 },
-        { number: 73, scale: 1.22, rotate: -2, z: 5 },
-    ],
-    [
-        { number: 90, scale: 1.26, rotate: 3, z: 9 },
-        { number: 103, scale: 1.22, rotate: -2, z: 8 },
-        { number: 86, scale: 1.28, rotate: 2, z: 10 },
-        { number: 106, scale: 1.24, rotate: -3, z: 9 },
-        { number: 78, scale: 1.46, rotate: 5, z: 13 },
-    ],
-    [
-        { number: 80, scale: 1.46, rotate: -5, z: 14 },
-        { number: 99, scale: 1.24, rotate: 3, z: 10 },
-        { number: 76, scale: 1.28, rotate: -2, z: 12 },
-        { number: 93, scale: 1.22, rotate: 3, z: 11 },
-        { number: 101, scale: 1.26, rotate: -3, z: 12 },
-    ],
-    [
-        { number: 89, scale: 1.24, rotate: 2, z: 6 },
-        { number: 72, scale: 1.22, rotate: -3, z: 7 },
-        { number: 105, scale: 1.26, rotate: 3, z: 8 },
-        { number: 77, scale: 1.24, rotate: -2, z: 7 },
-        { number: 92, scale: 1.28, rotate: 3, z: 9 },
-    ],
-];
-
-/**
- * Horizontal brick offset per row, in % of a row's width. Kept at or above 0
- * so no row reaches back past the field's left edge and over the headline.
- */
-const ROW_SHIFT = [0, 4, 1, 5];
-
-function getImageSrc(num: number) {
-    return `/catalog/png/كتالوج شركة سرايو مصر نهائي-${num}.png`;
-}
 
 export default function Hero(_props: { products?: Product[] }) {
     const { t } = useLanguage();
@@ -80,15 +26,30 @@ export default function Hero(_props: { products?: Product[] }) {
                 lg:min-h-[540px]
             "
         >
-            {/* LIGHT RED ORGANIC SHAPE — sits BEHIND the packs so they overlap
-                it, the way the reference layout reads */}
+            {/* PRODUCT SHOT — one pre-composed lineup image (client-provided),
+                full-bleed across the entire hero, sitting BEHIND the
+                blob + headline */}
+            <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
+                <Image
+                    src="/hero-sarayo.png"
+                    alt="Sarayo product lineup — Cornice, Pop Cornice and Flipi"
+                    fill
+                    priority
+                    quality={100}
+                    sizes="100vw"
+                    className="object-cover object-right"
+                />
+            </div>
+
+            {/* ORGANIC BLOB — sits ABOVE the product image so the headline
+                has a solid backdrop */}
             <div
                 className="
                     pointer-events-none
                     absolute
                     -left-[18%]
                     top-[4%]
-                    z-[5]
+                    z-[10]
                     h-[120%]
                     w-[64%]
                     -rotate-[7deg]
@@ -115,7 +76,7 @@ export default function Hero(_props: { products?: Product[] }) {
                     max-md:hidden
                     left-[36%]
                     top-[8%]
-                    z-[6]
+                    z-[12]
                     h-[38px]
                     w-[95px]
                     rotate-[8deg]
@@ -131,7 +92,7 @@ export default function Hero(_props: { products?: Product[] }) {
                     max-md:hidden
                     left-[43%]
                     top-[13%]
-                    z-[6]
+                    z-[12]
                     h-[55px]
                     w-[65px]
                     -rotate-[25deg]
@@ -147,7 +108,7 @@ export default function Hero(_props: { products?: Product[] }) {
                     max-md:hidden
                     left-[40%]
                     top-[22%]
-                    z-[6]
+                    z-[12]
                     h-[32px]
                     w-[45px]
                     -rotate-[20deg]
@@ -162,7 +123,7 @@ export default function Hero(_props: { products?: Product[] }) {
                     absolute
                     left-[5.5%]
                     top-[30%]
-                    z-[10]
+                    z-[20]
 
                     max-lg:top-[20%]
 
@@ -170,6 +131,9 @@ export default function Hero(_props: { products?: Product[] }) {
                     max-md:top-[15%]
                 "
             >
+                <Chip variant="yellow" size="md" interactive={false} className="mb-4">
+                    {t('lnd.tagline')}
+                </Chip>
                 <h1
                     className="
                         hero-welcome
@@ -188,92 +152,6 @@ export default function Hero(_props: { products?: Product[] }) {
                     <span className="block">{t('lnd.hero.welcome1')}</span>
                     <span className="block">{t('lnd.hero.welcome2')}</span>
                 </h1>
-            </div>
-
-            {/* PRODUCT FIELD
-
-                Row height comes from the cell's aspect ratio, not from a share
-                of the hero's height — otherwise the cells stretch on tall
-                viewports (iPad portrait) and the packs no longer fill them.
-                The field is therefore always ~1.1x its own width tall, and we
-                only have to place it:
-                  - phone / tablet: full-bleed across the bottom, headline above
-                  - desktop:        vertically centred on the right */}
-            <div
-                className="
-                    pointer-events-none
-                    absolute
-                    left-1/2
-                    bottom-[-16%]
-                    z-[20]
-                    flex
-                    w-[160%]
-                    -translate-x-1/2
-                    -rotate-[13deg]
-                    flex-col
-
-                    md:bottom-[-15%]
-                    md:w-[105%]
-
-                    lg:left-auto
-                    lg:bottom-auto
-                    lg:top-1/2
-                    lg:-right-[14%]
-                    lg:w-[78%]
-                    lg:-translate-y-1/2
-                    lg:translate-x-0
-                "
-            >
-                {MOSAIC.map((row, rowIndex) => (
-                    <div
-                        key={rowIndex}
-                        /* the 4th row only fits on desktop, where the field is
-                           tall enough to show it */
-                        className={
-                            rowIndex === 3
-                                ? 'hidden w-full lg:flex'
-                                : 'flex w-full'
-                        }
-                        style={{
-                            transform: `translateX(${ROW_SHIFT[rowIndex]}%)`,
-                            marginTop: rowIndex === 0 ? 0 : '-2.5%',
-                        }}
-                    >
-                        {row.map((tile) => (
-                            <div
-                                key={`${rowIndex}-${tile.number}`}
-                                className="relative aspect-[0.7] flex-1"
-                                style={{ zIndex: tile.z }}
-                            >
-                                <Image
-                                    src={getImageSrc(tile.number)}
-                                    alt={`Sarayo product ${tile.number}`}
-                                    width={900}
-                                    height={900}
-                                    priority={rowIndex < 2}
-                                    loading={rowIndex < 2 ? undefined : 'lazy'}
-                                    sizes="
-                                        (max-width: 768px) 30vw,
-                                        (max-width: 1024px) 20vw,
-                                        17vw
-                                    "
-                                    style={{
-                                        transform: `rotate(${tile.rotate}deg) scale(${tile.scale})`,
-                                    }}
-                                    className="
-                                        absolute
-                                        inset-0
-                                        h-full
-                                        w-full
-                                        select-none
-                                        object-contain
-                                        drop-shadow-[0_18px_30px_rgba(0,0,0,0.38)]
-                                    "
-                                />
-                            </div>
-                        ))}
-                    </div>
-                ))}
             </div>
         </section>
     );

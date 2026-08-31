@@ -10,13 +10,13 @@ import { useLanguage } from '@/lib/LanguageContext';
 export default function CTA() {
     const { t } = useLanguage();
     return (
-        <section id="cta" className="relative px-5 py-24 sm:px-8 sm:py-32">
+        <section id="cta" className="relative bg-brand-cream px-5 py-24 sm:px-8 sm:py-32">
             <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="relative mx-auto max-w-[1100px] overflow-hidden rounded-[2.5rem] border border-white/15 bg-brand-red-deep px-6 py-20 text-center sm:px-12"
+                className="relative mx-auto max-w-[1100px] overflow-hidden rounded-[2.5rem] border border-white/15 bg-gradient-to-br from-brand-red-deep via-brand-red-deep to-brand-ink px-6 py-20 text-center shadow-[0_30px_70px_rgba(42,10,7,0.25)] sm:px-12"
             >
                 {/* animated conic shine */}
                 <motion.div

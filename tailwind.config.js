@@ -29,6 +29,11 @@ module.exports = {
                     'yellow-deep':'#DE9605',
                     cream:        '#FFF6F1',
                     ink:          '#2A0A07',
+
+                    // Hero-only palette (reference mockup): deep royal blue
+                    // field with a cyan organic blob behind the headline.
+                    blue:         '#1E3FD9',
+                    cyan:         '#35BFE3',
                 },
             },
             fontFamily: {

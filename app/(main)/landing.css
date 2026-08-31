@@ -8,7 +8,9 @@
 .landing-root {
     position: relative;
     min-height: 100vh;
-    background: #E20C18;            /* dominant warm red — sampled from the logo */
+    /* Warm red field, sampled from the logo (#E20C18), given depth with the
+       brand's own deep/soft variants instead of one flat fill. */
+    background: linear-gradient(180deg, #A80A12 0%, #E20C18 22%, #E20C18 55%, #F23B33 78%, #A80A12 100%);
     color: #fff;
     /* NO overflow here: `overflow-x: clip` clips position:fixed descendants,
        which cut off and shifted the fixed header on scroll. Horizontal overflow
