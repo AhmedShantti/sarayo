@@ -42,7 +42,7 @@ export default function Loader() {
                     onClick={() => setDone(true)}
                     exit={{ y: '-100%' }}
                     transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-                    className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-brand-red-deep"
+                    className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-br from-brand-red-deep via-brand-red to-brand-red-deep"
                 >
                     <motion.span
                         initial={{ scale: 0.7, opacity: 0 }}

@@ -6,9 +6,9 @@ import CartDrawer from '@/components/landing/CartDrawer';
 import './landing.css';
 
 export const metadata: Metadata = {
-    title: 'Sarayo Alwadiya — Crunch in Style',
+    title: 'Sarayo Alwadiya — Don\'t Stop the Crunch',
     description:
-        'Sarayo Alwadiya — crunchy, flavorful, irresistible chips since 2002. Cut thick, fried crisp, seasoned loud.',
+        'Sarayo Alwadiya — chips and wafer, made in Egypt since 1985.',
 };
 
 export default function LandingLayout({

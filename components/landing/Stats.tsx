@@ -5,7 +5,7 @@ import { animate, motion, useInView, useMotionValue, useTransform } from 'framer
 import { useLanguage } from '@/lib/LanguageContext';
 
 const STATS = [
-    { to: 24, suffix: '', labelKey: 'lnd.stats.years' },
+    { to: 41, suffix: '', labelKey: 'lnd.stats.years' },
     { to: 6, suffix: '', labelKey: 'lnd.stats.flavors' },
     { to: 100, suffix: '%', labelKey: 'lnd.stats.loud' },
     { to: 1, suffix: 'M+', labelKey: 'lnd.stats.bags' },
@@ -26,7 +26,7 @@ function Counter({ to, suffix }: { to: number; suffix: string }) {
     return (
         <span ref={ref} className="inline-flex items-end">
             <motion.span>{text}</motion.span>
-            <span className="text-brand-yellow">{suffix}</span>
+            <span className="text-brand-yellow-deep">{suffix}</span>
         </span>
     );
 }
@@ -34,7 +34,7 @@ function Counter({ to, suffix }: { to: number; suffix: string }) {
 export default function Stats() {
     const { t } = useLanguage();
     return (
-        <section className="border-y border-white/12 bg-brand-red-deep/40 py-16 backdrop-blur-sm sm:py-20">
+        <section className="bg-gradient-to-b from-brand-cream to-white py-16 sm:py-20">
             <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-y-12 px-5 sm:px-8 lg:grid-cols-4">
                 {STATS.map((s) => (
                     <motion.div
@@ -45,10 +45,10 @@ export default function Stats() {
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                         className="text-center"
                     >
-                        <div className="landing-display text-[clamp(3rem,7vw,5.5rem)] leading-none text-white">
+                        <div className="landing-display text-[clamp(3rem,7vw,5.5rem)] leading-none text-brand-red-deep">
                             <Counter to={s.to} suffix={s.suffix} />
                         </div>
-                        <p className="mt-3 font-grotesk text-xs uppercase tracking-[0.25em] text-white/60">
+                        <p className="mt-3 font-grotesk text-xs uppercase tracking-[0.25em] text-brand-ink/55">
                             {t(s.labelKey)}
                         </p>
                     </motion.div>

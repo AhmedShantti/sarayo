@@ -4,12 +4,12 @@
     "ar": "مقرمش. نكهة غنية. لا يُقاوم. شيبس متبّل يدويًا، نكهة جريئة ويُشحن طازجًا في كل مصر."
   },
   "tagline": {
-    "en": "Crunch in style",
-    "ar": "قرمشة بأناقة"
+    "en": "Don't Stop the Crunch",
+    "ar": "متوقفش القرمشة"
   },
   "since": {
-    "en": "Since 2002",
-    "ar": "منذ ٢٠٠٢"
+    "en": "Since 1985",
+    "ar": "منذ ١٩٨٥"
   },
   "copyright": {
     "en": "© 2026 Sarayo Alwadiya. All rights reserved.",
@@ -17,8 +17,8 @@
   },
   "contact": {
     "location": { "en": "Cairo, Egypt", "ar": "القاهرة، مصر" },
-    "phone": "0123 456 7890",
-    "email": "hello@sarayo.com"
+    "phone": "+20 2 0000 0000",
+    "email": "info@sarayoalwadiya.com"
   },
   "social": [
     { "id": "instagram", "label": "Instagram", "href": "#" },

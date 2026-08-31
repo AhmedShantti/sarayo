@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Chip from '@/components/landing/Chip';
 import { PageHero, SectionTitle, Icon, CrunchCTA } from './PageShell';
 import { useLanguage } from '@/lib/LanguageContext';
@@ -40,23 +39,23 @@ export default function AboutPage({ data }: { data: any }) {
                             <SectionTitle title={ar ? story.titleAr || story.titleEn : story.titleEn} />
                             <div className="space-y-5">
                                 {(ar ? story.paragraphsAr : story.paragraphsEn).map((p: string, i: number) => (
-                                    <motion.p key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.6 }} className="text-white/75 leading-relaxed">
+                                    <p key={i} className="text-white/75 leading-relaxed">
                                         {p}
-                                    </motion.p>
+                                    </p>
                                 ))}
                             </div>
                         </div>
 
                         {/* Vision + Mission */}
                         <div className="space-y-5">
-                            {[vision, mission].filter(Boolean).map((block: any, i: number) => (
-                                <motion.div key={block.titleEn} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.55 }}
+                            {[vision, mission].filter(Boolean).map((block: any) => (
+                                <div key={block.titleEn}
                                     className="rounded-3xl border border-white/12 bg-brand-red-deep/60 p-7 backdrop-blur-sm">
                                     <span className="font-grotesk text-xs uppercase tracking-[0.2em] text-brand-yellow">
                                         {ar ? block.titleAr : block.titleEn}
                                     </span>
                                     <p className="mt-3 text-white/80 leading-relaxed">{ar ? block.textAr : block.textEn}</p>
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -68,8 +67,8 @@ export default function AboutPage({ data }: { data: any }) {
                 <section className="py-20 sm:py-28 border-t border-white/8">
                     <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            {pillars.map((p: any, i: number) => (
-                                <motion.div key={p.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.6 }}
+                            {pillars.map((p: any) => (
+                                <div key={p.id}
                                     className="rounded-3xl border border-white/12 bg-brand-red-deep/40 p-7 backdrop-blur-sm">
                                     <span className="mb-5 grid h-12 w-12 place-items-center rounded-xl border border-white/20 text-brand-yellow">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -82,7 +81,7 @@ export default function AboutPage({ data }: { data: any }) {
                                             <p key={j} className="text-sm text-white/70 leading-relaxed">{txt}</p>
                                         ))}
                                     </div>
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -94,8 +93,8 @@ export default function AboutPage({ data }: { data: any }) {
                 <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
                     <SectionTitle chip={ar ? 'قيمنا' : 'Our Values'} title={ar ? 'ما نؤمن به' : 'What We Stand For'} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                        {values.map((v: any, i: number) => (
-                            <motion.div key={v.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.6 }}
+                        {values.map((v: any) => (
+                            <div key={v.id}
                                 className="rounded-3xl border border-white/12 bg-brand-red-deep/60 p-7 backdrop-blur-sm">
                                 <span className="mb-5 grid h-12 w-12 place-items-center rounded-xl border border-white/20 text-brand-yellow">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -104,7 +103,7 @@ export default function AboutPage({ data }: { data: any }) {
                                 </span>
                                 <p className="font-semibold text-white mb-2">{ar ? v.titleAr : v.titleEn}</p>
                                 <p className="text-sm text-white/65 leading-relaxed">{ar ? v.textAr : v.textEn}</p>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
                 </div>

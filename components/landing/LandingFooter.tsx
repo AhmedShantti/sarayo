@@ -47,8 +47,8 @@ export default function LandingFooter() {
         { label: t('lnd.footer.contactUs'), href: '/contact' },
     ];
     const contact = [
-        { label: 'hello@sarayoalwadiya.com', href: 'mailto:hello@sarayoalwadiya.com' },
-        { label: '+20 100 123 4567', href: 'tel:+201001234567' },
+        { label: 'info@sarayoalwadiya.com', href: 'mailto:info@sarayoalwadiya.com' },
+        { label: '+20 2 0000 0000', href: 'tel:+20200000000' },
         { label: t('lnd.footer.location'), href: null as string | null },
     ];
     const columns = [
@@ -57,7 +57,7 @@ export default function LandingFooter() {
     ];
 
     return (
-        <footer className="border-t border-white/12 bg-brand-red-deep">
+        <footer className="border-t border-white/12 bg-gradient-to-b from-brand-red-deep to-brand-ink">
             <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-8">
                 <div className="grid grid-cols-2 gap-10 md:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
                     {/* Brand */}

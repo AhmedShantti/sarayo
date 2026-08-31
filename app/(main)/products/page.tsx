@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
     title: 'Shop — Sarayo Alwadiya',
-    description: 'The full Lay’s lineup by Sarayo Alwadiya. Cut thick, fried crisp, seasoned loud.',
+    description: 'Cornice crisps and our wafer range — made in Egypt.',
 };
 
 export default function ProductsPage() {

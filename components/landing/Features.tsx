@@ -35,14 +35,14 @@ export default function Features({ features: featuresProp }: { features?: Featur
     const FEATURES_DATA = featuresProp || FEATURES;
     const { t, locale } = useLanguage();
     return (
-        <section id="features" className="relative py-24 sm:py-32">
+        <section id="features" className="relative bg-gradient-to-b from-white to-brand-cream py-24 sm:py-32">
             <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
                 <div className="mb-14 max-w-2xl">
                     <Chip variant="yellow" size="md" className="mb-5">{t('lnd.features.chip')}</Chip>
-                    <h2 className="landing-display text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] text-white">
+                    <h2 className="landing-display text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] text-brand-ink">
                         <TextReveal text={t('lnd.features.title')} />
                     </h2>
-                    <p className="mt-5 max-w-lg text-base text-white/75">
+                    <p className="mt-5 max-w-lg text-base text-brand-ink/70">
                         {t('lnd.features.sub')}
                     </p>
                 </div>
@@ -64,16 +64,16 @@ export default function Features({ features: featuresProp }: { features?: Featur
                             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                             onMouseMove={spotlight}
                             data-cursor="hover"
-                            className="feature-card group relative flex flex-col overflow-hidden rounded-3xl border border-white/12 bg-brand-red-deep/60 p-7 backdrop-blur-sm"
+                            className="feature-card group relative flex flex-col overflow-hidden rounded-3xl border border-brand-red-deep/10 bg-white p-7 shadow-[0_8px_30px_rgba(168,10,18,0.08)]"
                         >
-                            <span className="mb-6 grid h-14 w-14 place-items-center rounded-2xl border border-white/25 text-brand-yellow transition-colors duration-300 group-hover:bg-brand-yellow group-hover:text-brand-red-deep">
+                            <span className="mb-6 grid h-14 w-14 place-items-center rounded-2xl border border-brand-red-deep/15 text-brand-red-deep transition-colors duration-300 group-hover:bg-brand-yellow group-hover:text-brand-red-deep">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="h-7 w-7">
                                     {ICONS[f.icon]}
                                 </svg>
                             </span>
-                            <Chip variant="outline" size="sm" className="mb-4 self-start">{fl.chip}</Chip>
-                            <h3 className="landing-display mb-3 text-2xl leading-tight text-white">{fl.title}</h3>
-                            <p className="text-sm leading-relaxed text-white/70">{fl.text}</p>
+                            <Chip variant="red" size="sm" className="mb-4 self-start">{fl.chip}</Chip>
+                            <h3 className="landing-display mb-3 text-2xl leading-tight text-brand-ink">{fl.title}</h3>
+                            <p className="text-sm leading-relaxed text-brand-ink/65">{fl.text}</p>
                         </motion.article>
                         );
                     })}

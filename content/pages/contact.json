@@ -29,18 +29,18 @@
       "icon": "phone",
       "labelEn": "Phone",
       "labelAr": "الهاتف",
-      "valueEn": "+20 123 456 7890",
-      "valueAr": "٢٠+ ١٢٣ ٤٥٦ ٧٨٩٠",
-      "href": "tel:+201234567890"
+      "valueEn": "+20 2 0000 0000",
+      "valueAr": "٢٠+ ٢ ٠٠٠٠ ٠٠٠٠",
+      "href": "tel:+20200000000"
     },
     {
       "id": "email",
       "icon": "mail",
       "labelEn": "Email",
       "labelAr": "البريد الإلكتروني",
-      "valueEn": "hello@sarayo.com",
-      "valueAr": "hello@sarayo.com",
-      "href": "mailto:hello@sarayo.com"
+      "valueEn": "info@sarayoalwadiya.com",
+      "valueAr": "info@sarayoalwadiya.com",
+      "href": "mailto:info@sarayoalwadiya.com"
     },
     {
       "id": "hours",

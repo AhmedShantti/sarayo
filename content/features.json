@@ -1,20 +1,20 @@
 [
   {
     "id": "crunch",
-    "title": "Cut Thick, Fried Crisp",
-    "titleAr": "شرائح سميكة، مقلية ومقرمشة",
-    "text": "Every chip is sliced thick and fried to a loud, shattering crunch you can hear across the room.",
-    "textAr": "كل شريحة تُقطع سميكة وتُقلى حتى قرمشة صاخبة تُسمع عبر الغرفة.",
+    "title": "Baked, Not Fried",
+    "titleAr": "مخبوز مش مقلي",
+    "text": "Every Cornice piece is baked, not fried — a lighter, cleaner crunch you can still hear across the room.",
+    "textAr": "كل قطعة كورنيس بتتخبز مش بتتقلى — قرمشة أخف وأنضف تسمعها من غير ما تشوفها.",
     "chip": "The Crunch",
     "chipAr": "القرمشة",
     "icon": "spark"
   },
   {
     "id": "flavor",
-    "title": "Real, Loud Flavor",
+    "title": "Bold, Real Flavor",
     "titleAr": "نكهة حقيقية وجريئة",
-    "text": "Spices toasted in small batches and tumbled on warm — never dusted with a whisper.",
-    "textAr": "بهارات مُحمّصة على دفعات صغيرة وتُقلّب وهي دافئة — لا مجرد رشّة خفيفة.",
+    "text": "From Korean chili to hot sausage — every flavor is built to be noticed.",
+    "textAr": "من الشطة الكورية للسجق الحار — كل نكهة اتصممت عشان تتحس.",
     "chip": "Big Taste",
     "chipAr": "طعم كبير",
     "icon": "flame"
@@ -23,20 +23,20 @@
     "id": "clean",
     "title": "Clean Ingredients",
     "titleAr": "مكونات نظيفة",
-    "text": "No mystery list. Potatoes, oil, and seasoning you can actually pronounce.",
-    "textAr": "لا قائمة غامضة. بطاطس وزيت وتتبيلة تستطيع نطقها فعلًا.",
+    "text": "No mystery list — ingredients you can actually read and pronounce.",
+    "textAr": "من غير قايمة غامضة — مكونات تقدر تقراها وتنطقها فعلاً.",
     "chip": "Honest",
     "chipAr": "صادق",
     "icon": "leaf"
   },
   {
     "id": "heritage",
-    "title": "Crunched Since 2002",
-    "titleAr": "نقرمش منذ ٢٠٠٢",
-    "text": "Two decades of getting the snack right — now shipped fresh across the region.",
-    "textAr": "عقدان من إتقان السناك — والآن يُشحن طازجًا عبر المنطقة.",
-    "chip": "Since 2002",
-    "chipAr": "منذ ٢٠٠٢",
+    "title": "Four Decades of Craft",
+    "titleAr": "أربعة عقود من الخبرة",
+    "text": "Built on Sarayo Alwadiya's expertise since 1985 — now made fresh in Egypt.",
+    "textAr": "خبرة سرايو الوادية الممتدة منذ ١٩٨٥ — الآن بتتصنّع طازة في مصر.",
+    "chip": "Since 1985",
+    "chipAr": "منذ ١٩٨٥",
     "icon": "globe"
   }
 ]
