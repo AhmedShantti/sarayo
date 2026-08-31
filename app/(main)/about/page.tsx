@@ -7,7 +7,7 @@ import LandingFooter from '@/components/landing/LandingFooter';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
-    const data = await readContent('pages/about');
+    const data = readContent('pages/about');
     return buildPageMetadata(data.meta, { title: 'About Us — Sarayo Alwadiya', description: '' });
 }
 

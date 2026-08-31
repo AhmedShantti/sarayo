@@ -149,8 +149,7 @@ export default function Hero(_props: { products?: Product[] }) {
                         max-md:text-[clamp(38px,13vw,58px)]
                     "
                 >
-                    <span className="block">{t('lnd.hero.welcome1')}</span>
-                    <span className="block">{t('lnd.hero.welcome2')}</span>
+                   
                 </h1>
             </div>
         </section>
