@@ -132,7 +132,7 @@ export default function Hero(_props: { products?: Product[] }) {
                 "
             >
                 <Chip variant="yellow" size="md" interactive={false} className="mb-4">
-                    {t('lnd.tagline')}
+                    {t('lnd.hero.welcome1')} {t('lnd.hero.welcome2')}
                 </Chip>
                 <h1
                     className="
@@ -149,8 +149,8 @@ export default function Hero(_props: { products?: Product[] }) {
                         max-md:text-[clamp(38px,13vw,58px)]
                     "
                 >
-                    <span className="block">{t('lnd.hero.welcome1')}</span>
-                    <span className="block">{t('lnd.hero.welcome2')}</span>
+                    <span className="block">{t('lnd.hero.taglineLine1')}</span>
+                    <span className="block">{t('lnd.hero.taglineLine2')}</span>
                 </h1>
             </div>
         </section>
