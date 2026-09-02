@@ -64,7 +64,7 @@ export default function LandingNav({ nav = { items: [] } }: { nav?: { items: Nav
                             <motion.span
                                 whileHover={{ rotate: -10, scale: 1.12 }}
                                 transition={{ type: 'spring', stiffness: 400, damping: 13 }}
-                                className="block h-12 w-12 flex-shrink-0 sm:h-16 sm:w-16 lg:h-[72px] lg:w-[72px]"
+                                className="block h-24 w-24 flex-shrink-0 sm:h-32 sm:w-32 lg:h-[140px] lg:w-[140px]"
                             >
                                 <Image src="/sarayo-icon.png" alt="Sarayo" width={144} height={144} className="h-full w-full object-contain" priority />
                             </motion.span>

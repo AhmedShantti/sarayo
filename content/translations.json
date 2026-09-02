@@ -355,7 +355,9 @@
     "lnd.cart.checkout": "Checkout",
     "lnd.cart.freeDelivery": "Free delivery over 150 EGP",
     "lnd.hero.welcome1": "The Original",
-    "lnd.hero.welcome2": "Crunch"
+    "lnd.hero.welcome2": "Crunch",
+    "lnd.hero.taglineLine1": "Don't Stop",
+    "lnd.hero.taglineLine2": "the Crunch"
   },
   "ar": {
     "nav.menu": "القائمة",
@@ -713,6 +715,8 @@
     "lnd.cart.checkout": "الدفع",
     "lnd.cart.freeDelivery": "توصيل مجاني فوق ١٥٠ جنيه",
     "lnd.hero.welcome1": "القرمشة",
-    "lnd.hero.welcome2": "الأصلية"
+    "lnd.hero.welcome2": "الأصلية",
+    "lnd.hero.taglineLine1": "متوقفش",
+    "lnd.hero.taglineLine2": "القرمشة"
   }
 }
